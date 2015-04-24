@@ -13,13 +13,18 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.DateUtils;
-import cn.featherfly.conversion.basic.ClassConvertor;
-import cn.featherfly.conversion.basic.EnumConvertor;
-import cn.featherfly.conversion.basic.IntArrayConvertor;
-import cn.featherfly.conversion.basic.IntConvertor;
-import cn.featherfly.conversion.basic.IntegerConvertor;
-import cn.featherfly.conversion.basic.StringConvertor;
-import cn.featherfly.conversion.format.DateFormatConvertor;
+import cn.featherfly.conversion.core.BeanPropertyConversion;
+import cn.featherfly.conversion.core.ConversionException;
+import cn.featherfly.conversion.core.ConversionPolicy;
+import cn.featherfly.conversion.core.ConversionPolicys;
+import cn.featherfly.conversion.core.TypeConversion;
+import cn.featherfly.conversion.core.basic.ClassConvertor;
+import cn.featherfly.conversion.core.basic.EnumConvertor;
+import cn.featherfly.conversion.core.basic.IntArrayConvertor;
+import cn.featherfly.conversion.core.basic.IntConvertor;
+import cn.featherfly.conversion.core.basic.IntegerConvertor;
+import cn.featherfly.conversion.core.basic.StringConvertor;
+import cn.featherfly.conversion.core.format.DateFormatConvertor;
 
 /**
  * <p>

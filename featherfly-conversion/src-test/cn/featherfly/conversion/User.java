@@ -3,9 +3,9 @@ package cn.featherfly.conversion;
 
 import java.util.Date;
 
-import cn.featherfly.conversion.annotation.Assign;
-import cn.featherfly.conversion.annotation.Format;
-import cn.featherfly.conversion.basic.DateConvertor;
+import cn.featherfly.conversion.core.annotation.Assign;
+import cn.featherfly.conversion.core.annotation.Format;
+import cn.featherfly.conversion.core.basic.DateConvertor;
 
 /**
  * <p>
