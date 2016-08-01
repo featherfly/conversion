@@ -1,7 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'  
-apply plugin: 'maven-publish'  
+apply plugin: 'maven-publish'
+apply plugin: 'signing'  
 
 sourceCompatibility=1.7  
 targetCompatibility=1.7
@@ -69,6 +70,83 @@ publishing {
         }
     }    
 }
+
+//为所有的jar包做数字签名  
+signing {  
+    sign configurations.archives  
+} 
+
+uploadArchives {
+   repositories {
+       mavenDeployer {  
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) } 
+            repository(url:"https://oss.sonatype.org/service/local/staging/deploy/maven2") {  
+                authentication(userName: 'yufei', password: 'yufeimvn101')  
+            }
+            pom.project {  
+                name project.name  
+                packaging 'jar'
+                description 'conversion tool'  
+                url 'https://github.com/featherfly/conversion.git'  
+                scm {  
+                    url 'scm:git@github.com:featherfly/conversion.git'  
+                    connection 'scm:git@github.com:featherfly/conversion.git'  
+                    developerConnection 'git@github.com:featherfly/conversion.git'  
+                }  
+                licenses {  
+                    license {  
+                        name 'The Apache Software License, Version 2.0'  
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'  
+                        distribution 'repo'  
+                    }  
+                }  
+                developers {  
+                    developer {  
+                        id 'featherfly'  
+                        name 'Yufei'
+                    }  
+                }  
+            }  
+        }
+    }  
+}
+
+task("uploadNexusArchives", type: Upload) {
+        configuration = configurations.archives
+        uploadDescriptor = true
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                repository(url:"http://192.168.203.241:8081/nexus/content/repositories/releases/") {
+                    authentication(userName: 'admin', password: 'admin123')
+                }
+                pom.project {
+                    name project.name
+                    packaging 'jar'
+                    description 'conversion tool'
+                    url 'https://github.com/featherfly/conversion.git'
+                    scm {
+                        url 'scm:git@github.com:featherfly/conversion.git'
+                        connection 'scm:git@github.com:featherfly/conversion.git'
+                        developerConnection 'git@github.com:featherfly/conversion.git'
+                    }
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'featherfly'
+                            name 'zhongji'
+                        }
+                    }
+                }
+            }
+        }
+    } 
 
 jar {
     manifest.attributes 'Build-By': "zhong ji"
