@@ -32,6 +32,12 @@ import cn.featherfly.conversion.core.basic.LongWrapperConvertor;
 import cn.featherfly.conversion.core.basic.ShortArrayConvertor;
 import cn.featherfly.conversion.core.basic.ShortConvertor;
 import cn.featherfly.conversion.core.basic.ShortWrapperConvertor;
+import cn.featherfly.conversion.core.basic.SqlDateArrayConvertor;
+import cn.featherfly.conversion.core.basic.SqlDateConvertor;
+import cn.featherfly.conversion.core.basic.SqlTimeArrayConvertor;
+import cn.featherfly.conversion.core.basic.SqlTimeConvertor;
+import cn.featherfly.conversion.core.basic.SqlTimestampArrayConvertor;
+import cn.featherfly.conversion.core.basic.SqlTimestampConvertor;
 import cn.featherfly.conversion.core.basic.StringArrayConvertor;
 import cn.featherfly.conversion.core.basic.StringBufferArrayConvertor;
 import cn.featherfly.conversion.core.basic.StringBufferConvertor;
@@ -59,6 +65,8 @@ import cn.featherfly.conversion.core.bp.LongWrapperBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.ShortBeanPropertyArrayFormatConvertor;
 import cn.featherfly.conversion.core.bp.ShortBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.ShortWrapperBeanPropertyFormatConvertor;
+import cn.featherfly.conversion.core.bp.SqlTimestampBeanPropertyArrayFormatConvertor;
+import cn.featherfly.conversion.core.bp.SqlTimestampBeanPropertyFormatConvertor;
 
 /**
  * <p>
@@ -93,6 +101,9 @@ public final class ConversionPolicys {
                     , new EnumConvertor(), new EnumArrayConvertor()
                     , new BigDecimalConvertor(), new BigDecimalArrayConvertor()
                     , new BigIntegerConvertor(), new BigIntegerArrayConvertor()
+                    , new SqlDateConvertor(), new SqlDateArrayConvertor()
+                    , new SqlTimeConvertor(), new SqlTimeArrayConvertor()
+                    , new SqlTimestampConvertor(), new SqlTimestampArrayConvertor()
     );
 
     /*
@@ -115,6 +126,7 @@ public final class ConversionPolicys {
                 , new BigDecimalBeanPropertyFormatConvertor(), new BigDecimalBeanPropertyArrayFormatConvertor()
                 , new BigIntegerBeanPropertyFormatConvertor(), new BigIntegerBeanPropertyArrayFormatConvertor()
                 , new DateBeanPropertyFormatConvertor(), new DateBeanPropertyArrayFormatConvertor()
+                , new SqlTimestampBeanPropertyFormatConvertor(), new SqlTimestampBeanPropertyArrayFormatConvertor()
         );
         FORMAT_CONVERSION_POLICY = policy;
     }
