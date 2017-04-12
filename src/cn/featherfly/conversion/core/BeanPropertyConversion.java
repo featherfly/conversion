@@ -7,7 +7,6 @@ import java.util.Map;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.core.annotation.Assign;
 
 
@@ -97,11 +96,10 @@ public class BeanPropertyConversion extends AbstractConversion<BeanProperty<?>>{
         if (conversion == null) {
             conversion = BeanUtils.instantiateClass(conversionType);
             if (conversion.getType() != beanProperty.getType()) {
-                String msg = StringUtils.format("类 [#1] 的属性 [#2]->[#3] 不能使用指定的转换器 [#4]，该转换器只能转换 [#5] 类型"
-                        , beanProperty.getOwnerType().getName(), beanProperty.getName()
-                        , beanProperty.getType().getName(), conversionType.getName()
-                        , conversion.getType().getName());
-                throw new ConversionException(msg);
+                throw new ConversionException("#type_with_error_convertor", new Object[]{
+                		beanProperty.getOwnerType().getName(), beanProperty.getName()
+                      , beanProperty.getType().getName(), conversionType.getName()
+                      , conversion.getType().getName()});
             }
         }
         return (Convertor<E>) conversion;

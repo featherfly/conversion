@@ -6,7 +6,7 @@ import java.math.BigInteger;
 
 /**
  * <p>
- * 整数包装类转换器
+ * BigInteger转换器
  * </p>
  *
  * @author 钟冀

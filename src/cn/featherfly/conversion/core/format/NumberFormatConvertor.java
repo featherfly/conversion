@@ -35,12 +35,9 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T>{
      */
     @Override
     protected String formatToString(T value, FormatType<T> genericType) {
-        if (genericType != null) {
-            String format = genericType.getFormat();
-            if (StringUtils.isNotBlank(format)) {
-                DecimalFormat df = new DecimalFormat(format);
-                return df.format(value);
-            }
+        if (genericType != null && value != null && StringUtils.isNotBlank(genericType.getFormat())) {
+            DecimalFormat df = new DecimalFormat(genericType.getFormat());
+            return df.format(value);
         }
         return null;
     }
@@ -50,20 +47,19 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T>{
      */
     @Override
     protected T formatToObject(String value, FormatType<T> genericType) {
-        if (genericType != null) {
-            List<String> formats = genericType.getFormats();
-            if (LangUtils.isNotEmpty(formats)) {
-                for (String format : formats) {
-                    DecimalFormat df = new DecimalFormat(format);
-                    try {
-                        return (T) NumberUtils.value(df.parse(value), getType());
-                    } catch (ParseException e) {
-                        LogUtils.debug(e, logger);
-                    }
+        if (genericType != null && value != null && LangUtils.isNotEmpty(genericType.getFormats())) {
+            List<String> formats = genericType.getFormats();            
+            for (String format : formats) {
+                DecimalFormat df = new DecimalFormat(format);
+                try {
+                    return (T) NumberUtils.value(df.parse(value), getType());
+                } catch (ParseException e) {
+                    LogUtils.debug(e, logger);
                 }
-                throw new ConversionException(value
-                        + " 使用以下格式转换失败！ -> " + ArrayUtils.toString(formats));
             }
+            throw new ConversionException("#convert_failed_with_type", new Object[]{
+            		value, ArrayUtils.toString(formats), getType().getName()});
+            
         }
         return null;
     }

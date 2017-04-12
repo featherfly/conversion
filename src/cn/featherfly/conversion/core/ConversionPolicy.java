@@ -40,10 +40,8 @@ public class ConversionPolicy implements Cloneable{
             Class<?> type = convertor.getType();
             Convertor<?> c = getConvertor(type);
             if (c != null) {
-                throw new ConversionException(
-                    String.format("为类型%s绑定了多个转换器[%s , %s]"
-                            , type.getName(), convertor.getClass().getName()
-                            , c.getClass().getName()));
+                throw new ConversionException("#type_with_muliti_convertor", new Object[]{
+                		type.getName(), convertor.getClass().getName(), c.getClass().getName()});
             }
             conversions.put(type, convertor);
         }

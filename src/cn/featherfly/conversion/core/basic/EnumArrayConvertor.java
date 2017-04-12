@@ -9,12 +9,11 @@ package cn.featherfly.conversion.core.basic;
  *
  * @author 钟冀
  */
-@SuppressWarnings("rawtypes")
-public class EnumArrayConvertor extends GenericClassArrayConvertor<Enum[], Enum> {
+public class EnumArrayConvertor<T extends Enum<T>> extends GenericClassArrayConvertor<T[], T> {
 
     /**
      */
     public EnumArrayConvertor() {
-        super(new EnumConvertor());
+        super(new EnumConvertor<T>());
     }
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 /**
  * <p>
- * 整数包装类转换器
+ * BigDecimal转换器
  * </p>
  *
  * @author 钟冀

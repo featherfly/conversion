@@ -5,7 +5,7 @@ import java.sql.Time;
 
 /**
  * <p>
- * SqlDateArray类转换器
+ * SqlTimeArray类转换器
  * </p>
  *
  * @author 钟冀

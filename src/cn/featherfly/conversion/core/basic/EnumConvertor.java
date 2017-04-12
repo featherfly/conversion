@@ -2,6 +2,7 @@
 package cn.featherfly.conversion.core.basic;
 
 import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.core.ConversionException;
 
@@ -12,8 +13,7 @@ import cn.featherfly.conversion.core.ConversionException;
  *
  * @author 钟冀
  */
-@SuppressWarnings("rawtypes")
-public class EnumConvertor extends AbstractBasicConvertor<Enum, GenericType<Enum>>{
+public class EnumConvertor<T extends Enum<T>> extends AbstractBasicConvertor<T, GenericType<T>>{
 
     /**
      */
@@ -24,7 +24,7 @@ public class EnumConvertor extends AbstractBasicConvertor<Enum, GenericType<Enum
      * {@inheritDoc}
      */
     @Override
-    protected String doToString(Enum value, GenericType<Enum> genericType) {
+    protected String doToString(T value, GenericType<T> genericType) {
         if (value != null) {
             return value.toString();
         }
@@ -34,17 +34,19 @@ public class EnumConvertor extends AbstractBasicConvertor<Enum, GenericType<Enum
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    protected Enum doToObject(String value, GenericType<Enum> genericType) {
+    protected T doToObject(String value, GenericType<T> genericType) {
         if (StringUtils.isNotBlank(value)) {
             try {
-                return Enum.valueOf(genericType.getType() , value);
+            	T t = LangUtils.toEnum(genericType.getType(), value);
+            	if (t == null) {
+            		throw new ConversionException("#convert_failed", new Object[]{value, genericType.getType().getName()});	
+            	}
+            	return t;
             } catch (IllegalArgumentException e) {
-                throw new ConversionException("设置枚举报错！", e);
+                throw new ConversionException("#convert_failed", new Object[]{value, genericType.getType().getName()});
             }
         }
         return null;
     }
-
 }

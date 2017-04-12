@@ -11,7 +11,7 @@ import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.core.ConversionException;
-import cn.featherfly.conversion.core.basic.DateConvertor;
+import cn.featherfly.conversion.core.Convertor;
 
 /**
  * <p>
@@ -20,39 +20,40 @@ import cn.featherfly.conversion.core.basic.DateConvertor;
  *
  * @author 钟冀
  */
-public class DateFormatConvertor extends FormatConvertor<Date> {
+public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends FormatConvertor<T> {
 
     /**
      */
-    public DateFormatConvertor() {
-        super(new DateConvertor());
+    public AbstractSqlDateFormatConvertor(Convertor<T> convertor) {
+        super(convertor);
     }
-
+    
+    protected abstract T convert(Date date);
+    
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String formatToString(Date value, FormatType<Date> genericType) {
-        if (value != null && genericType != null && StringUtils.isNotBlank(genericType.getFormat())) {
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected String formatToString(T value, FormatType<T> genericType) {
+		if (genericType != null && StringUtils.isNotBlank(genericType.getFormat())) {
             SimpleDateFormat sdf = new SimpleDateFormat(genericType.getFormat());
             return sdf.format(value);
         }
         return null;
-    }
+	}
 
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Date formatToObject(String value, FormatType<Date> genericType) {
-        if (value != null && genericType != null && LangUtils.isNotEmpty(genericType.getFormats())) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected T formatToObject(String value, FormatType<T> genericType) {
+		if (genericType != null && LangUtils.isNotEmpty(genericType.getFormats())) {
             List<String> formats = genericType.getFormats();
             for (String format : formats) {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);
                 try {
-                    return sdf.parse(value);
+                    Date d = sdf.parse(value);
+                    return convert(d);
                 } catch (ParseException e) {
                     LogUtils.debug(e, logger);
                 }
@@ -61,5 +62,5 @@ public class DateFormatConvertor extends FormatConvertor<Date> {
             		value, ArrayUtils.toString(formats), getType().getName()});
         }
         return null;
-    }
+	}
 }

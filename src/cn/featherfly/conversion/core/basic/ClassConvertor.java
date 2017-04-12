@@ -51,7 +51,7 @@ public class ClassConvertor extends AbstractBasicConvertor<Class, GenericType<Cl
                 return Class.forName(value);
             } catch (ClassNotFoundException e) {
                 LogUtils.debug(e, logger);
-                throw new ConversionException(String.format("设置常量时，类%s没有找到", value));
+                throw new ConversionException("#class_not_found", new Object[]{value});
             }
         }
         return null;

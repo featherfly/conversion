@@ -44,7 +44,7 @@ public abstract class AbstractConversion<G extends GenericType<?>>  implements C
      */
     protected void check() {
         if (conversionPolicy == null) {
-            throw new ConversionException("转换策略[conversionPolicy]没有设置!");
+            throw new ConversionException("#no_policy");
         }
     }
 
@@ -60,8 +60,8 @@ public abstract class AbstractConversion<G extends GenericType<?>>  implements C
         @SuppressWarnings("unchecked")
         Convertor<E> convertor = (Convertor<E>) conversionPolicy.getConvertor(type);
         if (convertor == null) {
-            throw new ConversionException(
-                    String.format("转换策略没有为类型%s设置转换器!", type.getName()));
+            throw new ConversionException("#no_convertor_with_type"
+            		, new Object[]{type.getName()});
         }
         return convertor;
     }
