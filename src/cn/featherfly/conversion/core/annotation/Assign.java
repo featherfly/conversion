@@ -22,6 +22,7 @@ public @interface Assign {
      * <p>
      * 手动设置转换类
      * </p>
+     * @return 转换器类型
      */
     Class<? extends Convertor<?>> conversion();
 }

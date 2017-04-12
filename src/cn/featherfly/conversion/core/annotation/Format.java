@@ -18,14 +18,16 @@ import java.lang.annotation.Target;
 public @interface Format {
     /**
      * <p>
-     * 格式化转换输出格式
+     * 格式化日期使用的格式
      * </p>
+     * @return format
      */
     String format();
     /**
      * <p>
-     * 格式化支持的输入格式
+     * 转换字符串到日期格式支持的格式
      * </p>
+     * @return formats
      */
     String[] formats();
 }
