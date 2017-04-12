@@ -65,6 +65,10 @@ import cn.featherfly.conversion.core.bp.LongWrapperBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.ShortBeanPropertyArrayFormatConvertor;
 import cn.featherfly.conversion.core.bp.ShortBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.ShortWrapperBeanPropertyFormatConvertor;
+import cn.featherfly.conversion.core.bp.SqlDateBeanPropertyArrayFormatConvertor;
+import cn.featherfly.conversion.core.bp.SqlDateBeanPropertyFormatConvertor;
+import cn.featherfly.conversion.core.bp.SqlTimeBeanPropertyArrayFormatConvertor;
+import cn.featherfly.conversion.core.bp.SqlTimeBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.SqlTimestampBeanPropertyArrayFormatConvertor;
 import cn.featherfly.conversion.core.bp.SqlTimestampBeanPropertyFormatConvertor;
 
@@ -126,6 +130,8 @@ public final class ConversionPolicys {
                 , new BigDecimalBeanPropertyFormatConvertor(), new BigDecimalBeanPropertyArrayFormatConvertor()
                 , new BigIntegerBeanPropertyFormatConvertor(), new BigIntegerBeanPropertyArrayFormatConvertor()
                 , new DateBeanPropertyFormatConvertor(), new DateBeanPropertyArrayFormatConvertor()
+                , new SqlDateBeanPropertyFormatConvertor(), new SqlDateBeanPropertyArrayFormatConvertor()
+                , new SqlTimeBeanPropertyFormatConvertor(), new SqlTimeBeanPropertyArrayFormatConvertor()
                 , new SqlTimestampBeanPropertyFormatConvertor(), new SqlTimestampBeanPropertyArrayFormatConvertor()
         );
         FORMAT_CONVERSION_POLICY = policy;
