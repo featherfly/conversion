@@ -14,7 +14,7 @@ import cn.featherfly.common.lang.GenericType;
  * 抽象转换器
  * </p>
  * @param <T> 转换对象
- * @param <G> 
+ * @param <G> GenericType
  * @author 钟冀
  */
 public abstract class AbstractConvertor<T, G extends GenericType<T>> implements Convertor<T>{

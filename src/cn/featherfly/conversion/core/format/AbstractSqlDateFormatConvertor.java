@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.StringUtils;
@@ -24,6 +22,7 @@ import cn.featherfly.conversion.core.Convertor;
 public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends FormatConvertor<T> {
 
     /**
+     * @param convertor convertor
      */
     public AbstractSqlDateFormatConvertor(Convertor<T> convertor) {
         super(convertor);

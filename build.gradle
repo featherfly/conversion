@@ -1,11 +1,8 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'maven'  
 apply plugin: 'maven-publish'
-apply plugin: 'signing'  
-
-sourceCompatibility=1.7  
-targetCompatibility=1.7
+apply plugin: 'signing'
+apply from: './java_base.gradle'  
 
 sourceSets {
     main {

@@ -120,8 +120,8 @@ public class BasicTest {
         String a1 = "12345";
         String a2 = "1,23,45";
         assertEquals(a2, beanPropertyConversion.toString(age, beanProperty));
-        assertEquals(age, beanPropertyConversion.toObject(a1, beanProperty));
-        assertEquals(age, beanPropertyConversion.toObject(a2, beanProperty));
+        assertEquals(age, (int) beanPropertyConversion.toObject(a1, beanProperty));
+        assertEquals(age, (int) beanPropertyConversion.toObject(a2, beanProperty));
         
         String ds1 = "2000年1月1日,2002-2-2";
         String ds2 = "2000-01-01,2002-02-02";
@@ -176,7 +176,7 @@ public class BasicTest {
         BeanDescriptor<User> bd = BeanDescriptor.getBeanDescriptor(User.class);
         
         BeanProperty<?> beanProperty = bd.getBeanProperty("name");
-        System.out.println(beanPropertyConversion.toObject("yufei", beanProperty));
+        System.out.println(beanPropertyConversion.toObject("yufei", beanProperty).toString());
         System.out.println(beanPropertyConversion.toString("yufei", beanProperty));
     }
 }
