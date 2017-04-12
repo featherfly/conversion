@@ -50,7 +50,7 @@ public class JsonClassParser extends JsonParser<GenericClass<Class<?>>>{
             if (LangUtils.isEmpty(className)) {
                 throw new IllegalArgumentException("parse(String content)必须显示指定类型（class）");
             }
-            return (T) objectMapper.reader(Class.forName(className)).readValue(jsonContent);
+            return (T) objectMapper.readerFor(Class.forName(className)).readValue(jsonContent);
         } catch (Exception e) {
             throw new ParseException(e);
         }

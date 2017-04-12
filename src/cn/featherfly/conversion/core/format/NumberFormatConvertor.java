@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.List;
 
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.NumberUtils;
@@ -58,7 +57,7 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T>{
                 }
             }
             throw new ConversionException("#convert_failed_with_type", new Object[]{
-            		value, ArrayUtils.toString(formats), getType().getName()});
+            		value, formats, getType().getName()});
             
         }
         return null;

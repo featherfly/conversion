@@ -55,7 +55,7 @@ public class ConversionPolicy implements Cloneable{
      */
     public void put(Convertor<?> convertor) {
         if (conversions != null) {
-            Class<?> type = convertor.getType();            
+            Class<?> type = convertor.getType();
             conversions.put(type, convertor);
         }
     }

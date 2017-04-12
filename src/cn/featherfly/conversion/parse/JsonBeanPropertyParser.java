@@ -87,7 +87,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
             }
             if (toType instanceof ParameterizedType) {
                 final Type parameterizedType =  ((ParameterizedType) toType);
-                return (T) objectMapper.reader(new TypeReference<T>(){
+                return (T) objectMapper.readerFor(new TypeReference<T>(){
                     /**
                      * {@inheritDoc}
                      */
@@ -97,7 +97,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
                     }
                 }).readValue(jsonContent);
             } else {
-                return (T) objectMapper.reader((Class<?>) toType).readValue(jsonContent);
+                return (T) objectMapper.readerFor((Class<?>) toType).readValue(jsonContent);
             }
         } catch (Exception e) {
             throw new ParseException(e);

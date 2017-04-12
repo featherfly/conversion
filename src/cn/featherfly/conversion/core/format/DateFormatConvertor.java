@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.StringUtils;
@@ -58,7 +57,7 @@ public class DateFormatConvertor extends FormatConvertor<Date> {
                 }
             }
             throw new ConversionException("#convert_failed_with_type", new Object[]{
-            		value, ArrayUtils.toString(formats), getType().getName()});
+            		value, formats, getType().getName()});
         }
         return null;
     }

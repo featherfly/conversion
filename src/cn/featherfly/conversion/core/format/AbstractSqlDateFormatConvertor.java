@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.featherfly.common.lang.ArrayUtils;
+import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.StringUtils;
@@ -58,8 +59,9 @@ public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends For
                     LogUtils.debug(e, logger);
                 }
             }
+            
             throw new ConversionException("#convert_failed_with_type", new Object[]{
-            		value, ArrayUtils.toString(formats), getType().getName()});
+            		value, formats, getType().getName()});
         }
         return null;
 	}

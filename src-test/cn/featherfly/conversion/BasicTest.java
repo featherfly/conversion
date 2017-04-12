@@ -4,6 +4,8 @@ package cn.featherfly.conversion;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import org.testng.annotations.BeforeClass;
@@ -67,7 +69,7 @@ public class BasicTest {
         String className = User.class.getName();
         assertEquals(User.class , convertor.toObject(className, Class.class));
         
-        assertEquals(className , convertor.toString(User.class, Class.class));
+        assertEquals(className , convertor.toString(User.class, Class.class));        
     }
     @Test
     public void testBeanPropertyConversion() {
@@ -84,6 +86,7 @@ public class BasicTest {
 
         beanProperty = bd.getBeanProperty("sex");
         assertEquals(Sex.male, beanPropertyConversion.toObject("male", beanProperty));
+        assertEquals(Sex.male, beanPropertyConversion.toObject("0", beanProperty));
         assertEquals("female", beanPropertyConversion.toString(Sex.female, beanProperty));
     }
     @Test
@@ -128,6 +131,41 @@ public class BasicTest {
         assertEquals(ArrayUtils.toString(date1, date2)
                 , ArrayUtils.toString(beanPropertyConversion.toObject(ds1, beanProperty)));
         assertEquals(ds2, beanPropertyConversion.toString(new Date[] {date1, date2}, beanProperty));
+        
+        
+        // sql date
+        beanProperty = bd.getBeanProperty("sqlDate");
+        java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
+        assertEquals(sqlDate.toString(), beanPropertyConversion.toObject("2000-1-1", beanProperty).toString());        
+        assertEquals("2000-01-01", beanPropertyConversion.toString(sqlDate, beanProperty));        
+        
+        beanProperty = bd.getBeanProperty("sqlDate2");
+        assertEquals(sqlDate.toString(), beanPropertyConversion.toObject("2000年1月1日", beanProperty).toString());        
+        assertEquals(sqlDate.toString(), beanPropertyConversion.toObject("2000/1/1", beanProperty).toString());        
+        assertEquals("2000年01月01日", beanPropertyConversion.toString(sqlDate, beanProperty));        
+        
+        //sql time        
+        beanProperty = bd.getBeanProperty("time");
+        Time time = new Time(DateUtils.getTime(2002, 2, 2, 14, 15, 16).getTime());
+        assertEquals(time.toString(), beanPropertyConversion.toObject("14:15:16", beanProperty).toString());        
+        assertEquals("14:15:16", beanPropertyConversion.toString(time, beanProperty));        
+        
+        beanProperty = bd.getBeanProperty("time2");
+        assertEquals(time.toString(), beanPropertyConversion.toObject("14时15分16秒", beanProperty).toString());
+        assertEquals(time.toString(), beanPropertyConversion.toObject("14:15:16", beanProperty).toString());
+        assertEquals("14时15分16秒", beanPropertyConversion.toString(time, beanProperty));
+        
+        //sql timestamp        
+        beanProperty = bd.getBeanProperty("timestamp");
+        Timestamp timestamp = new Timestamp(DateUtils.getTime(2002, 2, 2, 14, 15, 16).getTime());
+        assertEquals(DateUtils.formartTime(timestamp), DateUtils.formartTime((Date) beanPropertyConversion.toObject("2002-2-2 14:15:16", beanProperty)));        
+        assertEquals("2002-02-02 14:15:16", beanPropertyConversion.toString(timestamp, beanProperty));        
+        
+        beanProperty = bd.getBeanProperty("timestamp2");
+        assertEquals(DateUtils.formartTime(timestamp), DateUtils.formartTime((Date) beanPropertyConversion.toObject("2002年2月2日 14时15分16秒", beanProperty)));
+        assertEquals(DateUtils.formartTime(timestamp), DateUtils.formartTime((Date) beanPropertyConversion.toObject("2002/2/2 14:15:16", beanProperty)));
+        assertEquals("2002年02月02日 14时15分16秒", beanPropertyConversion.toString(timestamp, beanProperty));
+        
     }
     
     @Test(expectedExceptions = ConversionException.class)

@@ -57,7 +57,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
 	protected String doToString(T value, GenericType<T> genericType) {
 		if (value != null) {
 			if (StringUtils.isNotBlank(getFormat())) {
-				logger.debug("use {} format to convert {} to string", getFormat(), getType().getName());
+				logger.debug("format {} to string with {}", getType().getName(), getFormat());
 				DateFormat df = new SimpleDateFormat(getFormat());				
 				return df.format(value);
 			} else {

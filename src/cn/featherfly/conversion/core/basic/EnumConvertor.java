@@ -7,7 +7,7 @@ import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.core.ConversionException;
 
 /**
- * <p>
+ * <p>	
  * Enum类转换器
  * </p>
  *
@@ -19,8 +19,21 @@ public class EnumConvertor<T extends Enum<T>> extends AbstractBasicConvertor<T, 
      */
     public EnumConvertor() {
     }
+    
+    
 
     /**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public Class<T> getType() {
+		return (Class) Enum.class;
+	}
+
+
+
+	/**
      * {@inheritDoc}
      */
     @Override
