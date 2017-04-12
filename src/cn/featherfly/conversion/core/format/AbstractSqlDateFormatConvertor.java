@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import cn.featherfly.common.lang.LangUtils;
-import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.core.ConversionException;
 import cn.featherfly.conversion.core.Convertor;
@@ -37,6 +36,7 @@ public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends For
 	protected String formatToString(T value, FormatType<T> genericType) {
 		if (genericType != null && StringUtils.isNotBlank(genericType.getFormat())) {
             SimpleDateFormat sdf = new SimpleDateFormat(genericType.getFormat());
+            logger.debug("format {} to string with {}", getType().getName(), genericType.getFormat());
             return sdf.format(value);
         }
         return null;
@@ -53,12 +53,12 @@ public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends For
                 SimpleDateFormat sdf = new SimpleDateFormat(format);
                 try {
                     Date d = sdf.parse(value);
+                    logger.debug("parse {} with format[{}] success", value, format);
                     return convert(d);
                 } catch (ParseException e) {
-                    LogUtils.debug(e, logger);
+                	logger.debug("parse {} with format[{}] error", value, format);
                 }
             }
-            
             throw new ConversionException("#convert_failed_with_type", new Object[]{
             		value, formats, getType().getName()});
         }
