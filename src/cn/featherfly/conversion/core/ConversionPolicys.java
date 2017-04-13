@@ -102,7 +102,7 @@ public final class ConversionPolicys {
                     , new StringBuilderConvertor(), new StringBuilderArrayConvertor()
                     , new DateConvertor(), new DateArrayConvertor()
                     , new ClassConvertor(), new ClassArrayConvertor()
-                    , new EnumConvertor(), new EnumArrayConvertor()
+                    , new EnumConvertor<>(), new EnumArrayConvertor<>()
                     , new BigDecimalConvertor(), new BigDecimalArrayConvertor()
                     , new BigIntegerConvertor(), new BigIntegerArrayConvertor()
                     , new SqlDateConvertor(), new SqlDateArrayConvertor()

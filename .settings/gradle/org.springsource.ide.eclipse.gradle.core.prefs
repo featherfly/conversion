@@ -3,3 +3,4 @@
 build.family.org.gradle.tooling.model.eclipse.HierarchicalEclipseProject=;
 org.springsource.ide.eclipse.gradle.linkedresources=
 org.springsource.ide.eclipse.gradle.rootprojectloc=
+org.gradle.java.home=D:/programe/runtime/java/jdk1.7.0_79

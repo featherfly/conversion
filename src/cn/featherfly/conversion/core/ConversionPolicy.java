@@ -62,6 +62,34 @@ public class ConversionPolicy implements Cloneable{
     
     /**
      * <p>
+     * 添加转换策略,如果新添加的转换策略中出现重复绑定相当类型的转换器择抛出异常
+     * </p>
+     * @param conversionPolicy 转换策略
+     */
+    public void add(ConversionPolicy conversionPolicy) {
+    	if (conversionPolicy != null) {
+    		for (Convertor<?> convertor : conversionPolicy.getConvertors()) {
+    			add(convertor);
+			}
+    	}
+    }
+    
+    /**
+     * <p>
+     * 放入转换策略，如果传入参数的转换策略中的转换器绑定类型已经有转换器绑定，则替换已绑定的转换器
+     * </p>
+     * @param conversionPolicy 转换策略
+     */
+    public void put(ConversionPolicy conversionPolicy) {
+    	if (conversionPolicy != null) {
+    		for (Convertor<?> convertor : conversionPolicy.getConvertors()) {
+    			put(convertor);
+			}
+    	}
+    }
+    
+    /**
+     * <p>
      * 放入转换器，如果传入参数的绑定类型已经有转换器绑定，则替换已绑定的转换器
      * </p>
      * @param convertors 转换器
