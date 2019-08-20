@@ -2,7 +2,8 @@ apply plugin: 'java'
 apply plugin: 'maven'  
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
-apply from: './java_base.gradle'  
+apply from: './gradle/java_base.gradle'  
+apply from: './gradle/maven_push.gradle'  
 
 sourceSets {
     main {
@@ -20,91 +21,12 @@ sourceSets {
     }
 }
 
-repositories {
-	maven {
-		url  ant.properties['user.home'] +  "/.m2/repository"
-	}
-	maven {
-        url  "http://maven.aliyun.com/nexus/content/groups/public/"
-    }
-	mavenCentral()
-}
-
 dependencies {
-	compile 'cn.featherfly:featherfly-common:1.5.2'
+	compile 'cn.featherfly:featherfly-common:1.7.5'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.3'
     testCompile (
     	'org.testng:testng:6.8.21'
     )
-}
-
-task sourcesJar(type: Jar) {
-	classifier "sources"
-    from sourceSets.main.java.srcDirs
-}
-
-task javadocJar(type: Jar, dependsOn:javadoc) { 
-     classifier = "javadoc"
-     from javadoc.destinationDir 
-}
-
-artifacts {  
-    archives jar  
-    archives javadocJar  
-    archives sourcesJar  
-}  
-
-publishing {
-    publications {
-		mavenJava(MavenPublication) {
-        	from components.java
-            artifact (sourcesJar) {
-             	classifier "sources"
-            }
-			artifact (javadocJar) {
-				classifier "javadoc"
-			}
-        }
-    }    
-}
-
-//为所有的jar包做数字签名  
-signing {  
-    sign configurations.archives  
-} 
-
-uploadArchives {
-   repositories {
-       mavenDeployer {  
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) } 
-            repository(url:"https://oss.sonatype.org/service/local/staging/deploy/maven2") {  
-                authentication(userName: 'yufei', password: 'yufeimvn101')  
-            }
-            pom.project {  
-                name project.name  
-                packaging 'jar'
-                description 'conversion tool'  
-                url 'https://github.com/featherfly/conversion.git'  
-                scm {  
-                    url 'scm:git@github.com:featherfly/conversion.git'  
-                    connection 'scm:git@github.com:featherfly/conversion.git'  
-                    developerConnection 'git@github.com:featherfly/conversion.git'  
-                }  
-                licenses {  
-                    license {  
-                        name 'The Apache Software License, Version 2.0'  
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'  
-                        distribution 'repo'  
-                    }  
-                }  
-                developers {  
-                    developer {  
-                        id 'featherfly'  
-                        name 'Yufei'
-                    }  
-                }  
-            }  
-        }
-    }  
 }
 
 task("uploadNexusArchives", type: Upload) {
@@ -143,11 +65,4 @@ task("uploadNexusArchives", type: Upload) {
             }
         }
     } 
-
-jar {
-    manifest.attributes 'Build-By': "zhong ji"
-    manifest.attributes 'Tool' : "gradle"
-    manifest.attributes 'Build-Jdk' : ant.properties['java.runtime.version']
-    manifest.attributes 'Bundle-License': 'http://www.apache.org/licenses/LICENSE-2.0'
-}
 
