@@ -48,7 +48,7 @@ public class BasicTest {
                 , new ClassConvertor(), new StringConvertor()
                 , new DateFormatConvertor()
                 , new IntArrayConvertor()
-                , new EnumConvertor()
+                , new EnumConvertor<>()
         );
     }
     
