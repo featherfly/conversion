@@ -41,6 +41,7 @@ public abstract class YamlParser<G extends GenericType<?>> extends JacksonParser
             index = content.indexOf("#[");
             objContent.isMulty = index != -1;
         }
+        content = content.trim();
         if (index != -1) {
             className = org.apache.commons.lang3.StringUtils.substring(content, 0, index);
             yamlContent = org.apache.commons.lang3.StringUtils.substring(content, index + 3, content.length() - 1);

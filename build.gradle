@@ -12,7 +12,7 @@ dependencies {
     	'org.testng:testng:6.8.21'
     )
 }
-
+/*
 task("uploadNexusArchives", type: Upload) {
         configuration = configurations.archives
         uploadDescriptor = true
@@ -49,4 +49,4 @@ task("uploadNexusArchives", type: Upload) {
             }
         }
     } 
-
+*/
