@@ -1,0 +1,9 @@
+yaml:org.yufei.Role#{
+  name: test_role_name
+  user: 
+    name: test_user_name_in_role
+    age: 33
+}
+
+
+  

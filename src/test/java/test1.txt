@@ -1,0 +1,4 @@
+yaml:org.yufei.User#{
+    name: "test_user_name"
+    age: 21
+}

@@ -5,20 +5,19 @@ import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.StringUtils;
 
-
-
 /**
  * <p>
  * class类协议解析器
  * </p>
+ * 
  * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
-public class ClassParser<G extends GenericType<?>> extends AbstractIterableParser<G>{
+public class ClassParser<G extends GenericType<?>> extends AbstractIterableParser<G> {
     /**
      * 协议字符串常量
      */
-    public static final String CLASS_PROTOCOL = "class";
+    public static final String PROTOCOL = "class";
 
     /**
      */
@@ -54,6 +53,6 @@ public class ClassParser<G extends GenericType<?>> extends AbstractIterableParse
      */
     @Override
     public String getProtocol() {
-        return CLASS_PROTOCOL;
+        return PROTOCOL;
     }
 }

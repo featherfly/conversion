@@ -7,13 +7,12 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.LangUtils;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-
 
 /**
  * <p>
@@ -22,11 +21,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author 钟冀
  */
-public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
+public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
 
     /**
      */
-    public JsonBeanPropertyParser() {
+    public YamlBeanPropertyParser() {
     }
 
     /**
@@ -66,8 +65,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
                     } else if (ClassUtils.isParent(Map.class, toBeanProperty.getType())) {
                         toType = toBeanProperty.getField().getGenericType();
                     } else {
-                        throw new IllegalArgumentException(
-                                "要设置的目标是接口（interface），请显示指定类型（class）");
+                        throw new IllegalArgumentException("要设置的目标是接口（interface），请显示指定类型（class）");
                     }
                 } else {
                     toType = toBeanProperty.getType();
@@ -75,19 +73,18 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
             } else {
                 if (objContent.isMulty) {
                     if (toBeanProperty.getField().getType().isArray()) {
-                        toType = Array.newInstance(
-                                Class.forName(objContent.className), 0).getClass();
+                        toType = Array.newInstance(Class.forName(objContent.className), 0).getClass();
                     } else {
-                        toType = createParameterizedType(toBeanProperty.getField().getType()
-                                , null, Class.forName(objContent.className));
+                        toType = createParameterizedType(toBeanProperty.getField().getType(), null,
+                                Class.forName(objContent.className));
                     }
                 } else {
                     toType = Class.forName(className);
                 }
             }
             if (toType instanceof ParameterizedType) {
-                final Type parameterizedType =  ((ParameterizedType) toType);
-                return (T) objectMapper.readerFor(new TypeReference<T>(){
+                final Type parameterizedType = toType;
+                return (T) objectMapper.readerFor(new TypeReference<T>() {
                     /**
                      * {@inheritDoc}
                      */

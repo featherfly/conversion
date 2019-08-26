@@ -3,8 +3,6 @@ package cn.featherfly.conversion.parse;
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.LangUtils;
 import cn.featherfly.common.lang.reflect.GenericClass;
-import cn.featherfly.conversion.parse.JsonParser;
-
 
 /**
  * <p>
@@ -13,11 +11,12 @@ import cn.featherfly.conversion.parse.JsonParser;
  *
  * @author 钟冀
  */
-public class JsonClassParser extends JsonParser<GenericClass<Class<?>>>{
+public class YamlClassParser extends YamlParser<GenericClass<Class<?>>> {
     /**
      */
-    public JsonClassParser() {
+    public YamlClassParser() {
     }
+
     /**
      * {@inheritDoc}
      */
@@ -41,8 +40,8 @@ public class JsonClassParser extends JsonParser<GenericClass<Class<?>>>{
         try {
             Content objContent = getContent(content);
             String className = objContent.className;
-            String jsonContent = objContent.content;
-            
+            String yamlContent = objContent.content;
+
             if (LangUtils.isEmpty(className)) {
                 className = gt.getType().getName();
             }
@@ -50,7 +49,7 @@ public class JsonClassParser extends JsonParser<GenericClass<Class<?>>>{
             if (LangUtils.isEmpty(className)) {
                 throw new IllegalArgumentException("parse(String content)必须显示指定类型（class）");
             }
-            return (T) objectMapper.readerFor(Class.forName(className)).readValue(jsonContent);
+            return (T) objectMapper.readerFor(Class.forName(className)).readValue(yamlContent);
         } catch (Exception e) {
             throw new ParseException(e);
         }
