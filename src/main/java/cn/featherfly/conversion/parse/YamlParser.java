@@ -60,7 +60,7 @@ public abstract class YamlParser<G extends GenericType<?>> extends JacksonParser
         String firstLine = lines[0];
         int first = firstLine.length() - StringUtils.trimStart(firstLine).length();
         for (String line : lines) {
-            result += line.substring(first);
+            result += line.substring(first) + "\n";
         }
         return result;
     }
