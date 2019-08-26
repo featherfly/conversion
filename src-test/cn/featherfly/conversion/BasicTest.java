@@ -27,6 +27,8 @@ import cn.featherfly.conversion.core.basic.IntConvertor;
 import cn.featherfly.conversion.core.basic.IntegerConvertor;
 import cn.featherfly.conversion.core.basic.StringConvertor;
 import cn.featherfly.conversion.core.format.DateFormatConvertor;
+import cn.featherfly.conversion.vo.Sex;
+import cn.featherfly.conversion.vo.User;
 
 /**
  * <p>

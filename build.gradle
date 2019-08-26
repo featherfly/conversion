@@ -18,7 +18,7 @@ sourceSets {
 }
 
 dependencies {
-	compile 'cn.featherfly:featherfly-common:1.7.5'
+	compile 'cn.featherfly:featherfly-common:1.7.7'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.3'
     testCompile (
     	'org.testng:testng:6.8.21'

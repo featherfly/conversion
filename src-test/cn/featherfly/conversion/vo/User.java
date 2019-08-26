@@ -1,5 +1,5 @@
 
-package cn.featherfly.conversion;
+package cn.featherfly.conversion.vo;
 
 import java.sql.Time;
 import java.sql.Timestamp;

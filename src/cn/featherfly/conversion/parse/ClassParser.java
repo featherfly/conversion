@@ -18,7 +18,7 @@ public class ClassParser<G extends GenericType<?>> extends AbstractIterableParse
     /**
      * 协议字符串常量
      */
-    public static final String CLASS_PROTOCOL = "class";
+    public static final String PROTOCOL = "class";
 
     /**
      */
@@ -54,6 +54,6 @@ public class ClassParser<G extends GenericType<?>> extends AbstractIterableParse
      */
     @Override
     public String getProtocol() {
-        return CLASS_PROTOCOL;
+        return PROTOCOL;
     }
 }

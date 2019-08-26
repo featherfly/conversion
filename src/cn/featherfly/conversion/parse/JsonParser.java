@@ -21,7 +21,7 @@ public abstract class JsonParser<G extends GenericType<?>> extends AbstractParse
     /**
      * 协议字符串常量
      */
-    public static final String CLASS_PROTOCOL = "json";
+    public static final String PROTOCOL = "json";
     /**
      * objectMapper
      */
@@ -38,7 +38,7 @@ public abstract class JsonParser<G extends GenericType<?>> extends AbstractParse
      */
     @Override
     public String getProtocol() {
-        return CLASS_PROTOCOL;
+        return PROTOCOL;
     }
 
     /**
