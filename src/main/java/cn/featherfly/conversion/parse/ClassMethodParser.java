@@ -1,5 +1,5 @@
 
-package cn.featherfly.conversion.parse;
+package main.java.cn.featherfly.conversion.parse;
 
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.GenericType;

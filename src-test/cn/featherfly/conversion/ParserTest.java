@@ -9,9 +9,9 @@ import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.reflect.GenericClass;
-import cn.featherfly.conversion.parse.ClassFieldParser;
-import cn.featherfly.conversion.parse.ClassMethodParser;
 import cn.featherfly.conversion.vo.Constants.Constant;
+import main.java.cn.featherfly.conversion.parse.ClassFieldParser;
+import main.java.cn.featherfly.conversion.parse.ClassMethodParser;
 import cn.featherfly.conversion.vo.Constants2;
 
 /**
