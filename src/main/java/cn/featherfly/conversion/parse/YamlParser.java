@@ -1,6 +1,9 @@
 
 package cn.featherfly.conversion.parse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
@@ -57,12 +60,18 @@ public abstract class YamlParser<G extends GenericType<?>> extends JacksonParser
     private String trimContent(String content) {
         String result = "";
         String[] lines = content.split("\n");
-        String firstLine = lines[0];
-        int first = firstLine.length() - StringUtils.trimStart(firstLine).length();
+        List<String> newLines = new ArrayList<>();
         for (String line : lines) {
+            if (StringUtils.isNotBlank(line)) {
+                newLines.add(line);
+            }
+        }
+        String firstLine = newLines.get(0);
+        int first = firstLine.length() - StringUtils.trimStart(firstLine).length();
+        for (String line : newLines) {
             result += line.substring(first) + "\n";
         }
-        return result;
+        return result.trim();
     }
 
     /**

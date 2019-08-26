@@ -51,9 +51,10 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
         try {
             Content objContent = getContent(content);
             String className = objContent.className;
-            String jsonContent = objContent.content;
+            String yamlContent = objContent.content;
 
             Type toType = null;
+            Class<?> classType = null;
 
             if (LangUtils.isEmpty(className)) {
                 if (toBeanProperty == null) {
@@ -70,16 +71,17 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
                 } else {
                     toType = toBeanProperty.getType();
                 }
+                classType = ClassUtils.forName(toType.getTypeName());
             } else {
+                classType = Class.forName(objContent.className);
                 if (objContent.isMulty) {
                     if (toBeanProperty.getField().getType().isArray()) {
-                        toType = Array.newInstance(Class.forName(objContent.className), 0).getClass();
+                        toType = Array.newInstance(classType, 0).getClass();
                     } else {
-                        toType = createParameterizedType(toBeanProperty.getField().getType(), null,
-                                Class.forName(objContent.className));
+                        toType = createParameterizedType(toBeanProperty.getField().getType(), null, classType);
                     }
                 } else {
-                    toType = Class.forName(className);
+                    toType = classType;
                 }
             }
             if (toType instanceof ParameterizedType) {
@@ -92,9 +94,9 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
                     public Type getType() {
                         return parameterizedType;
                     }
-                }).readValue(jsonContent);
+                }).readValue(yamlContent);
             } else {
-                return (T) objectMapper.readerFor((Class<?>) toType).readValue(jsonContent);
+                return (T) objectMapper.readerFor((Class<?>) toType).readValue(yamlContent);
             }
         } catch (Exception e) {
             throw new ParseException(e);

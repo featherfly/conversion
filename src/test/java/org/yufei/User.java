@@ -13,7 +13,7 @@ package org.yufei;
  */
 public class User {
 
-    private User() {
+    public User() {
     }
 
     private String name = "default_user2_name";
@@ -22,6 +22,24 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    /**
+     * 设置name
+     *
+     * @param name name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 设置age
+     *
+     * @param age age
+     */
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     /**
