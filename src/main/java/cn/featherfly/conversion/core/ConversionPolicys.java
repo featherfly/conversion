@@ -26,6 +26,12 @@ import cn.featherfly.conversion.core.basic.FloatWrapperConvertor;
 import cn.featherfly.conversion.core.basic.IntArrayConvertor;
 import cn.featherfly.conversion.core.basic.IntConvertor;
 import cn.featherfly.conversion.core.basic.IntegerConvertor;
+import cn.featherfly.conversion.core.basic.LocalDateArrayConvertor;
+import cn.featherfly.conversion.core.basic.LocalDateConvertor;
+import cn.featherfly.conversion.core.basic.LocalDateTimeArrayConvertor;
+import cn.featherfly.conversion.core.basic.LocalDateTimeConvertor;
+import cn.featherfly.conversion.core.basic.LocalTimeArrayConvertor;
+import cn.featherfly.conversion.core.basic.LocalTimeConvertor;
 import cn.featherfly.conversion.core.basic.LongArrayConvertor;
 import cn.featherfly.conversion.core.basic.LongConvertor;
 import cn.featherfly.conversion.core.basic.LongWrapperConvertor;
@@ -59,6 +65,12 @@ import cn.featherfly.conversion.core.bp.FloatWrapperBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.IntBeanPropertyArrayFormatConvertor;
 import cn.featherfly.conversion.core.bp.IntBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.IntegerBeanPropertyFormatConvertor;
+import cn.featherfly.conversion.core.bp.LocalDateBeanPropertyArrayFormatConvertor;
+import cn.featherfly.conversion.core.bp.LocalDateBeanPropertyFormatConvertor;
+import cn.featherfly.conversion.core.bp.LocalDateTimeBeanPropertyArrayFormatConvertor;
+import cn.featherfly.conversion.core.bp.LocalDateTimeBeanPropertyFormatConvertor;
+import cn.featherfly.conversion.core.bp.LocalTimeBeanPropertyArrayFormatConvertor;
+import cn.featherfly.conversion.core.bp.LocalTimeBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.LongBeanPropertyArrayFormatConvertor;
 import cn.featherfly.conversion.core.bp.LongBeanPropertyFormatConvertor;
 import cn.featherfly.conversion.core.bp.LongWrapperBeanPropertyFormatConvertor;
@@ -88,70 +100,66 @@ public final class ConversionPolicys {
     /*
      * 基本转换策略
      */
-    private static final ConversionPolicy BASIC_CONVERSION_POLICY = new ConversionPolicy(
-                    new BooleanConvertor(), new BooleanWrapperConvertor(), new BooleanArrayConvertor()
-                    , new ByteConvertor(), new ByteWrapperConvertor(), new ByteArrayConvertor()
-                    , new ShortConvertor(), new ShortWrapperConvertor(), new ShortArrayConvertor()
-                    , new IntConvertor(), new IntegerConvertor(), new IntArrayConvertor()
-                    , new LongConvertor(), new LongWrapperConvertor(), new LongArrayConvertor()
-                    , new FloatConvertor(), new FloatWrapperConvertor(), new FloatArrayConvertor()
-                    , new DoubleConvertor(), new DoubleWrapperConvertor()
-                    , new DoubleArrayConvertor()
-                    , new StringConvertor(), new StringArrayConvertor()
-                    , new StringBufferConvertor(), new StringBufferArrayConvertor()
-                    , new StringBuilderConvertor(), new StringBuilderArrayConvertor()
-                    , new DateConvertor(), new DateArrayConvertor()
-                    , new ClassConvertor(), new ClassArrayConvertor()
-                    , new EnumConvertor<>(), new EnumArrayConvertor<>()
-                    , new BigDecimalConvertor(), new BigDecimalArrayConvertor()
-                    , new BigIntegerConvertor(), new BigIntegerArrayConvertor()
-                    , new SqlDateConvertor(), new SqlDateArrayConvertor()
-                    , new SqlTimeConvertor(), new SqlTimeArrayConvertor()
-                    , new SqlTimestampConvertor(), new SqlTimestampArrayConvertor()
-    );
+    private static final ConversionPolicy BASIC_CONVERSION_POLICY = new ConversionPolicy(new BooleanConvertor(),
+            new BooleanWrapperConvertor(), new BooleanArrayConvertor(), new ByteConvertor(), new ByteWrapperConvertor(),
+            new ByteArrayConvertor(), new ShortConvertor(), new ShortWrapperConvertor(), new ShortArrayConvertor(),
+            new IntConvertor(), new IntegerConvertor(), new IntArrayConvertor(), new LongConvertor(),
+            new LongWrapperConvertor(), new LongArrayConvertor(), new FloatConvertor(), new FloatWrapperConvertor(),
+            new FloatArrayConvertor(), new DoubleConvertor(), new DoubleWrapperConvertor(), new DoubleArrayConvertor(),
+            new StringConvertor(), new StringArrayConvertor(), new StringBufferConvertor(),
+            new StringBufferArrayConvertor(), new StringBuilderConvertor(), new StringBuilderArrayConvertor(),
+            new DateConvertor(), new DateArrayConvertor(), new ClassConvertor(), new ClassArrayConvertor(),
+            new EnumConvertor<>(), new EnumArrayConvertor<>(), new BigDecimalConvertor(),
+            new BigDecimalArrayConvertor(), new BigIntegerConvertor(), new BigIntegerArrayConvertor(),
+            new SqlDateConvertor(), new SqlDateArrayConvertor(), new SqlTimeConvertor(), new SqlTimeArrayConvertor(),
+            new SqlTimestampConvertor(), new SqlTimestampArrayConvertor()
+            // 核心包升级至jdk1.8后把1.8支持的类也加入进来
+            , new LocalDateConvertor(), new LocalDateArrayConvertor(), new LocalTimeConvertor(),
+            new LocalTimeArrayConvertor(), new LocalDateTimeConvertor(), new LocalDateTimeArrayConvertor());
 
     /*
      * 带格式支持的转换策略
      */
     private static final ConversionPolicy FORMAT_CONVERSION_POLICY;
     static {
-        ConversionPolicy policy =  BASIC_CONVERSION_POLICY.clone();
-        policy.put(
-                new ShortBeanPropertyFormatConvertor(), new ShortWrapperBeanPropertyFormatConvertor()
-                    , new ShortBeanPropertyArrayFormatConvertor()
-                , new IntBeanPropertyFormatConvertor(), new IntegerBeanPropertyFormatConvertor()
-                    , new IntBeanPropertyArrayFormatConvertor()
-                , new LongBeanPropertyFormatConvertor(), new LongWrapperBeanPropertyFormatConvertor()
-                    , new LongBeanPropertyArrayFormatConvertor()
-                , new FloatBeanPropertyFormatConvertor(), new FloatWrapperBeanPropertyFormatConvertor()
-                    , new FloatBeanPropertyArrayFormatConvertor()
-                , new DoubleBeanPropertyFormatConvertor(), new DoubleWrapperBeanPropertyFormatConvertor()
-                    , new DoubleBeanPropertyArrayFormatConvertor()
-                , new BigDecimalBeanPropertyFormatConvertor(), new BigDecimalBeanPropertyArrayFormatConvertor()
-                , new BigIntegerBeanPropertyFormatConvertor(), new BigIntegerBeanPropertyArrayFormatConvertor()
-                , new DateBeanPropertyFormatConvertor(), new DateBeanPropertyArrayFormatConvertor()
-                , new SqlDateBeanPropertyFormatConvertor(), new SqlDateBeanPropertyArrayFormatConvertor()
-                , new SqlTimeBeanPropertyFormatConvertor(), new SqlTimeBeanPropertyArrayFormatConvertor()
-                , new SqlTimestampBeanPropertyFormatConvertor(), new SqlTimestampBeanPropertyArrayFormatConvertor()
-        );
+        ConversionPolicy policy = BASIC_CONVERSION_POLICY.clone();
+        policy.put(new ShortBeanPropertyFormatConvertor(), new ShortWrapperBeanPropertyFormatConvertor(),
+                new ShortBeanPropertyArrayFormatConvertor(), new IntBeanPropertyFormatConvertor(),
+                new IntegerBeanPropertyFormatConvertor(), new IntBeanPropertyArrayFormatConvertor(),
+                new LongBeanPropertyFormatConvertor(), new LongWrapperBeanPropertyFormatConvertor(),
+                new LongBeanPropertyArrayFormatConvertor(), new FloatBeanPropertyFormatConvertor(),
+                new FloatWrapperBeanPropertyFormatConvertor(), new FloatBeanPropertyArrayFormatConvertor(),
+                new DoubleBeanPropertyFormatConvertor(), new DoubleWrapperBeanPropertyFormatConvertor(),
+                new DoubleBeanPropertyArrayFormatConvertor(), new BigDecimalBeanPropertyFormatConvertor(),
+                new BigDecimalBeanPropertyArrayFormatConvertor(), new BigIntegerBeanPropertyFormatConvertor(),
+                new BigIntegerBeanPropertyArrayFormatConvertor(), new DateBeanPropertyFormatConvertor(),
+                new DateBeanPropertyArrayFormatConvertor(), new SqlDateBeanPropertyFormatConvertor(),
+                new SqlDateBeanPropertyArrayFormatConvertor(), new SqlTimeBeanPropertyFormatConvertor(),
+                new SqlTimeBeanPropertyArrayFormatConvertor(), new SqlTimestampBeanPropertyFormatConvertor(),
+                new SqlTimestampBeanPropertyArrayFormatConvertor(),
+                // 核心包升级至jdk1.8后把1.8支持的类也加入进来
+                new LocalDateBeanPropertyFormatConvertor(), new LocalDateBeanPropertyArrayFormatConvertor(),
+                new LocalTimeBeanPropertyFormatConvertor(), new LocalTimeBeanPropertyArrayFormatConvertor(),
+                new LocalDateTimeBeanPropertyFormatConvertor(), new LocalDateTimeBeanPropertyArrayFormatConvertor());
         FORMAT_CONVERSION_POLICY = policy;
     }
-    
 
     /**
      * <p>
      * 获取基本类型支持的转换策略
      * </p>
+     *
      * @return 基本转换策略
      */
     public static ConversionPolicy getBasicConversionPolicy() {
         return BASIC_CONVERSION_POLICY.clone();
     }
+
     /**
      * <p>
-     * 获取带格式支持的转换策略.
-     * 支持属性定义上加上注解进行指定格式格式化（支持@DateFormat和@NumberFormat）
+     * 获取带格式支持的转换策略. 支持属性定义上加上注解进行指定格式格式化（支持@DateFormat和@NumberFormat）
      * </p>
+     *
      * @return 带格式支持的转换策略
      */
     public static ConversionPolicy getFormatConversionPolicy() {
