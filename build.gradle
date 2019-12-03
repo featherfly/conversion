@@ -5,48 +5,10 @@ sourceSets {
 }
 
 dependencies {
-	compile 'cn.featherfly:featherfly-common:1.7.7'
-	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.3'
-	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.9'
+	compile 'cn.featherfly.common:common-core:1.7.13'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10.1'
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.10'
     testCompile (
     	'org.testng:testng:6.8.21'
     )
 }
-/*
-task("uploadNexusArchives", type: Upload) {
-        configuration = configurations.archives
-        uploadDescriptor = true
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                repository(url:"http://192.168.203.241:8081/nexus/content/repositories/releases/") {
-                    authentication(userName: 'admin', password: 'admin123')
-                }
-                pom.project {
-                    name project.name
-                    packaging 'jar'
-                    description 'conversion tool'
-                    url 'https://github.com/featherfly/conversion.git'
-                    scm {
-                        url 'scm:git@github.com:featherfly/conversion.git'
-                        connection 'scm:git@github.com:featherfly/conversion.git'
-                        developerConnection 'git@github.com:featherfly/conversion.git'
-                    }
-                    licenses {
-                        license {
-                            name 'The Apache Software License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            distribution 'repo'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id 'featherfly'
-                            name 'zhongji'
-                        }
-                    }
-                }
-            }
-        }
-    } 
-*/
