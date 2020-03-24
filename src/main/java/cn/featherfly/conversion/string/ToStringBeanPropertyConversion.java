@@ -62,9 +62,9 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
      * 对象转换为字符串
      * </p>
      *
-     * @param <E>         泛型
-     * @param value       对象
-     * @param genericType 指定对象的指定属性，否则为null
+     * @param <E>          泛型
+     * @param value        对象
+     * @param beanProperty 指定对象的指定属性，否则为null
      * @return 字符串
      */
     @SuppressWarnings("unchecked")
@@ -90,9 +90,9 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
      * 字符串转换为对象
      * </p>
      *
-     * @param <E>          泛型
-     * @param value        字符串
-     * @param beanProperty 指定对象的指定属性，否则为null
+     * @param <E>         泛型
+     * @param value       字符串
+     * @param genericType 指定对象的指定属性，否则为null
      * @return 对象
      */
     @Override

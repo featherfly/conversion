@@ -12,7 +12,6 @@ import cn.featherfly.conversion.ConversionException;
  * 使用BeanProperty作为参数的转换器.
  * </p>
  *
- * @param <G> 类型信息
  * @author 钟冀
  */
 public abstract class AbstractToStringConversion implements ToStringConversion {

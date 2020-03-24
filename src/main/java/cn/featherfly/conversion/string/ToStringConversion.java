@@ -8,7 +8,6 @@ import cn.featherfly.common.lang.GenericType;
  * 转换器
  * </p>
  *
- * @param <G> 类型描述
  * @author 钟冀
  */
 public interface ToStringConversion {

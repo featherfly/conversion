@@ -34,7 +34,6 @@ public class ToStringTypeConversion extends AbstractToStringConversion {
      * 对象转换为字符串
      * </p>
      *
-     * @param <E>          泛型
      * @param value        对象
      * @param genericClass 对象类型
      * @return 字符串
