@@ -129,9 +129,10 @@ public final class ToStringConversionPolicys {
             optionalToStringConvertor.addConvertors(c);
         });
 
+        ToStringConversionPolicy policy = BASIC_CONVERSION_POLICY.clone();
+
         BASIC_CONVERSION_POLICY.add(optionalToStringConvertor);
 
-        ToStringConversionPolicy policy = BASIC_CONVERSION_POLICY.clone();
         policy.put(new ShortBeanPropertyFormatConvertor(), new ShortWrapperBeanPropertyFormatConvertor(),
                 new ShortBeanPropertyArrayFormatConvertor(), new IntBeanPropertyFormatConvertor(),
                 new IntegerBeanPropertyFormatConvertor(), new IntBeanPropertyArrayFormatConvertor(),
@@ -150,6 +151,13 @@ public final class ToStringConversionPolicys {
                 new LocalDateBeanPropertyFormatConvertor(), new LocalDateBeanPropertyArrayFormatConvertor(),
                 new LocalTimeBeanPropertyFormatConvertor(), new LocalTimeBeanPropertyArrayFormatConvertor(),
                 new LocalDateTimeBeanPropertyFormatConvertor(), new LocalDateTimeBeanPropertyArrayFormatConvertor());
+
+        OptionalToStringConvertor optionalToStringConvertor2 = new OptionalToStringConvertor();
+        policy.getConvertors().forEach(c -> {
+            optionalToStringConvertor2.addConvertors(c);
+        });
+        policy.add(optionalToStringConvertor2);
+
         FORMAT_CONVERSION_POLICY = policy;
     }
 
