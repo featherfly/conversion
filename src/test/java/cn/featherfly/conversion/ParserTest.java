@@ -18,9 +18,6 @@ import cn.featherfly.conversion.vo.Constants2;
  * <p>
  * ParserTest
  * </p>
- * <p>
- * 2019-08-26
- * </p>
  *
  * @author zhongj
  */

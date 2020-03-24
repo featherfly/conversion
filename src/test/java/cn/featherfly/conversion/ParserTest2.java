@@ -39,9 +39,6 @@ import cn.featherfly.conversion.parse.YamlClassParser;
  * <p>
  * ParserTest
  * </p>
- * <p>
- * 2019-08-26
- * </p>
  *
  * @author zhongj
  */
@@ -92,7 +89,7 @@ public class ParserTest2 {
         String content = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
         BeanDescriptor<Role> bd = BeanDescriptor.getBeanDescriptor(Role.class);
-        BeanProperty<Actor[]> bp = (BeanProperty<Actor[]>) bd.getBeanProperty("actors");
+        BeanProperty<Actor[]> bp = bd.getBeanProperty("actors");
         Actor[] actors = parse.parse(content, bp);
 
         System.out.println(ArrayUtils.toString(actors));
@@ -117,7 +114,7 @@ public class ParserTest2 {
         System.out.println(ArrayUtils.toString(persons));
 
         BeanDescriptor<Role> bd = BeanDescriptor.getBeanDescriptor(Role.class);
-        BeanProperty<Actor[]> toBeanProperty = (BeanProperty<Actor[]>) bd.getBeanProperty("actors");
+        BeanProperty<Actor[]> toBeanProperty = bd.getBeanProperty("actors");
 
         Type toType = null;
 
