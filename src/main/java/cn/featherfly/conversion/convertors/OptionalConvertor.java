@@ -56,7 +56,8 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      *
      * @param convertors convertors
      */
-    public void addConvertors(Convertor convertors) {
+    @SuppressWarnings("unchecked")
+    public void addConvertor(Convertor convertors) {
         if (convertors != null) {
             this.convertors.put(convertors.getSourceType(), convertors);
         }

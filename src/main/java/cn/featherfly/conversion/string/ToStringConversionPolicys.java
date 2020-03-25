@@ -126,7 +126,7 @@ public final class ToStringConversionPolicys {
 
         OptionalToStringConvertor optionalToStringConvertor = new OptionalToStringConvertor();
         BASIC_CONVERSION_POLICY.getConvertors().forEach(c -> {
-            optionalToStringConvertor.addConvertors(c);
+            optionalToStringConvertor.addConvertor(c);
         });
 
         ToStringConversionPolicy policy = BASIC_CONVERSION_POLICY.clone();
@@ -154,7 +154,7 @@ public final class ToStringConversionPolicys {
 
         OptionalToStringConvertor optionalToStringConvertor2 = new OptionalToStringConvertor();
         policy.getConvertors().forEach(c -> {
-            optionalToStringConvertor2.addConvertors(c);
+            optionalToStringConvertor2.addConvertor(c);
         });
         policy.add(optionalToStringConvertor2);
 
