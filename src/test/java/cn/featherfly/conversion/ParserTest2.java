@@ -46,6 +46,7 @@ public class ParserTest2 {
 
     ParsePolity parse;
 
+    @SuppressWarnings("rawtypes")
     @BeforeClass
     public void before() {
         parse = new ParsePolity();
@@ -98,8 +99,8 @@ public class ParserTest2 {
     }
 
     public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(ClassLoaderUtils.getResource("test3.txt", ParserTest2.class).getFile());
-        String content = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        //        File file = new File(ClassLoaderUtils.getResource("test3.txt", ParserTest2.class).getFile());
+        //        String content = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
         Person[] persons = new Person[2];
         Actor[] actors = new Actor[2];

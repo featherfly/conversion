@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.DateUtils;
+import cn.featherfly.common.lang.Dates;
 import cn.featherfly.conversion.string.ToStringBeanPropertyConversion;
 import cn.featherfly.conversion.string.ToStringConversionPolicy;
 import cn.featherfly.conversion.string.ToStringConversionPolicys;
@@ -96,8 +96,8 @@ public class BasicTest {
         BeanDescriptor<User> bd = BeanDescriptor.getBeanDescriptor(User.class);
 
         BeanProperty<Date> beanProperty = bd.getBeanProperty("date");
-        Date date1 = DateUtils.getTime(2000, 1, 1, 0, 0, 0);
-        Date date2 = DateUtils.getTime(2012, 12, 12, 0, 0, 0);
+        Date date1 = Dates.getTime(2000, 1, 1, 0, 0, 0);
+        Date date2 = Dates.getTime(2012, 12, 12, 0, 0, 0);
         assertNull(beanPropertyConversion.targetToSource("2000年1月1日", beanProperty));
         assertNull(beanPropertyConversion.targetToSource("2000年01月1日", beanProperty));
         assertNull(beanPropertyConversion.sourceToTarget(date2, beanProperty));
@@ -124,8 +124,8 @@ public class BasicTest {
 
         String ds1 = "2000年1月1日,2002-2-2";
         String ds2 = "2000-01-01,2002-02-02";
-        date1 = DateUtils.getTime(2000, 1, 1, 0, 0, 0);
-        date2 = DateUtils.getTime(2002, 2, 2, 0, 0, 0);
+        date1 = Dates.getTime(2000, 1, 1, 0, 0, 0);
+        date2 = Dates.getTime(2002, 2, 2, 0, 0, 0);
         BeanProperty<Date[]> bpDates = bd.getBeanProperty("dates");
         assertEquals(ArrayUtils.toString(date1, date2),
                 ArrayUtils.toString(beanPropertyConversion.targetToSource(ds1, bpDates)));
@@ -145,7 +145,7 @@ public class BasicTest {
 
         //sql time
         BeanProperty<Time> bptime = bd.getBeanProperty("time");
-        Time time = new Time(DateUtils.getTime(2002, 2, 2, 14, 15, 16).getTime());
+        Time time = new Time(Dates.getTime(2002, 2, 2, 14, 15, 16).getTime());
         assertEquals(time.toString(), beanPropertyConversion.targetToSource("14:15:16", bptime).toString());
         assertEquals("14:15:16", beanPropertyConversion.sourceToTarget(time, bptime));
 
@@ -156,16 +156,16 @@ public class BasicTest {
 
         //sql timestamp
         BeanProperty<Timestamp> bptimestamp = bd.getBeanProperty("timestamp");
-        Timestamp timestamp = new Timestamp(DateUtils.getTime(2002, 2, 2, 14, 15, 16).getTime());
-        assertEquals(DateUtils.formartTime(timestamp),
-                DateUtils.formartTime(beanPropertyConversion.targetToSource("2002-2-2 14:15:16", bptimestamp)));
+        Timestamp timestamp = new Timestamp(Dates.getTime(2002, 2, 2, 14, 15, 16).getTime());
+        assertEquals(Dates.formatTime(timestamp),
+                Dates.formatTime(beanPropertyConversion.targetToSource("2002-2-2 14:15:16", bptimestamp)));
         assertEquals("2002-02-02 14:15:16", beanPropertyConversion.sourceToTarget(timestamp, bptimestamp));
 
         BeanProperty<Timestamp> bptimestamp2 = bd.getBeanProperty("timestamp2");
-        assertEquals(DateUtils.formartTime(timestamp),
-                DateUtils.formartTime(beanPropertyConversion.targetToSource("2002年2月2日 14时15分16秒", bptimestamp2)));
-        assertEquals(DateUtils.formartTime(timestamp),
-                DateUtils.formartTime(beanPropertyConversion.targetToSource("2002/2/2 14:15:16", bptimestamp2)));
+        assertEquals(Dates.formatTime(timestamp),
+                Dates.formatTime(beanPropertyConversion.targetToSource("2002年2月2日 14时15分16秒", bptimestamp2)));
+        assertEquals(Dates.formatTime(timestamp),
+                Dates.formatTime(beanPropertyConversion.targetToSource("2002/2/2 14:15:16", bptimestamp2)));
         assertEquals("2002年02月02日 14时15分16秒", beanPropertyConversion.sourceToTarget(timestamp, bptimestamp2));
 
     }

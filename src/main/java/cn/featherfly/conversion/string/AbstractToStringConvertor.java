@@ -26,7 +26,7 @@ public abstract class AbstractToStringConvertor<S, G extends GenericType<S>> imp
     /**
      */
     public AbstractToStringConvertor() {
-        type = ClassUtils.getSuperClassGenricType(this.getClass());
+        type = ClassUtils.getSuperClassGenericType(this.getClass());
     }
 
     /**

@@ -36,7 +36,7 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      */
     public OptionalConvertor(Collection<Convertor<?, T>> convertors) {
         setPolicy(TypePolicys.INSTANCE);
-        setTargetType(ClassUtils.getSuperClassGenricType(this.getClass()));
+        setTargetType(ClassUtils.getSuperClassGenericType(this.getClass()));
         setSourceType(Optional.class);
         addConvertors(convertors);
     }

@@ -56,6 +56,7 @@ public class User {
     private Optional<Date> date1;
 
     private Optional<?> obj;
+    @SuppressWarnings("rawtypes")
     private Optional obj2;
 
     /**
@@ -318,6 +319,7 @@ public class User {
      *
      * @return obj2
      */
+    @SuppressWarnings("rawtypes")
     public Optional getObj2() {
         return obj2;
     }
@@ -327,13 +329,13 @@ public class User {
      *
      * @param obj2 obj2
      */
-    public void setObj2(Optional obj2) {
+    public void setObj2(@SuppressWarnings("rawtypes") Optional obj2) {
         this.obj2 = obj2;
     }
 
     /**
      * 返回date1
-     * 
+     *
      * @return date1
      */
     public Optional<Date> getDate1() {
@@ -342,7 +344,7 @@ public class User {
 
     /**
      * 设置date1
-     * 
+     *
      * @param date1 date1
      */
     public void setDate1(Optional<Date> date1) {
