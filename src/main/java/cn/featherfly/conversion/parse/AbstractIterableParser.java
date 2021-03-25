@@ -8,7 +8,7 @@ import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.CollectionUtils;
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 
 
 /**
@@ -45,7 +45,7 @@ public abstract class AbstractIterableParser<G extends GenericType<?>> extends A
     @SuppressWarnings("unchecked")
     @Override
     protected <T> T doParse(String content, G to) {
-        if (LangUtils.isEmpty(content)) {
+        if (Lang.isEmpty(content)) {
             return null;
         }
         try {

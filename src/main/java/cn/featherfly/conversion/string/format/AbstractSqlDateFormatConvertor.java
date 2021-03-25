@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.ToStringConvertor;
@@ -47,7 +47,7 @@ public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends For
 	 */
 	@Override
 	protected T formatToObject(String value, FormatType<T> genericType) {
-		if (genericType != null && LangUtils.isNotEmpty(genericType.getFormats())) {
+		if (genericType != null && Lang.isNotEmpty(genericType.getFormats())) {
             List<String> formats = genericType.getFormats();
             for (String format : formats) {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);

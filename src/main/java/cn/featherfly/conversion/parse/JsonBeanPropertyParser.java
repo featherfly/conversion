@@ -10,7 +10,7 @@ import java.util.Map;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -46,7 +46,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
     @SuppressWarnings("unchecked")
     @Override
     protected <T> T doParse(String content, BeanProperty<?> toBeanProperty) {
-        if (LangUtils.isEmpty(content)) {
+        if (Lang.isEmpty(content)) {
             return null;
         }
         try {
@@ -56,7 +56,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>>{
 
             Type toType = null;
 
-            if (LangUtils.isEmpty(className)) {
+            if (Lang.isEmpty(className)) {
                 if (toBeanProperty == null) {
                     throw new IllegalArgumentException("当没有指定类型时，toBeanProperty不能为空");
                 }

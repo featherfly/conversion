@@ -8,7 +8,7 @@ import java.util.Date;
 
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.ConversionException;
 
@@ -74,7 +74,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
 	@Override
 	protected T doToObject(String value, GenericType<T> genericType) {
 		String[] formats = getFormats();
-		if (LangUtils.isEmpty(formats)) {
+		if (Lang.isEmpty(formats)) {
 			logger.warn("there is no formats, can not parse {} to {}", value, getSourceType().getName());
 		} else if (StringUtils.isNotBlank(value)) {			
             for (String format : formats) {

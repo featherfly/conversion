@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.ConversionException;
@@ -46,7 +46,7 @@ public class DateFormatConvertor extends FormatConvertor<Date> {
      */
     @Override
     protected Date formatToObject(String value, FormatType<Date> genericType) {
-        if (value != null && genericType != null && LangUtils.isNotEmpty(genericType.getFormats())) {
+        if (value != null && genericType != null && Lang.isNotEmpty(genericType.getFormats())) {
             List<String> formats = genericType.getFormats();
             for (String format : formats) {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);

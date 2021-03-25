@@ -12,7 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
     @SuppressWarnings("unchecked")
     @Override
     protected <T> T doParse(String content, BeanProperty<?> toBeanProperty) {
-        if (LangUtils.isEmpty(content)) {
+        if (Lang.isEmpty(content)) {
             return null;
         }
         try {
@@ -56,7 +56,7 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
             Type toType = null;
             Class<?> classType = null;
 
-            if (LangUtils.isEmpty(className)) {
+            if (Lang.isEmpty(className)) {
                 if (toBeanProperty == null) {
                     throw new IllegalArgumentException("当没有指定类型时，toBeanProperty不能为空");
                 }

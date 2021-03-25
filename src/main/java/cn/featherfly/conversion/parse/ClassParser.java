@@ -2,7 +2,7 @@
 package cn.featherfly.conversion.parse;
 
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.StringUtils;
 
 /**
@@ -30,7 +30,7 @@ public class ClassParser<G extends GenericType<?>> extends AbstractIterableParse
     @SuppressWarnings("unchecked")
     @Override
     protected <T> T doParseContent(String content, G to) {
-        if (LangUtils.isEmpty(content)) {
+        if (Lang.isEmpty(content)) {
             return null;
         }
         try {

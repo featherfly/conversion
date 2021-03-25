@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.List;
 
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.StringUtils;
@@ -46,7 +46,7 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T>{
      */
     @Override
     protected T formatToObject(String value, FormatType<T> genericType) {
-        if (genericType != null && value != null && LangUtils.isNotEmpty(genericType.getFormats())) {
+        if (genericType != null && value != null && Lang.isNotEmpty(genericType.getFormats())) {
             List<String> formats = genericType.getFormats();            
             for (String format : formats) {
                 DecimalFormat df = new DecimalFormat(format);

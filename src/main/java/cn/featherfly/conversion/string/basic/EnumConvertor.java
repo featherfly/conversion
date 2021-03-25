@@ -2,7 +2,7 @@
 package cn.featherfly.conversion.string.basic;
 
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.StringUtils;
 import cn.featherfly.conversion.ConversionException;
 
@@ -51,7 +51,7 @@ public class EnumConvertor<T extends Enum<T>> extends AbstractBasicConvertor<T, 
     protected T doToObject(String value, GenericType<T> genericType) {
         if (StringUtils.isNotBlank(value)) {
             try {
-            	T t = LangUtils.toEnum(genericType.getType(), value);
+            	T t = Lang.toEnum(genericType.getType(), value);
             	if (t == null) {
             		throw new ConversionException("#convert_failed", new Object[]{value, genericType.getType().getName()});	
             	}

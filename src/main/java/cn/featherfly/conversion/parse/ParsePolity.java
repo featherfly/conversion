@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.LangUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.StringUtils;
 
 /**
@@ -40,10 +40,10 @@ public class ParsePolity {
      */
     public <T> T parse(String resolve, GenericType<T> gt) {
         String protocol = null;
-        if (LangUtils.isNotEmpty(resolve)) {
+        if (Lang.isNotEmpty(resolve)) {
             protocol = getProtocol(resolve);
         }
-        if (LangUtils.isEmpty(protocol)) {
+        if (Lang.isEmpty(protocol)) {
             return null;
         }
         String content = getContent(resolve);
@@ -78,7 +78,7 @@ public class ParsePolity {
      * @param parsers 解析器集合
      */
     public void register(Collection<Parser> parsers) {
-        if (LangUtils.isNotEmpty(parsers)) {
+        if (Lang.isNotEmpty(parsers)) {
             for (Parser parser : parsers) {
                 register(parser);
             }
@@ -91,7 +91,7 @@ public class ParsePolity {
      * @param parsers 解析器数组
      */
     public void register(Parser...parsers) {
-        if (LangUtils.isNotEmpty(parsers)) {
+        if (Lang.isNotEmpty(parsers)) {
             for (Parser parser : parsers) {
                 register(parser);
             }
@@ -203,7 +203,7 @@ public class ParsePolity {
      * @return 传入字符串的解析协议
      */
     protected String getProtocol(String resolve) {
-        if (LangUtils.isEmpty(resolve)) {
+        if (Lang.isEmpty(resolve)) {
             return null;
         }
         int index = resolve.indexOf(':');
@@ -220,7 +220,7 @@ public class ParsePolity {
      * @return 传入字符串的内容
      */
     protected String getContent(String resolve) {
-        if (LangUtils.isEmpty(resolve)) {
+        if (Lang.isEmpty(resolve)) {
             return null;
         }
         int index = resolve.indexOf(':');
