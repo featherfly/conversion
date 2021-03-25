@@ -3,7 +3,7 @@ package cn.featherfly.conversion.string.basic;
 
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.LogUtils;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.conversion.ConversionException;
 
 /**
@@ -14,7 +14,7 @@ import cn.featherfly.conversion.ConversionException;
  * @author 钟冀
  */
 @SuppressWarnings("rawtypes")
-public class ClassConvertor extends AbstractBasicConvertor<Class, GenericType<Class>>{
+public class ClassConvertor extends AbstractBasicConvertor<Class, GenericType<Class>> {
 
     /**
      */
@@ -28,7 +28,6 @@ public class ClassConvertor extends AbstractBasicConvertor<Class, GenericType<Cl
     public Class<Class> getSourceType() {
         return Class.class;
     }
-
 
     /**
      * {@inheritDoc}
@@ -46,12 +45,12 @@ public class ClassConvertor extends AbstractBasicConvertor<Class, GenericType<Cl
      */
     @Override
     protected Class doToObject(String value, GenericType<Class> genericType) {
-        if (StringUtils.isNotBlank(value)) {
+        if (Strings.isNotBlank(value)) {
             try {
                 return Class.forName(value);
             } catch (ClassNotFoundException e) {
                 LogUtils.debug(e, logger);
-                throw new ConversionException("#class_not_found", new Object[]{value});
+                throw new ConversionException("#class_not_found", new Object[] { value });
             }
         }
         return null;

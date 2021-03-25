@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 
 /**
  * <p>
@@ -52,7 +52,7 @@ public abstract class YamlParser<G extends GenericType<?>> extends JacksonParser
             yamlContent = content;
         }
 
-        objContent.className = StringUtils.trim(className);
+        objContent.className = Strings.trim(className);
         objContent.content = trimContent(yamlContent);
         return objContent;
     }
@@ -62,12 +62,12 @@ public abstract class YamlParser<G extends GenericType<?>> extends JacksonParser
         String[] lines = content.split("\n");
         List<String> newLines = new ArrayList<>();
         for (String line : lines) {
-            if (StringUtils.isNotBlank(line)) {
+            if (Strings.isNotBlank(line)) {
                 newLines.add(line);
             }
         }
         String firstLine = newLines.get(0);
-        int first = firstLine.length() - StringUtils.trimStart(firstLine).length();
+        int first = firstLine.length() - Strings.trimStart(firstLine).length();
         for (String line : newLines) {
             result += line.substring(first) + "\n";
         }

@@ -4,7 +4,7 @@ package cn.featherfly.conversion.parse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 
 /**
  * <p>
@@ -46,8 +46,8 @@ public abstract class JsonParser<G extends GenericType<?>> extends JacksonParser
         } else {
             jsonContent = content;
         }
-        objContent.className = StringUtils.trim(className);
-        objContent.content = StringUtils.trim(jsonContent);
+        objContent.className = Strings.trim(className);
+        objContent.content = Strings.trim(jsonContent);
         return objContent;
     }
 

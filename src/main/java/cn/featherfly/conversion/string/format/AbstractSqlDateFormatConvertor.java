@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
@@ -26,28 +26,28 @@ public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends For
     public AbstractSqlDateFormatConvertor(ToStringConvertor<T> convertor) {
         super(convertor);
     }
-    
+
     protected abstract T convert(Date date);
-    
+
     /**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected String formatToString(T value, FormatType<T> genericType) {
-		if (genericType != null && StringUtils.isNotBlank(genericType.getFormat())) {
+     * {@inheritDoc}
+     */
+    @Override
+    protected String formatToString(T value, FormatType<T> genericType) {
+        if (genericType != null && Strings.isNotBlank(genericType.getFormat())) {
             SimpleDateFormat sdf = new SimpleDateFormat(genericType.getFormat());
             logger.debug("format {} to string with {}", getSourceType().getName(), genericType.getFormat());
             return sdf.format(value);
         }
         return null;
-	}
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected T formatToObject(String value, FormatType<T> genericType) {
-		if (genericType != null && Lang.isNotEmpty(genericType.getFormats())) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected T formatToObject(String value, FormatType<T> genericType) {
+        if (genericType != null && Lang.isNotEmpty(genericType.getFormats())) {
             List<String> formats = genericType.getFormats();
             for (String format : formats) {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -56,12 +56,12 @@ public abstract class AbstractSqlDateFormatConvertor<T extends Date> extends For
                     logger.debug("parse {} with format[{}] success", value, format);
                     return convert(d);
                 } catch (ParseException e) {
-                	logger.debug("parse {} with format[{}] error", value, format);
+                    logger.debug("parse {} with format[{}] error", value, format);
                 }
             }
-            throw new ConversionException("#convert_failed_with_type", new Object[]{
-            		value, formats, getSourceType().getName()});
+            throw new ConversionException("#convert_failed_with_type",
+                    new Object[] { value, formats, getSourceType().getName() });
         }
         return null;
-	}
+    }
 }

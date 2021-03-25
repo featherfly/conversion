@@ -3,8 +3,6 @@ package cn.featherfly.conversion.parse;
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.GenericClass;
-import cn.featherfly.conversion.parse.JsonParser;
-
 
 /**
  * <p>
@@ -13,11 +11,12 @@ import cn.featherfly.conversion.parse.JsonParser;
  *
  * @author 钟冀
  */
-public class JsonClassParser extends JsonParser<GenericClass<Class<?>>>{
+public class JsonClassParser extends JsonParser<GenericClass<Class<?>>> {
     /**
      */
     public JsonClassParser() {
     }
+
     /**
      * {@inheritDoc}
      */
@@ -42,7 +41,7 @@ public class JsonClassParser extends JsonParser<GenericClass<Class<?>>>{
             Content objContent = getContent(content);
             String className = objContent.className;
             String jsonContent = objContent.content;
-            
+
             if (Lang.isEmpty(className)) {
                 className = gt.getType().getName();
             }

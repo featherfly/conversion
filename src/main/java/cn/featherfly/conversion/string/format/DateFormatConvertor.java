@@ -8,7 +8,7 @@ import java.util.List;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.LogUtils;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.basic.DateConvertor;
 
@@ -32,14 +32,12 @@ public class DateFormatConvertor extends FormatConvertor<Date> {
      */
     @Override
     protected String formatToString(Date value, FormatType<Date> genericType) {
-        if (value != null && genericType != null && StringUtils.isNotBlank(genericType.getFormat())) {
+        if (value != null && genericType != null && Strings.isNotBlank(genericType.getFormat())) {
             SimpleDateFormat sdf = new SimpleDateFormat(genericType.getFormat());
             return sdf.format(value);
         }
         return null;
     }
-
-
 
     /**
      * {@inheritDoc}
@@ -56,8 +54,8 @@ public class DateFormatConvertor extends FormatConvertor<Date> {
                     LogUtils.debug(e, logger);
                 }
             }
-            throw new ConversionException("#convert_failed_with_type", new Object[]{
-            		value, formats, getSourceType().getName()});
+            throw new ConversionException("#convert_failed_with_type",
+                    new Object[] { value, formats, getSourceType().getName() });
         }
         return null;
     }

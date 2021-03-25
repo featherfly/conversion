@@ -8,7 +8,7 @@ import java.util.Map;
 
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 
 /**
  * <p>
@@ -27,15 +27,16 @@ public class ParsePolity {
     /*
      * parsers
      */
-    private Map<String, Parser> parsers = new HashMap<String, Parser>();
+    private Map<String, Parser> parsers = new HashMap<>();
 
     /**
      * <p>
      * 解析传入的字符串
      * </p>
-     * @param <T> 返回类型
+     *
+     * @param <T>     返回类型
      * @param resolve 需要解析的字符串
-     * @param gt 需要解析完成后的目标GenericType
+     * @param gt      需要解析完成后的目标GenericType
      * @return 解析后的对象
      */
     public <T> T parse(String resolve, GenericType<T> gt) {
@@ -49,7 +50,7 @@ public class ParsePolity {
         String content = getContent(resolve);
         for (Parser parser : parsers.values()) {
             if (protocol.equals(parser.getProtocol())) {
-                return (T) parser.parse(content, gt);
+                return parser.parse(content, gt);
             }
         }
         return null;
@@ -59,6 +60,7 @@ public class ParsePolity {
      * <p>
      * 判断传入的字符串是否可以被解析
      * </p>
+     *
      * @param resolve 需要解析的字符串
      * @return 是否可以解析传入字符串
      */
@@ -75,6 +77,7 @@ public class ParsePolity {
      * <p>
      * 批量注册解析器
      * </p>
+     *
      * @param parsers 解析器集合
      */
     public void register(Collection<Parser> parsers) {
@@ -84,49 +87,59 @@ public class ParsePolity {
             }
         }
     }
+
     /**
      * <p>
      * 批量注册解析器
      * </p>
+     *
      * @param parsers 解析器数组
      */
-    public void register(Parser...parsers) {
+    public void register(Parser... parsers) {
         if (Lang.isNotEmpty(parsers)) {
             for (Parser parser : parsers) {
                 register(parser);
             }
         }
     }
+
     /**
      * <p>
      * 注册解析器
      * </p>
+     *
      * @param parser 解析器
      */
     public void register(Parser parser) {
         if (parser != null) {
             if (isRegister(parser)) {
-                throw new ParseException(
-                    StringUtils.format("协议[#1]已经被[#2]注册"
-                        , parser.getProtocol()
-                        , getParser(parser.getProtocol()).getClass().getName()));
+                //                throw new ParseException(
+                //                    StringUtils.format("协议[#1]已经被[#2]注册"
+                //                        , parser.getProtocol()
+                //                        , getParser(parser.getProtocol()).getClass().getName()));
+                throw new ParseException(Strings.format("协议[{0}]已经被[{1}]注册", parser.getProtocol(),
+                        getParser(parser.getProtocol()).getClass().getName()));
             }
             parsers.put(parser.getProtocol(), parser);
         }
     }
+
     /**
      * <p>
      * 注销协议
      * </p>
+     *
      * @param protocol 解析协议
      */
     public void unregister(String protocol) {
         parsers.remove(protocol);
     }
+
     /**
      * <p>
      * 注销解析器
      * </p>
+     *
      * @param parser 解析解析器
      */
     public void unregister(Parser parser) {
@@ -134,30 +147,34 @@ public class ParsePolity {
             parsers.remove(parser.getProtocol());
         }
     }
+
     /**
      * <p>
      * 返回已经注册的所有协议
      * </p>
+     *
      * @return 已经注册的所有协议
      */
     public Collection<String> getProtocols() {
-        return new ArrayList<String>(parsers.keySet());
+        return new ArrayList<>(parsers.keySet());
     }
 
     /**
      * <p>
      * 返回已经注册的所有解析器
      * </p>
+     *
      * @return 已经注册的所有解析器
      */
     public Collection<Parser> getParsers() {
-        return new ArrayList<Parser>(parsers.values());
+        return new ArrayList<>(parsers.values());
     }
 
     /**
      * <p>
      * 返回是否注册有传入的协议
      * </p>
+     *
      * @param protocol 解析协议
      * @return 是否注册协议
      */
@@ -169,6 +186,7 @@ public class ParsePolity {
      * <p>
      * 返回是否注册有传入解析器
      * </p>
+     *
      * @param parser 解析器
      * @return 是否注册解析器
      */
@@ -180,6 +198,7 @@ public class ParsePolity {
      * <p>
      * 返回指定协议解析器
      * </p>
+     *
      * @param protocol 解析协议
      * @return 解析器
      */
@@ -199,6 +218,7 @@ public class ParsePolity {
      * <p>
      * 获取传入字符串的解析协议
      * </p>
+     *
      * @param resolve 需要解析的字符串
      * @return 传入字符串的解析协议
      */
@@ -212,10 +232,12 @@ public class ParsePolity {
         }
         return null;
     }
+
     /**
      * <p>
      * 获取传入字符串的内容
      * </p>
+     *
      * @param resolve 需要解析的字符串
      * @return 传入字符串的内容
      */

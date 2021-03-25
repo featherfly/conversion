@@ -3,13 +3,13 @@ package cn.featherfly.conversion.parse;
 
 import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.StringUtils;
+import cn.featherfly.common.lang.Strings;
 
 /**
  * <p>
  * class类协议解析器
  * </p>
- * 
+ *
  * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
@@ -34,7 +34,7 @@ public class ClassParser<G extends GenericType<?>> extends AbstractIterableParse
             return null;
         }
         try {
-            return (T) Class.forName(StringUtils.trim(content)).newInstance();
+            return (T) Class.forName(Strings.trim(content)).newInstance();
         } catch (Exception e) {
             throw new ParseException(e);
         }
