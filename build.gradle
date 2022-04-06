@@ -5,9 +5,9 @@ sourceSets {
 }
 
 dependencies {
-    api 'cn.featherfly.common:common-core:1.8.22'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.2'
-    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.12.2'
+    api 'cn.featherfly.common:common-core:1.9.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.2'
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.2'
     testImplementation (
     	'org.testng:testng:6.8.21'
     )
