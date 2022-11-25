@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="featherfly conversion Test Suite" parallel="tests">
+<!--     <listeners> -->
+<!--         <listener -->
+<!--             class-name="cn.featherfly.hammer.sqldb.TestngListener"></listener> -->
+<!--     </listeners> -->
+    <test name="basic test">
+        <packages>
+            <package name="cn.featherfly.conversion.*" />
+        </packages>
+    </test>
+</suite>

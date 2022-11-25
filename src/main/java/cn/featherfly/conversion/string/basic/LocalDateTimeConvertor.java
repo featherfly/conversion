@@ -4,7 +4,7 @@ package cn.featherfly.conversion.string.basic;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.conversion.ConversionException;
 
@@ -15,7 +15,7 @@ import cn.featherfly.conversion.ConversionException;
  *
  * @author 钟冀
  */
-public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime, GenericType<LocalDateTime>> {
+public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime, Type<LocalDateTime>> {
 
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
@@ -30,7 +30,7 @@ public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime
      * {@inheritDoc}
      */
     @Override
-    protected String doToString(LocalDateTime value, GenericType<LocalDateTime> genericType) {
+    protected String doToString(LocalDateTime value, Type<LocalDateTime> genericType) {
         if (value != null) {
             return value.format(DATE_TIME_PATTERN);
         }
@@ -41,7 +41,7 @@ public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime
      * {@inheritDoc}
      */
     @Override
-    protected LocalDateTime doToObject(String value, GenericType<LocalDateTime> genericType) {
+    protected LocalDateTime doToObject(String value, Type<LocalDateTime> genericType) {
         if (Strings.isNotBlank(value)) {
             value = value.trim();
             try {

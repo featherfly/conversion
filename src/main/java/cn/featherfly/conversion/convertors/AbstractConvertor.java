@@ -4,7 +4,7 @@ package cn.featherfly.conversion.convertors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.Convertor;
 import cn.featherfly.conversion.TypePolicys;
 
@@ -15,7 +15,7 @@ import cn.featherfly.conversion.TypePolicys;
  *
  * @author zhongj
  */
-public abstract class AbstractConvertor<S, T, G extends GenericType<S>> implements Convertor<S, T> {
+public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Convertor<S, T> {
 
     private Class<S> sourceType;
 
@@ -53,7 +53,7 @@ public abstract class AbstractConvertor<S, T, G extends GenericType<S>> implemen
      * @param generecType generecType
      * @return 是否支持
      */
-    protected abstract boolean supportFor(GenericType<S> generecType);
+    protected abstract boolean supportFor(Type<S> generecType);
 
     /**
      * <p>
@@ -82,7 +82,7 @@ public abstract class AbstractConvertor<S, T, G extends GenericType<S>> implemen
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <GT extends GenericType<S>> T sourceToTarget(S value, GT genericType) {
+    public <GT extends Type<S>> T sourceToTarget(S value, GT genericType) {
         if (supportFor(genericType)) {
             return doSourceToTarget(value, (G) genericType);
         }
@@ -94,7 +94,7 @@ public abstract class AbstractConvertor<S, T, G extends GenericType<S>> implemen
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <GT extends GenericType<S>> S targetToSource(T value, GT genericType) {
+    public <GT extends Type<S>> S targetToSource(T value, GT genericType) {
         if (supportFor(genericType)) {
             return doTargetToSource(value, (G) genericType);
         }

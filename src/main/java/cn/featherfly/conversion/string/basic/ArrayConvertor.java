@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
@@ -22,7 +22,7 @@ import cn.featherfly.conversion.string.ToStringConvertor;
  * @param <GT> 描述类型
  * @author 钟冀
  */
-public abstract class ArrayConvertor<A, G extends GenericType<A>, E, GT extends GenericType<E>>
+public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>>
         extends AbstractBasicConvertor<A, G> {
 
     /**
@@ -45,7 +45,7 @@ public abstract class ArrayConvertor<A, G extends GenericType<A>, E, GT extends 
                 for (int i = 0; i < Array.getLength(value); i++) {
                     // TODO 这里只能使用null
                     result.append(
-                            convertor.sourceToTarget((E) Array.get(value, i), getArrayItemGenericType(genericType)))
+                            convertor.sourceToTarget((E) Array.get(value, i), getArrayItemType(genericType)))
                             .append(Chars.COMMA);
                 }
                 if (result.length() > 0) {
@@ -77,7 +77,7 @@ public abstract class ArrayConvertor<A, G extends GenericType<A>, E, GT extends 
             Object result = Array.newInstance(type.getComponentType(), valueList.size());
             for (int i = 0; i < valueList.size(); i++) {
                 String v = valueList.get(i).trim();
-                Array.set(result, i, convertor.targetToSource(v, getArrayItemGenericType(genericType)));
+                Array.set(result, i, convertor.targetToSource(v, getArrayItemType(genericType)));
             }
             return (A) result;
         }
@@ -86,13 +86,13 @@ public abstract class ArrayConvertor<A, G extends GenericType<A>, E, GT extends 
 
     /**
      * <p>
-     * 获取数组元素GenericType
+     * 获取数组元素Type
      * </p>
      *
      * @param genericType genericType
-     * @return 数组元素GenericType
+     * @return 数组元素Type
      */
-    protected abstract GT getArrayItemGenericType(G genericType);
+    protected abstract GT getArrayItemType(G genericType);
 
     //    /**
     //     * <p>

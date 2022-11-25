@@ -1,7 +1,5 @@
 package cn.featherfly.conversion.string.basic;
 
-
-
 /**
  * <p>
  * Enum[]转换器

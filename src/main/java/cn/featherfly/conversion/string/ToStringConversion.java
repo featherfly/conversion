@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion.string;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -21,7 +21,7 @@ public interface ToStringConversion {
      * @param <S>         泛型
      * @return 字符串
      */
-    <S, G extends GenericType<S>> String sourceToTarget(S value, G genericType);
+    <S, G extends Type<S>> String sourceToTarget(S value, G genericType);
 
     /**
      * <p>
@@ -33,5 +33,5 @@ public interface ToStringConversion {
      * @param <S>         泛型
      * @return 对象
      */
-    <S, G extends GenericType<S>> S targetToSource(String value, G genericType);
+    <S, G extends Type<S>> S targetToSource(String value, G genericType);
 }

@@ -2,7 +2,7 @@
 package cn.featherfly.conversion.string.bp;
 
 import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.string.AbstractToStringConvertor;
 
 
@@ -24,7 +24,7 @@ public abstract class BeanPropertyConvertor<T> extends AbstractToStringConvertor
      * {@inheritDoc}
      */
     @Override
-    protected boolean supportFor(GenericType<T> generecType) {
+    protected boolean supportFor(Type<T> generecType) {
         if (generecType == null) {
             return false;        
         }

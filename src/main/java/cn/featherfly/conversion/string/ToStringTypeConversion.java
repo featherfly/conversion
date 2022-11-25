@@ -1,8 +1,8 @@
 
 package cn.featherfly.conversion.string;
 
-import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -34,14 +34,14 @@ public class ToStringTypeConversion extends AbstractToStringConversion {
      * 对象转换为字符串
      * </p>
      *
-     * @param value        对象
-     * @param genericClass 对象类型
+     * @param value     对象
+     * @param ClassType 对象类型
      * @return 字符串
      */
     @Override
-    public <S, G extends GenericType<S>> String sourceToTarget(S value, G genericClass) {
+    public <S, G extends Type<S>> String sourceToTarget(S value, G ClassType) {
         check();
-        return getConvertor(genericClass).sourceToTarget(value, genericClass);
+        return getConvertor(ClassType).sourceToTarget(value, ClassType);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ToStringTypeConversion extends AbstractToStringConversion {
      * @return 字符串
      */
     public <E> String sourceToTarget(E value, Class<E> type) {
-        return sourceToTarget(value, new GenericClass<>(type));
+        return sourceToTarget(value, new ClassType<>(type));
     }
 
     /**
@@ -63,15 +63,15 @@ public class ToStringTypeConversion extends AbstractToStringConversion {
      * 字符串转换为对象
      * </p>
      *
-     * @param <S>          泛型
-     * @param value        字符串
-     * @param genericClass 对象类型
+     * @param <S>       泛型
+     * @param value     字符串
+     * @param ClassType 对象类型
      * @return 对象
      */
     @Override
-    public <S, G extends GenericType<S>> S targetToSource(String value, G genericClass) {
+    public <S, G extends Type<S>> S targetToSource(String value, G ClassType) {
         check();
-        return getConvertor(genericClass).targetToSource(value, genericClass);
+        return getConvertor(ClassType).targetToSource(value, ClassType);
     }
 
     /**
@@ -85,6 +85,6 @@ public class ToStringTypeConversion extends AbstractToStringConversion {
      * @return 对象
      */
     public <E> E targetToSource(String value, Class<E> type) {
-        return targetToSource(value, new GenericClass<>(type));
+        return targetToSource(value, new ClassType<>(type));
     }
 }

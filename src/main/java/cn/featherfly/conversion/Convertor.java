@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -37,10 +37,10 @@ public interface Convertor<S, T> {
      *
      * @param source      需要转换的对象
      * @param genericType 需要转换的对象的上下文属性
-     * @param <GS>        GenericType子类泛型
+     * @param <GS>        Type子类泛型
      * @return 字符串
      */
-    <GS extends GenericType<S>> T sourceToTarget(S source, GS genericType);
+    <GS extends Type<S>> T sourceToTarget(S source, GS genericType);
 
     /**
      * <p>
@@ -49,8 +49,8 @@ public interface Convertor<S, T> {
      *
      * @param target      需要转换的对象
      * @param genericType 指定对象的上下文属性
-     * @param <GT>        GenericType子类泛型
+     * @param <GT>        Type子类泛型
      * @return 源类型对象
      */
-    <GT extends GenericType<S>> S targetToSource(T target, GT genericType);
+    <GT extends Type<S>> S targetToSource(T target, GT genericType);
 }

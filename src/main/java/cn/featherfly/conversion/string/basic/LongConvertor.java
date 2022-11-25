@@ -29,7 +29,7 @@ public class LongConvertor extends NumberBasicTypeConvertor<Long>{
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    protected Long doToObject(String value, GenericType<Long> genericType) {
+//    protected Long doToObject(String value, Type<Long> genericType) {
 //        if (StringUtils.isNotBlank(value)) {
 //            return Long.parseLong(value);
 //        }

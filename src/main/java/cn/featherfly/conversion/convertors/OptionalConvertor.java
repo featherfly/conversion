@@ -8,8 +8,8 @@ import java.util.Optional;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.GenericType;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.Convertor;
 import cn.featherfly.conversion.TypePolicys;
@@ -22,7 +22,7 @@ import cn.featherfly.conversion.TypePolicys;
  * @author zhongj
  */
 @SuppressWarnings("rawtypes")
-public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T, GenericType<Optional>> {
+public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T, Type<Optional>> {
 
     private Map<Class<?>, Convertor<?, T>> convertors = new HashMap<>();
 
@@ -80,7 +80,7 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      * {@inheritDoc}
      */
     @Override
-    protected boolean supportFor(GenericType<Optional> generecType) {
+    protected boolean supportFor(Type<Optional> generecType) {
         return generecType != null && generecType.getClass() == BeanProperty.class;
     }
 
@@ -89,11 +89,11 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected T doSourceToTarget(Optional source, GenericType<Optional> genericType) {
+    protected T doSourceToTarget(Optional source, Type<Optional> genericType) {
         if (source != null && source.isPresent()) {
             Class<?> type = source.get().getClass();
             Convertor c = getConvertor(type);
-            return (T) c.sourceToTarget(source.get(), new GenericClass<>(type));
+            return (T) c.sourceToTarget(source.get(), new ClassType<>(type));
         }
         return null;
     }
@@ -103,10 +103,10 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected Optional doTargetToSource(T target, GenericType<Optional> genericType) {
+    protected Optional doTargetToSource(T target, Type<Optional> genericType) {
         if (genericType instanceof BeanProperty) {
             BeanProperty<Optional> bp = (BeanProperty<Optional>) genericType;
-            Class<?> type = bp.getGenericType();
+            Class<?> type = bp.getType();
             Convertor c = getConvertor(type);
             return Optional.of(c.targetToSource(target, new Proxy<>(bp, type)));
         }

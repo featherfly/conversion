@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion.string.basic;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.Strings;
 
@@ -13,7 +13,7 @@ import cn.featherfly.common.lang.Strings;
  * @param <T> 转换器对应的转换类型
  * @author 钟冀
  */
-public abstract class NumberConvertor<T extends Number> extends AbstractBasicConvertor<T, GenericType<T>> {
+public abstract class NumberConvertor<T extends Number> extends AbstractBasicConvertor<T, Type<T>> {
 
     /**
      */
@@ -24,7 +24,7 @@ public abstract class NumberConvertor<T extends Number> extends AbstractBasicCon
      * {@inheritDoc}
      */
     @Override
-    protected String doToString(T value, GenericType<T> genericType) {
+    protected String doToString(T value, Type<T> genericType) {
         if (value != null) {
             return value.toString();
         }
@@ -35,7 +35,7 @@ public abstract class NumberConvertor<T extends Number> extends AbstractBasicCon
      * {@inheritDoc}
      */
     @Override
-    protected T doToObject(String value, GenericType<T> genericType) {
+    protected T doToObject(String value, Type<T> genericType) {
         if (Strings.isNotBlank(value)) {
             return NumberUtils.parse(value, getSourceType());
         }

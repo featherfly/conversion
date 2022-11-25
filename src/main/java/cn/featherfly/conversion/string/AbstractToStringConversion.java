@@ -4,7 +4,7 @@ package cn.featherfly.conversion.string;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 
 /**
@@ -59,7 +59,7 @@ public abstract class AbstractToStringConversion implements ToStringConversion {
      * @param type 类型
      * @return 转换器
      */
-    protected <E> ToStringConvertor<E> getConvertor(GenericType<E> type) {
+    protected <E> ToStringConvertor<E> getConvertor(Type<E> type) {
         ToStringConvertor<E> convertor = conversionPolicy.getConvertor(type);
         if (convertor == null) {
             throw new ConversionException("#no_convertor_with_type", new Object[] { type.getType().getName() });

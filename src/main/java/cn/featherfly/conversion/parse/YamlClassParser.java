@@ -1,8 +1,8 @@
 package cn.featherfly.conversion.parse;
 
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -11,7 +11,7 @@ import cn.featherfly.common.lang.reflect.GenericClass;
  *
  * @author 钟冀
  */
-public class YamlClassParser extends YamlParser<GenericClass<Class<?>>> {
+public class YamlClassParser extends YamlParser<ClassType<Class<?>>> {
     /**
      */
     public YamlClassParser() {
@@ -21,11 +21,11 @@ public class YamlClassParser extends YamlParser<GenericClass<Class<?>>> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean supportFor(GenericType<?> to) {
+    protected boolean supportFor(Type<?> to) {
         if (to == null) {
             return false;
         }
-        return to.getClass() == GenericClass.class;
+        return to.getClass() == ClassType.class;
     }
 
     /**
@@ -33,7 +33,7 @@ public class YamlClassParser extends YamlParser<GenericClass<Class<?>>> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected <T> T doParse(String content, GenericClass<Class<?>> gt) {
+    protected <T> T doParse(String content, ClassType<Class<?>> gt) {
         if (Lang.isEmpty(content)) {
             return null;
         }

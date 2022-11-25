@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 import cn.featherfly.conversion.ConversionException;
@@ -19,7 +19,7 @@ import cn.featherfly.conversion.ConversionException;
  *
  * @author 钟冀
  */
-public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasicConvertor<T, GenericType<T>> {
+public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasicConvertor<T, Type<T>> {
 
     /**
      */
@@ -58,7 +58,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
      * {@inheritDoc}
      */
     @Override
-    protected String doToString(T value, GenericType<T> genericType) {
+    protected String doToString(T value, Type<T> genericType) {
         if (value != null) {
             if (Strings.isNotBlank(getFormat())) {
                 logger.debug("format {} to string with {}", getSourceType().getName(), getFormat());
@@ -76,7 +76,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
      * {@inheritDoc}
      */
     @Override
-    protected T doToObject(String value, GenericType<T> genericType) {
+    protected T doToObject(String value, Type<T> genericType) {
         String[] formats = getFormats();
         if (Lang.isEmpty(formats)) {
             logger.warn("there is no formats, can not parse {} to {}", value, getSourceType().getName());

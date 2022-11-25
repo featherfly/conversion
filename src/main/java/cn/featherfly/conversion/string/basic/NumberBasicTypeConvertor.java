@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion.string.basic;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.NumberUtils;
 import cn.featherfly.common.lang.Strings;
 
@@ -24,7 +24,7 @@ public abstract class NumberBasicTypeConvertor<T extends Number> extends NumberC
      * {@inheritDoc}
      */
     @Override
-    protected T doToObject(String value, GenericType<T> genericType) {
+    protected T doToObject(String value, Type<T> genericType) {
         if (Strings.isNotBlank(value)) {
             return NumberUtils.parse(value, getSourceType());
         }

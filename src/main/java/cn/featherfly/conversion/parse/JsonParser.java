@@ -3,7 +3,7 @@ package cn.featherfly.conversion.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Strings;
 
 /**
@@ -14,7 +14,7 @@ import cn.featherfly.common.lang.Strings;
  * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
-public abstract class JsonParser<G extends GenericType<?>> extends JacksonParser<G> {
+public abstract class JsonParser<G extends Type<?>> extends JacksonParser<G> {
 
     /**
      * 协议字符串常量

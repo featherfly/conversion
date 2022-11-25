@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion.string.basic;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 
 /**
@@ -11,7 +11,7 @@ import cn.featherfly.common.lang.GenericType;
  *
  * @author 钟冀
  */
-public class BooleanConvertor extends AbstractBasicConvertor<Boolean, GenericType<Boolean>>{
+public class BooleanConvertor extends AbstractBasicConvertor<Boolean, Type<Boolean>>{
 
     /**
      */
@@ -30,7 +30,7 @@ public class BooleanConvertor extends AbstractBasicConvertor<Boolean, GenericTyp
      * {@inheritDoc}
      */
     @Override
-    protected Boolean doToObject(String value, GenericType<Boolean> genericType) {
+    protected Boolean doToObject(String value, Type<Boolean> genericType) {
         return Boolean.parseBoolean(value);
     }
 
@@ -38,7 +38,7 @@ public class BooleanConvertor extends AbstractBasicConvertor<Boolean, GenericTyp
      * {@inheritDoc}
      */
     @Override
-    protected String doToString(Boolean value, GenericType<Boolean> genericType) {
+    protected String doToString(Boolean value, Type<Boolean> genericType) {
         if (value == null) {
             return "";
         }

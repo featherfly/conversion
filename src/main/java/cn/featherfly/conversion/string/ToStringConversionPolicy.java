@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.TypePolicys;
 
@@ -179,7 +179,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * @param type 转换器指定的转换类型
      * @return 指定类型的转换器
      */
-    public <E> ToStringConvertor<E> getConvertor(GenericType<E> type) {
+    public <E> ToStringConvertor<E> getConvertor(Type<E> type) {
         return getConvertor(type.getType());
     }
 

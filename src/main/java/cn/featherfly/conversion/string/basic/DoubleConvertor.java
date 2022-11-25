@@ -29,7 +29,7 @@ public class DoubleConvertor extends NumberBasicTypeConvertor<Double>{
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    protected Double doToObject(String value, GenericType<Double> genericType) {
+//    protected Double doToObject(String value, Type<Double> genericType) {
 //        if (StringUtils.isNotBlank(value)) {
 //            return Double.parseDouble(value);
 //        }

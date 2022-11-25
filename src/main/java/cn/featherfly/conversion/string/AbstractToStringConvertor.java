@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.TypePolicys;
 
 /**
@@ -14,10 +14,10 @@ import cn.featherfly.conversion.TypePolicys;
  * </p>
  *
  * @param <S> 转换对象
- * @param <G> GenericType
+ * @param <G> Type
  * @author 钟冀
  */
-public abstract class AbstractToStringConvertor<S, G extends GenericType<S>> implements ToStringConvertor<S> {
+public abstract class AbstractToStringConvertor<S, G extends Type<S>> implements ToStringConvertor<S> {
 
     private Class<S> type;
 
@@ -42,7 +42,7 @@ public abstract class AbstractToStringConvertor<S, G extends GenericType<S>> imp
      * @param generecType generecType
      * @return 是否支持
      */
-    protected abstract boolean supportFor(GenericType<S> generecType);
+    protected abstract boolean supportFor(Type<S> generecType);
 
     /**
      * <p>
@@ -71,7 +71,7 @@ public abstract class AbstractToStringConvertor<S, G extends GenericType<S>> imp
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <GT extends GenericType<S>> String sourceToTarget(S value, GT genericType) {
+    public <GT extends Type<S>> String sourceToTarget(S value, GT genericType) {
         if (supportFor(genericType)) {
             return doToString(value, (G) genericType);
         }
@@ -83,7 +83,7 @@ public abstract class AbstractToStringConvertor<S, G extends GenericType<S>> imp
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <GT extends GenericType<S>> S targetToSource(String value, GT genericType) {
+    public <GT extends Type<S>> S targetToSource(String value, GT genericType) {
         if (supportFor(genericType)) {
             return doToObject(value, (G) genericType);
         }

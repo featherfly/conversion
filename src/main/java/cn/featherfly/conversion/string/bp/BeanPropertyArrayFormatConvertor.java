@@ -33,7 +33,7 @@ public abstract class BeanPropertyArrayFormatConvertor<A, E> extends
      * {@inheritDoc}
      */
     @Override
-    protected FormatType<E> getArrayItemGenericType(BeanProperty<A> beanProperty) {
+    protected FormatType<E> getArrayItemType(BeanProperty<A> beanProperty) {
         Format format = beanProperty.getAnnotation(Format.class);
         FormatType<E> ft = new FormatType<>(getConvertor().getSourceType());
         ft.setFormat(format.format());

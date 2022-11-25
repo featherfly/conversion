@@ -4,7 +4,7 @@ package cn.featherfly.conversion.parse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import cn.featherfly.common.lang.GenericType;
  * @param <G> 解析后的目标类型描述信息
  * @author 钟冀
  */
-public abstract class AbstractParser<G extends GenericType<?>> implements Parser{
+public abstract class AbstractParser<G extends Type<?>> implements Parser{
     /**
      * 日志
      */
@@ -25,7 +25,7 @@ public abstract class AbstractParser<G extends GenericType<?>> implements Parser
      * @param to to
      * @return 是否支持
      */
-    protected abstract boolean supportFor(GenericType<?> to);
+    protected abstract boolean supportFor(Type<?> to);
     /**
      * <p>
      * 解析传入的字符串
@@ -41,7 +41,7 @@ public abstract class AbstractParser<G extends GenericType<?>> implements Parser
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <TO extends GenericType<T>, T> T parse(String content, TO to) {
+    public <TO extends Type<T>, T> T parse(String content, TO to) {
         if (supportFor(to)) {
             T result = doParse(content, (G) to);
             return result;

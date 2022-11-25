@@ -28,7 +28,7 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.ClassLoaderUtils;
-import cn.featherfly.common.lang.reflect.GenericClass;
+import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.conversion.parse.ClassParser;
 import cn.featherfly.conversion.parse.JsonClassParser;
 import cn.featherfly.conversion.parse.ParsePolity;
@@ -61,7 +61,7 @@ public class ParserTest2 {
     public void test() throws IOException {
         File file = new File(ClassLoaderUtils.getResource("test1.txt", ParserTest2.class).getFile());
         String content = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        User user = parse.parse(content, new GenericClass<>(User.class));
+        User user = parse.parse(content, new ClassType<>(User.class));
 
         System.out.println(user);
 
@@ -73,7 +73,7 @@ public class ParserTest2 {
     public void test2() throws IOException {
         File file = new File(ClassLoaderUtils.getResource("test2.txt", ParserTest2.class).getFile());
         String content = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        Role role = parse.parse(content, new GenericClass<>(Role.class));
+        Role role = parse.parse(content, new ClassType<>(Role.class));
 
         System.out.println(role);
         assertEquals(role.getName(), "test_role_name");

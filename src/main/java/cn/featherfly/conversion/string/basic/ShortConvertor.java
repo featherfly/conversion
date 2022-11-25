@@ -29,7 +29,7 @@ public class ShortConvertor extends NumberBasicTypeConvertor<Short>{
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    protected Short doToObject(String value, GenericType<Short> genericType) {
+//    protected Short doToObject(String value, Type<Short> genericType) {
 //        if (StringUtils.isNotBlank(value)) {
 //            return Short.parseShort(value);
 //        }

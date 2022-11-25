@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanUtils;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.annotation.Assign;
 
@@ -49,7 +49,7 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <E, G extends GenericType<E>> String sourceToTarget(E value, G genericType) {
+    public <E, G extends Type<E>> String sourceToTarget(E value, G genericType) {
         if (genericType instanceof BeanProperty) {
             return sourceToTarget(value, (BeanProperty<E>) genericType);
         }
@@ -97,7 +97,7 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <E, G extends GenericType<E>> E targetToSource(String value, G genericType) {
+    public <E, G extends Type<E>> E targetToSource(String value, G genericType) {
         if (genericType instanceof BeanProperty) {
             return targetToSource(value, (BeanProperty<E>) genericType);
         }

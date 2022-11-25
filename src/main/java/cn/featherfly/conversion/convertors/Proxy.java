@@ -2,7 +2,7 @@
 package cn.featherfly.conversion.convertors;
 
 import cn.featherfly.common.bean.BeanProperty;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -11,7 +11,7 @@ import cn.featherfly.common.lang.GenericType;
  *
  * @author zhongj
  */
-public class Proxy<T> implements GenericType<T> {
+public class Proxy<T> implements Type<T> {
 
     private BeanProperty<?> proxy;
 

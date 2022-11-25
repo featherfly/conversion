@@ -4,7 +4,7 @@ package cn.featherfly.conversion.string.format;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import cn.featherfly.common.lang.GenericType;
  * @param <T> 对象类型
  * @author 钟冀
  */
-public class FormatType<T> implements GenericType<T>{
+public class FormatType<T> implements Type<T>{
     
     /**
      * 

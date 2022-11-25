@@ -1,6 +1,6 @@
 package cn.featherfly.conversion.string;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.Convertor;
 import cn.featherfly.conversion.TypePolicys;
 
@@ -31,11 +31,11 @@ public interface ToStringConvertor<S> extends Convertor<S, String> {
      *
      * @param value       对象
      * @param genericType 指定对象的上下文属性
-     * @param <GT>        GenericType子类泛型
+     * @param <GT>        Type子类泛型
      * @return 字符串
      */
     @Override
-    <GT extends GenericType<S>> String sourceToTarget(S value, GT genericType);
+    <GT extends Type<S>> String sourceToTarget(S value, GT genericType);
 
     /**
      * <p>
@@ -44,9 +44,9 @@ public interface ToStringConvertor<S> extends Convertor<S, String> {
      *
      * @param value       字符串
      * @param genericType 指定对象的上下文属性
-     * @param <GT>        GenericType子类泛型
+     * @param <GT>        Type子类泛型
      * @return 对象
      */
     @Override
-    <GT extends GenericType<S>> S targetToSource(String value, GT genericType);
+    <GT extends Type<S>> S targetToSource(String value, GT genericType);
 }

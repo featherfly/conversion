@@ -1,6 +1,9 @@
 下一步实现	
 	1.实现原子类型(线程池包中Atomic开头的类）
 
+# 1.4.3 
+1. common-core不兼容升级
+
 # 1.4.2 2022-04-06
 1. 修复废弃API调用
 2. 构建时jackson使用implementation关系

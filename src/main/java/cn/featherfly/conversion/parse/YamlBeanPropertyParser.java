@@ -3,7 +3,6 @@ package cn.featherfly.conversion.parse;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
@@ -11,8 +10,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.GenericType;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -32,7 +31,7 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean supportFor(GenericType<?> to) {
+    protected boolean supportFor(Type<?> to) {
         if (to == null) {
             return false;
         }
@@ -53,7 +52,7 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
             String className = objContent.className;
             String yamlContent = objContent.content;
 
-            Type toType = null;
+            java.lang.reflect.Type toType = null;
             Class<?> classType = null;
 
             if (Lang.isEmpty(className)) {
@@ -62,9 +61,9 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
                 }
                 if (toBeanProperty.getType().isInterface()) {
                     if (ClassUtils.isParent(Collection.class, toBeanProperty.getType())) {
-                        toType = toBeanProperty.getField().getGenericType();
+                        toType = toBeanProperty.getField().getType();
                     } else if (ClassUtils.isParent(Map.class, toBeanProperty.getType())) {
-                        toType = toBeanProperty.getField().getGenericType();
+                        toType = toBeanProperty.getField().getType();
                     } else {
                         throw new IllegalArgumentException("要设置的目标是接口（interface），请显示指定类型（class）");
                     }
@@ -85,13 +84,13 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
                 }
             }
             if (toType instanceof ParameterizedType) {
-                final Type parameterizedType = toType;
+                final java.lang.reflect.Type parameterizedType = toType;
                 return (T) objectMapper.readerFor(new TypeReference<T>() {
                     /**
                      * {@inheritDoc}
                      */
                     @Override
-                    public Type getType() {
+                    public java.lang.reflect.Type getType() {
                         return parameterizedType;
                     }
                 }).readValue(yamlContent);

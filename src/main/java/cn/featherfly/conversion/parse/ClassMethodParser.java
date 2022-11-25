@@ -2,7 +2,7 @@
 package cn.featherfly.conversion.parse;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
 
 /**
@@ -13,7 +13,7 @@ import cn.featherfly.common.lang.Lang;
  * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
-public class ClassMethodParser<G extends GenericType<?>> extends AbstractIterableParser<G> {
+public class ClassMethodParser<G extends Type<?>> extends AbstractIterableParser<G> {
     /**
      * 协议字符串常量
      */
@@ -80,7 +80,7 @@ public class ClassMethodParser<G extends GenericType<?>> extends AbstractIterabl
      * {@inheritDoc}
      */
     @Override
-    protected boolean supportFor(GenericType<?> to) {
+    protected boolean supportFor(Type<?> to) {
         return true;
     }
 

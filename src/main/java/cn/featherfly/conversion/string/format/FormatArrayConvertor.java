@@ -25,7 +25,7 @@ public abstract class FormatArrayConvertor<A, E> extends ArrayConvertor<A, Forma
      * {@inheritDoc}
      */
     @Override
-    protected FormatType<E> getArrayItemGenericType(FormatType<A> formatType) {
+    protected FormatType<E> getArrayItemType(FormatType<A> formatType) {
         FormatType<E> ft = new FormatType<>(getConvertor().getSourceType());
         ft.setFormat(formatType.getFormat());
         ft.setFormats(formatType.getFormats());

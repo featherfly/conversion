@@ -6,8 +6,6 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cn.featherfly.common.lang.GenericType;
-
 /**
  * <p>
  * 使用jackson解析协议的解析器抽象类
@@ -16,7 +14,7 @@ import cn.featherfly.common.lang.GenericType;
  * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
-public abstract class JacksonParser<G extends GenericType<?>> extends AbstractParser<G> {
+public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.Type<?>> extends AbstractParser<G> {
 
     /**
      * objectMapper

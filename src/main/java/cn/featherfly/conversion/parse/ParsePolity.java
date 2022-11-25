@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Strings;
 
@@ -36,10 +36,10 @@ public class ParsePolity {
      *
      * @param <T>     返回类型
      * @param resolve 需要解析的字符串
-     * @param gt      需要解析完成后的目标GenericType
+     * @param gt      需要解析完成后的目标Type
      * @return 解析后的对象
      */
-    public <T> T parse(String resolve, GenericType<T> gt) {
+    public <T> T parse(String resolve, Type<T> gt) {
         String protocol = null;
         if (Lang.isNotEmpty(resolve)) {
             protocol = getProtocol(resolve);

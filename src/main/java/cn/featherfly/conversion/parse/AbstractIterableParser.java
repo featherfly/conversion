@@ -7,7 +7,7 @@ import java.util.Collection;
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.CollectionUtils;
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
 
 
@@ -18,7 +18,7 @@ import cn.featherfly.common.lang.Lang;
  * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
-public abstract class AbstractIterableParser<G extends GenericType<?>> extends AbstractParser<G>{
+public abstract class AbstractIterableParser<G extends Type<?>> extends AbstractParser<G>{
 //    /**
 //     * 协议字符串常量
 //     */

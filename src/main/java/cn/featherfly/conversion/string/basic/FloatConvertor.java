@@ -29,7 +29,7 @@ public class FloatConvertor extends NumberBasicTypeConvertor<Float>{
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    protected Float doToObject(String value, GenericType<Float> genericType) {
+//    protected Float doToObject(String value, Type<Float> genericType) {
 //        if (StringUtils.isNotBlank(value)) {
 //            return Float.parseFloat(value);
 //        }

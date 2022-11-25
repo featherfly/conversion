@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion.parse;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 
 
@@ -30,5 +30,5 @@ public interface Parser {
      * @param to 解析的目标类型描述信息
      * @return 解析后的对象
      */
-    <TO extends GenericType<T>, T> T parse(String content, TO to);
+    <TO extends Type<T>, T> T parse(String content, TO to);
 }

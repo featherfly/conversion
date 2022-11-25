@@ -1,7 +1,7 @@
 
 package cn.featherfly.conversion.string.basic;
 
-import cn.featherfly.common.lang.GenericType;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import cn.featherfly.common.lang.GenericType;
  *
  * @author 钟冀
  */
-public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, GenericType<StringBuffer>>{
+public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, Type<StringBuffer>>{
 
     /**
      */
@@ -22,7 +22,7 @@ public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, 
      */
     @Override
     protected String doToString(StringBuffer value,
-            GenericType<StringBuffer> genericType) {
+            Type<StringBuffer> genericType) {
         if (value != null) {
             return value.toString();
         }
@@ -34,7 +34,7 @@ public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, 
      */
     @Override
     protected StringBuffer doToObject(String value,
-            GenericType<StringBuffer> genericType) {
+            Type<StringBuffer> genericType) {
         if (value != null) {
             return new StringBuffer(value);
         }

@@ -121,9 +121,9 @@ public class Role {
 
     public static void main(String[] args) throws SecurityException, NoSuchFieldException {
         Field f = Role.class.getDeclaredField("personList");
-        System.out.println(f.getGenericType());
+        System.out.println(f.getType());
 
-        Type type = f.getGenericType();
+        Type type = f.getType();
 
         System.out.println(((ParameterizedType) type).getActualTypeArguments()[0]);
 
@@ -132,8 +132,8 @@ public class Role {
         System.out.println();
 
         f = Role.class.getDeclaredField("personLists");
-        System.out.println(f.getGenericType());
-        type = f.getGenericType();
+        System.out.println(f.getType());
+        type = f.getType();
 
         System.out.println(type instanceof ParameterizedType);
 

@@ -21,7 +21,7 @@ public class IntConvertor extends NumberBasicTypeConvertor<Integer>{
 //     * {@inheritDoc}
 //     */
 //    @Override
-//    protected Integer doToObject(String value, GenericType<Integer> genericType) {
+//    protected Integer doToObject(String value, Type<Integer> genericType) {
 //        if (StringUtils.isNotBlank(value)) {
 //            return Integer.parseInt(value);
 //        }
