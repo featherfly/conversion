@@ -21,7 +21,7 @@ public class BasicTest3 {
         policy = ToStringConversionPolicys.getFormatConversionPolicy();
     }
 
-    @Test
+    @Test(expectedExceptions = ConversionException.class)
     public void test1() {
         ToStringBeanPropertyConversion c = new ToStringBeanPropertyConversion(policy);
 
