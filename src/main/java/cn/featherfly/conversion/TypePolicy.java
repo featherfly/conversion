@@ -2,19 +2,18 @@
 package cn.featherfly.conversion;
 
 /**
- * <p>
- * TypePolity
- * </p>
+ * TypePolity.
  *
  * @author zhongj
  */
 public interface TypePolicy {
+
     /**
-     * support
+     * support.
      *
-     * @param sourceType
-     * @param checkedType
-     * @return
+     * @param sourceType  the source type
+     * @param checkedType the checked type
+     * @return true, if successful
      */
     boolean support(Class<?> sourceType, Class<?> checkedType);
 }

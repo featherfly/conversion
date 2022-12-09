@@ -9,11 +9,12 @@ import cn.featherfly.conversion.Convertor;
 import cn.featherfly.conversion.TypePolicys;
 
 /**
- * <p>
- * AbstractConvertor
- * </p>
+ * AbstractConvertor.
  *
  * @author zhongj
+ * @param <S> the generic type
+ * @param <T> the generic type
+ * @param <G> the generic type
  */
 public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Convertor<S, T> {
 
@@ -24,14 +25,17 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     private TypePolicys policy = TypePolicys.CLASS;
 
     /**
+     * Instantiates a new abstract convertor.
      */
     public AbstractConvertor() {
     }
 
     /**
-     * @param sourceType
-     * @param targetType
-     * @param policy
+     * Instantiates a new abstract convertor.
+     *
+     * @param sourceType the source type
+     * @param targetType the target type
+     * @param policy     the policy
      */
     public AbstractConvertor(Class<S> sourceType, Class<T> targetType, TypePolicys policy) {
         super();
@@ -40,15 +44,14 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
         this.policy = policy;
     }
 
-    /**
-     * 日志
-     */
+    /** 日志. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * <p>
      * 是否提供对传入类型的支持
      * </p>
+     * .
      *
      * @param generecType generecType
      * @return 是否支持
@@ -59,6 +62,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
      * <p>
      * 源转目标
      * </p>
+     * .
      *
      * @param source      源对象
      * @param genericType 指定对象的上下文属性
@@ -70,6 +74,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
      * <p>
      * 目标转源
      * </p>
+     * .
      *
      * @param target      目标对象
      * @param genericType 指定对象的上下文属性
@@ -102,7 +107,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 返回sourceType
+     * 返回sourceType.
      *
      * @return sourceType
      */
@@ -112,7 +117,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 设置sourceType
+     * 设置sourceType.
      *
      * @param sourceType sourceType
      */
@@ -121,7 +126,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 返回targetType
+     * 返回targetType.
      *
      * @return targetType
      */
@@ -131,7 +136,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 设置targetType
+     * 设置targetType.
      *
      * @param targetType targetType
      */
@@ -140,7 +145,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 返回policy
+     * 返回policy.
      *
      * @return policy
      */
@@ -149,7 +154,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 设置policy
+     * 设置policy.
      *
      * @param policy policy
      */

@@ -5,11 +5,10 @@ import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * Proxy
- * </p>
+ * Proxy.
  *
  * @author zhongj
+ * @param <T> the generic type
  */
 public class Proxy<T> implements Type<T> {
 
@@ -18,8 +17,10 @@ public class Proxy<T> implements Type<T> {
     private Class<T> proxyType;
 
     /**
-     * @param proxy
-     * @param proxyType
+     * Instantiates a new proxy.
+     *
+     * @param proxy     the proxy
+     * @param proxyType the proxy type
      */
     public Proxy(BeanProperty<?> proxy, Class<T> proxyType) {
         super();
@@ -36,7 +37,7 @@ public class Proxy<T> implements Type<T> {
     }
 
     /**
-     * 返回beanProperty
+     * 返回beanProperty.
      *
      * @return beanProperty
      */

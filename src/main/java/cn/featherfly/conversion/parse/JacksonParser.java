@@ -7,21 +7,20 @@ import java.lang.reflect.Type;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * <p>
- * 使用jackson解析协议的解析器抽象类
- * </p>
+ * 使用jackson解析协议的解析器抽象类.
  *
- * @param <G> 解析的目标类型描述
  * @author 钟冀
+ * @param <G> 解析的目标类型描述
  */
 public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.Type<?>> extends AbstractParser<G> {
 
-    /**
-     * objectMapper
-     */
+    /** objectMapper. */
     protected ObjectMapper objectMapper;
 
     /**
+     * Instantiates a new jackson parser.
+     *
+     * @param objectMapper the object mapper
      */
     public JacksonParser(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -31,6 +30,7 @@ public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.
      * <p>
      * 创建ParameterizedType
      * </p>
+     * .
      *
      * @param rawType            rawType
      * @param ownerType          ownerType
@@ -61,6 +61,7 @@ public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.
      * <p>
      * 返回正文对象
      * </p>
+     * .
      *
      * @param content 正文
      * @return Content对象
@@ -71,25 +72,25 @@ public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.
      * <p>
      * 内部解析使用对象Content
      * </p>
+     * .
      *
      * @author 钟冀
      */
     protected static final class Content {
-        /***/
+
+        /**
+         * Instantiates a new content.
+         */
         protected Content() {
         }
 
-        /**
-         * className
-         */
+        /** className. */
         protected String className;
-        /**
-         * jsonContent
-         */
+
+        /** jsonContent. */
         protected String content;
-        /**
-         * isMulty
-         */
+
+        /** isMulty. */
         protected boolean isMulty;
     }
 }

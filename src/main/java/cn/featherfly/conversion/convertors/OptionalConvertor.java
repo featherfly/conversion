@@ -18,8 +18,10 @@ import cn.featherfly.conversion.TypePolicys;
  * <p>
  * OptionalToStringConvertor
  * </p>
+ * .
  *
  * @author zhongj
+ * @param <T> the generic type
  */
 @SuppressWarnings("rawtypes")
 public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T, Type<Optional>> {
@@ -27,12 +29,16 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     private Map<Class<?>, Convertor<?, T>> convertors = new HashMap<>();
 
     /**
+     * Instantiates a new optional convertor.
      */
     public OptionalConvertor() {
         this(null);
     }
 
     /**
+     * Instantiates a new optional convertor.
+     *
+     * @param convertors the convertors
      */
     public OptionalConvertor(Collection<Convertor<?, T>> convertors) {
         setPolicy(TypePolicys.INSTANCE);
@@ -42,7 +48,7 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     }
 
     /**
-     * 设置convertors
+     * 设置convertors.
      *
      * @param convertors convertors
      */
@@ -52,7 +58,7 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     }
 
     /**
-     * 设置convertors
+     * 设置convertors.
      *
      * @param convertors convertors
      */
@@ -64,7 +70,7 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     }
 
     /**
-     * 设置convertors
+     * 设置convertors.
      *
      * @param convertors convertors
      */
@@ -113,6 +119,12 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
         return null;
     }
 
+    /**
+     * Gets the convertor.
+     *
+     * @param type the type
+     * @return the convertor
+     */
     protected Convertor getConvertor(Class<?> type) {
         Convertor convertor = convertors.get(type);
         if (convertor == null) {

@@ -13,9 +13,7 @@ import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.TypePolicys;
 
 /**
- * <p>
- * 转换策略
- * </p>
+ * 转换策略.
  *
  * @author 钟冀
  */
@@ -25,11 +23,14 @@ public class ToStringConversionPolicy implements Cloneable {
     private Map<Class<?>, ToStringConvertor<?>> conversions2 = new HashMap<>();
 
     /**
+     * Instantiates a new to string conversion policy.
      */
     public ToStringConversionPolicy() {
     }
 
     /**
+     * Instantiates a new to string conversion policy.
+     *
      * @param convertor conversions
      */
     public ToStringConversionPolicy(ToStringConvertor<?>... convertor) {
@@ -40,7 +41,9 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 添加转换器,如果出现重复绑定相当类型的转换器择抛出异常
      * </p>
+     * .
      *
+     * @param <E>       the element type
      * @param convertor 转换器
      */
     public <E> void add(ToStringConvertor<E> convertor) {
@@ -63,6 +66,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 放入转换器，如果传入参数的绑定类型已经有转换器绑定，则替换已绑定的转换器
      * </p>
+     * .
      *
      * @param convertor 转换器
      */
@@ -77,6 +81,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 添加转换策略,如果新添加的转换策略中出现重复绑定相当类型的转换器择抛出异常
      * </p>
+     * .
      *
      * @param conversionPolicy 转换策略
      */
@@ -92,6 +97,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 放入转换策略，如果传入参数的转换策略中的转换器绑定类型已经有转换器绑定，则替换已绑定的转换器
      * </p>
+     * .
      *
      * @param conversionPolicy 转换策略
      */
@@ -107,6 +113,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 放入转换器，如果传入参数的绑定类型已经有转换器绑定，则替换已绑定的转换器
      * </p>
+     * .
      *
      * @param convertors 转换器
      */
@@ -122,6 +129,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 添加转换器
      * </p>
+     * .
      *
      * @param convertors 转换器
      */
@@ -137,6 +145,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 添加转换器（复数）
      * </p>
+     * .
      *
      * @param convertors 转换器集合
      */
@@ -163,6 +172,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 判断是否拥有指定类型的转换器
      * </p>
+     * .
      *
      * @param type 转换器指定的转换类型
      * @return 是否拥有指定类型的转换器
@@ -175,7 +185,9 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 返回指定类型的转换器
      * </p>
+     * .
      *
+     * @param <E>  the element type
      * @param type 转换器指定的转换类型
      * @return 指定类型的转换器
      */
@@ -212,6 +224,7 @@ public class ToStringConversionPolicy implements Cloneable {
      * <p>
      * 返回全部转换器
      * </p>
+     * .
      *
      * @return 全部转换器
      */
