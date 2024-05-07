@@ -20,7 +20,7 @@ import cn.featherfly.common.lang.reflect.Type;
  *
  * @author 钟冀
  */
-public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
+public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?, ?>> {
 
     /**
      */
@@ -43,7 +43,7 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?>> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected <T> T doParse(String content, BeanProperty<?> toBeanProperty) {
+    protected <T> T doParse(String content, BeanProperty<?, ?> toBeanProperty) {
         if (Lang.isEmpty(content)) {
             return null;
         }

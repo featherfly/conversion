@@ -1,7 +1,6 @@
 
 package cn.featherfly.conversion.string;
 
-import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
@@ -14,14 +13,14 @@ import cn.featherfly.common.lang.reflect.Type;
 public class ToStringTypeConversion extends AbstractToStringConversion {
 
     /**
-     * 使用BASIC_CONVERSION_POLICY
+     * 使用BASIC_CONVERSION_POLICY.
      */
     public ToStringTypeConversion() {
         super();
     }
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param conversionPolicy conversionPolicy
      */
@@ -30,61 +29,30 @@ public class ToStringTypeConversion extends AbstractToStringConversion {
     }
 
     /**
-     * <p>
-     * 对象转换为字符串
-     * </p>
-     *
-     * @param value     对象
-     * @param ClassType 对象类型
-     * @return 字符串
+     * {@inheritDoc}
      */
     @Override
-    public <S, G extends Type<S>> String sourceToTarget(S value, G ClassType) {
+    public <S, G extends Type<S>, G2 extends Type<String>> String sourceToTarget(S source, G sourceType, G2 tagetType) {
         check();
-        return getConvertor(ClassType).sourceToTarget(value, ClassType);
+        return getConvertor(sourceType).sourceToTarget(source, sourceType);
     }
 
     /**
-     * <p>
-     * 对象转换为字符串
-     * </p>
-     *
-     * @param <E>   泛型
-     * @param value 对象
-     * @param type  对象类型
-     * @return 字符串
-     */
-    public <E> String sourceToTarget(E value, Class<E> type) {
-        return sourceToTarget(value, new ClassType<>(type));
-    }
-
-    /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
-     *
-     * @param <S>       泛型
-     * @param value     字符串
-     * @param ClassType 对象类型
-     * @return 对象
+     * {@inheritDoc}
      */
     @Override
-    public <S, G extends Type<S>> S targetToSource(String value, G ClassType) {
+    public <S, G extends Type<S>> S targetToSource(String value, G genericType) {
         check();
-        return getConvertor(ClassType).targetToSource(value, ClassType);
+        return getConvertor(genericType).targetToSource(value, genericType);
     }
 
     /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
-     *
-     * @param <E>   泛型
-     * @param value 字符串
-     * @param type  对象类型
-     * @return 对象
+     * {@inheritDoc}
      */
-    public <E> E targetToSource(String value, Class<E> type) {
-        return targetToSource(value, new ClassType<>(type));
+    @Override
+    public <S, G extends Type<String>, G2 extends Type<S>> S targetToSource(String value, G valueType, G2 sourceType) {
+        check();
+        return getConvertor(sourceType).targetToSource(value, sourceType);
     }
+
 }

@@ -20,8 +20,8 @@ import cn.featherfly.conversion.TypePolicys;
  * </p>
  * .
  *
- * @author zhongj
- * @param <T> the generic type
+ * @author     zhongj
+ * @param  <T> the generic type
  */
 @SuppressWarnings("rawtypes")
 public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T, Type<Optional>> {
@@ -111,8 +111,8 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     @Override
     protected Optional doTargetToSource(T target, Type<Optional> genericType) {
         if (genericType instanceof BeanProperty) {
-            BeanProperty<Optional> bp = (BeanProperty<Optional>) genericType;
-            Class<?> type = bp.getType();
+            BeanProperty<?, Optional> bp = (BeanProperty<?, Optional>) genericType;
+            Class<Optional> type = bp.getType();
             Convertor c = getConvertor(type);
             return Optional.of(c.targetToSource(target, new Proxy<>(bp, type)));
         }
@@ -122,8 +122,8 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     /**
      * Gets the convertor.
      *
-     * @param type the type
-     * @return the convertor
+     * @param  type the type
+     * @return      the convertor
      */
     protected Convertor getConvertor(Class<?> type) {
         Convertor convertor = convertors.get(type);

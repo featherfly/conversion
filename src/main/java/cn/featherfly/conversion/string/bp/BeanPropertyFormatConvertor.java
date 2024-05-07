@@ -11,9 +11,9 @@ import cn.featherfly.conversion.string.format.FormatType;
  * <p>
  * 格式化转换器
  * </p>
- * 
- * @param <T> 转换对象类型
- * @author 钟冀
+ *
+ * @param  <T> 转换对象类型
+ * @author     钟冀
  */
 public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
 
@@ -30,7 +30,7 @@ public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
      * {@inheritDoc}
      */
     @Override
-    protected String doToString(T value, BeanProperty<T> beanProperty) {
+    protected String doToString(T value, BeanProperty<?, T> beanProperty) {
         FormatType<T> formatType = new FormatType<>(getSourceType());
         Format format = beanProperty.getAnnotation(Format.class);
         if (beanProperty != null && format != null) {
@@ -44,7 +44,7 @@ public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
      * {@inheritDoc}
      */
     @Override
-    protected T doToObject(String value, BeanProperty<T> beanProperty) {
+    protected T doToObject(String value, BeanProperty<?, T> beanProperty) {
         FormatType<T> formatType = new FormatType<>(getSourceType());
         Format format = beanProperty.getAnnotation(Format.class);
         if (beanProperty != null && format != null) {
@@ -56,7 +56,7 @@ public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
 
     /**
      * 返回convertor
-     * 
+     *
      * @return convertor
      */
     public FormatConvertor<T> getConvertor() {

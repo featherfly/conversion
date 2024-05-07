@@ -90,7 +90,7 @@ public class ParserTest2 {
         String content = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
         BeanDescriptor<Role> bd = BeanDescriptor.getBeanDescriptor(Role.class);
-        BeanProperty<Actor[]> bp = bd.getBeanProperty("actors");
+        BeanProperty<Role, Actor[]> bp = bd.getBeanProperty("actors");
         Actor[] actors = parse.parse(content, bp);
 
         System.out.println(ArrayUtils.toString(actors));
@@ -115,7 +115,7 @@ public class ParserTest2 {
         System.out.println(ArrayUtils.toString(persons));
 
         BeanDescriptor<Role> bd = BeanDescriptor.getBeanDescriptor(Role.class);
-        BeanProperty<Actor[]> toBeanProperty = bd.getBeanProperty("actors");
+        BeanProperty<Role, Actor[]> toBeanProperty = bd.getBeanProperty("actors");
 
         Type toType = null;
 
@@ -172,7 +172,7 @@ public class ParserTest2 {
     }
 
     protected static ParameterizedType createParameterizedType(final Type rawType, final Type ownerType,
-            final Type... ctualTypeArguments) {
+        final Type... ctualTypeArguments) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {

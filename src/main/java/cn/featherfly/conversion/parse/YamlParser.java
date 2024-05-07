@@ -7,16 +7,16 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
  * json协议解析器抽象类
  * </p>
  *
- * @param <G> 解析的目标类型描述
- * @author 钟冀
+ * @param  <G> 解析的目标类型描述
+ * @author     钟冀
  */
 public abstract class YamlParser<G extends Type<?>> extends JacksonParser<G> {
 
@@ -67,7 +67,7 @@ public abstract class YamlParser<G extends Type<?>> extends JacksonParser<G> {
             }
         }
         String firstLine = newLines.get(0);
-        int first = firstLine.length() - Strings.trimStart(firstLine).length();
+        int first = firstLine.length() - Strings.trimBegin(firstLine).length();
         for (String line : newLines) {
             result += line.substring(first) + "\n";
         }

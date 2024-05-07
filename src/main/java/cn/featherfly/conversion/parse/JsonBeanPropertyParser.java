@@ -20,7 +20,7 @@ import cn.featherfly.common.lang.Lang;
  *
  * @author 钟冀
  */
-public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>> {
+public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?, ?>> {
 
     /**
      */
@@ -43,7 +43,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected <T> T doParse(String content, BeanProperty<?> toBeanProperty) {
+    protected <T> T doParse(String content, BeanProperty<?, ?> toBeanProperty) {
         if (Lang.isEmpty(content)) {
             return null;
         }
@@ -75,7 +75,7 @@ public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?>> {
                         toType = Array.newInstance(Class.forName(objContent.className), 0).getClass();
                     } else {
                         toType = createParameterizedType(toBeanProperty.getField().getType(), null,
-                                Class.forName(objContent.className));
+                            Class.forName(objContent.className));
                     }
                 } else {
                     toType = Class.forName(className);

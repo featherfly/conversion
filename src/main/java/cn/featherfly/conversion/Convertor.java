@@ -4,9 +4,7 @@ package cn.featherfly.conversion;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * 转换器
- * </p>
+ * 转换器.
  *
  * @param <T> 类型
  * @author 钟冀

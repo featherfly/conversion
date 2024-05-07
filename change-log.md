@@ -1,6 +1,10 @@
 下一步实现	
 	1.实现原子类型(线程池包中Atomic开头的类）
 
+# 1.5.0 2024-05-05
+1. ToStringConversion加入String sourceToString(S)|String sourceToString(S,G)
+2. common-core:1.12.0不兼容升级
+
 # 1.4.3 2022-12-09
 1. common-core不兼容升级
 

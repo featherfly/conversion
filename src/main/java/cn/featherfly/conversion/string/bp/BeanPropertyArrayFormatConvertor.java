@@ -11,21 +11,21 @@ import cn.featherfly.conversion.string.format.FormatType;
  * <p>
  * 数组转换器
  * </p>
- * 
- * @param <A>
- *            数组自身类型
- * @param <E>
- *            数组项类型
- * @author 钟冀
+ *
+ * @param  <A>
+ *                 数组自身类型
+ * @param  <E>
+ *                 数组项类型
+ * @author     钟冀
  */
-public abstract class BeanPropertyArrayFormatConvertor<A, E> extends
-        ArrayConvertor<A, BeanProperty<A>, E, FormatType<E>> {
+public abstract class BeanPropertyArrayFormatConvertor<A, E>
+    extends ArrayConvertor<A, BeanProperty<?, A>, E, FormatType<E>> {
 
     /**
      * @param convertor
-     *            conversion
+     *                      conversion
      */
-    public BeanPropertyArrayFormatConvertor(FormatConvertor<E> convertor) {
+    protected BeanPropertyArrayFormatConvertor(FormatConvertor<E> convertor) {
         super(convertor);
     }
 
@@ -33,7 +33,7 @@ public abstract class BeanPropertyArrayFormatConvertor<A, E> extends
      * {@inheritDoc}
      */
     @Override
-    protected FormatType<E> getArrayItemType(BeanProperty<A> beanProperty) {
+    protected FormatType<E> getArrayItemType(BeanProperty<?, A> beanProperty) {
         Format format = beanProperty.getAnnotation(Format.class);
         FormatType<E> ft = new FormatType<>(getConvertor().getSourceType());
         ft.setFormat(format.format());

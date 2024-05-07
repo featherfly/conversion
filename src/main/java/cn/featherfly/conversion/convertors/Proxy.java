@@ -7,12 +7,12 @@ import cn.featherfly.common.lang.reflect.Type;
 /**
  * Proxy.
  *
- * @author zhongj
- * @param <T> the generic type
+ * @author     zhongj
+ * @param  <T> the generic type
  */
 public class Proxy<T> implements Type<T> {
 
-    private BeanProperty<?> proxy;
+    private BeanProperty<?, T> proxy;
 
     private Class<T> proxyType;
 
@@ -22,7 +22,7 @@ public class Proxy<T> implements Type<T> {
      * @param proxy     the proxy
      * @param proxyType the proxy type
      */
-    public Proxy(BeanProperty<?> proxy, Class<T> proxyType) {
+    public Proxy(BeanProperty<?, T> proxy, Class<T> proxyType) {
         super();
         this.proxy = proxy;
         this.proxyType = proxyType;
@@ -41,7 +41,7 @@ public class Proxy<T> implements Type<T> {
      *
      * @return beanProperty
      */
-    public BeanProperty<?> getProxy() {
+    public BeanProperty<?, T> getProxy() {
         return proxy;
     }
 }
