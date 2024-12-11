@@ -7,7 +7,7 @@ import java.time.temporal.Temporal;
 import java.util.List;
 
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
@@ -34,7 +34,7 @@ public abstract class AbstractLocalDateTimeFormatConvertor<T extends Temporal> e
      */
     @Override
     protected String formatToString(T value, FormatType<T> genericType) {
-        if (genericType != null && Strings.isNotBlank(genericType.getFormat())) {
+        if (genericType != null && Str.isNotBlank(genericType.getFormat())) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(genericType.getFormat());
             logger.debug("format {} to string with {}", getSourceType().getName(), genericType.getFormat());
             return dateTimeFormatter.format(value);

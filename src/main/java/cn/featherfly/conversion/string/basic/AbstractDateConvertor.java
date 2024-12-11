@@ -9,7 +9,7 @@ import java.util.Date;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.ConversionException;
 
 /**
@@ -60,7 +60,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
     @Override
     protected String doToString(T value, Type<T> genericType) {
         if (value != null) {
-            if (Strings.isNotBlank(getFormat())) {
+            if (Str.isNotBlank(getFormat())) {
                 logger.debug("format {} to string with {}", getSourceType().getName(), getFormat());
                 DateFormat df = new SimpleDateFormat(getFormat());
                 return df.format(value);
@@ -80,7 +80,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
         String[] formats = getFormats();
         if (Lang.isEmpty(formats)) {
             logger.warn("there is no formats, can not parse {} to {}", value, getSourceType().getName());
-        } else if (Strings.isNotBlank(value)) {
+        } else if (Str.isNotBlank(value)) {
             for (String format : formats) {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);
                 try {
