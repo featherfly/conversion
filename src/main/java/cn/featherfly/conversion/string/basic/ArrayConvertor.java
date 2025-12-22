@@ -8,7 +8,7 @@ import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.reflect.Type;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
 /**
@@ -64,8 +64,8 @@ public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>
     @Override
     public A doToObject(String value, G genericType) {
         Class<A> type = getSourceType();
-        if (Strings.isNotBlank(value) && type != null) {
-            String[] values = Strings.split(value, Chars.COMMA);
+        if (Str.isNotBlank(value) && type != null) {
+            String[] values = Str.split(value, Chars.COMMA);
             List<String> valueList = Arrays.asList(values);
             Iterator<String> it = valueList.iterator();
             while (it.hasNext()) {

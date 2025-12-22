@@ -1,9 +1,9 @@
 
 package cn.featherfly.conversion.parse;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
  * <p>
@@ -34,7 +34,7 @@ public class ClassParser<G extends Type<?>> extends AbstractIterableParser<G> {
             return null;
         }
         try {
-            return (T) Class.forName(Strings.trim(content)).newInstance();
+            return (T) Class.forName(Str.trim(content)).newInstance();
         } catch (Exception e) {
             throw new ParseException(e);
         }

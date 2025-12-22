@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import cn.featherfly.common.lang.reflect.Type;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.ConversionException;
 
 /**
@@ -42,7 +42,7 @@ public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime
      */
     @Override
     protected LocalDateTime doToObject(String value, Type<LocalDateTime> genericType) {
-        if (Strings.isNotBlank(value)) {
+        if (Str.isNotBlank(value)) {
             value = value.trim();
             try {
                 return LocalDateTime.parse(value, DATE_TIME_PATTERN);

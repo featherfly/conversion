@@ -8,7 +8,7 @@ import java.util.Map;
 
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 
 /**
  * <p>
@@ -117,7 +117,7 @@ public class ParsePolity {
                 //                    StringUtils.format("协议[#1]已经被[#2]注册"
                 //                        , parser.getProtocol()
                 //                        , getParser(parser.getProtocol()).getClass().getName()));
-                throw new ParseException(Strings.format("协议[{0}]已经被[{1}]注册", parser.getProtocol(),
+                throw new ParseException(Str.format("协议[{0}]已经被[{1}]注册", parser.getProtocol(),
                         getParser(parser.getProtocol()).getClass().getName()));
             }
             parsers.put(parser.getProtocol(), parser);

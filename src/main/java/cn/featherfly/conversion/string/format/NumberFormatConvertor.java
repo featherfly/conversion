@@ -7,8 +7,8 @@ import java.util.List;
 
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.LogUtils;
-import cn.featherfly.common.lang.NumberUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Num;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.basic.NumberConvertor;
 
@@ -34,7 +34,7 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T> 
      */
     @Override
     protected String formatToString(T value, FormatType<T> genericType) {
-        if (genericType != null && value != null && Strings.isNotBlank(genericType.getFormat())) {
+        if (genericType != null && value != null && Str.isNotBlank(genericType.getFormat())) {
             DecimalFormat df = new DecimalFormat(genericType.getFormat());
             return df.format(value);
         }
@@ -51,7 +51,7 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T> 
             for (String format : formats) {
                 DecimalFormat df = new DecimalFormat(format);
                 try {
-                    return NumberUtils.value(df.parse(value), getSourceType());
+                    return Num.value(df.parse(value), getSourceType());
                 } catch (ParseException e) {
                     LogUtils.debug(e, logger);
                 }

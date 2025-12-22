@@ -3,7 +3,7 @@ package cn.featherfly.conversion.string.basic;
 
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.LogUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.ConversionException;
 
 /**
@@ -45,7 +45,7 @@ public class ClassConvertor extends AbstractBasicConvertor<Class, Type<Class>> {
      */
     @Override
     protected Class doToObject(String value, Type<Class> genericType) {
-        if (Strings.isNotBlank(value)) {
+        if (Str.isNotBlank(value)) {
             try {
                 return Class.forName(value);
             } catch (ClassNotFoundException e) {

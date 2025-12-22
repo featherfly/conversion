@@ -2,8 +2,8 @@
 package cn.featherfly.conversion.string.basic;
 
 import cn.featherfly.common.lang.reflect.Type;
-import cn.featherfly.common.lang.NumberUtils;
-import cn.featherfly.common.lang.Strings;
+import cn.featherfly.common.lang.Num;
+import cn.featherfly.common.lang.Str;
 
 /**
  * <p>
@@ -36,8 +36,8 @@ public abstract class NumberConvertor<T extends Number> extends AbstractBasicCon
      */
     @Override
     protected T doToObject(String value, Type<T> genericType) {
-        if (Strings.isNotBlank(value)) {
-            return NumberUtils.parse(value, getSourceType());
+        if (Str.isNotBlank(value)) {
+            return Num.parse(value, getSourceType());
         }
         return null;
     }
