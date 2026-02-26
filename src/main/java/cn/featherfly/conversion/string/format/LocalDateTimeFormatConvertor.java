@@ -7,25 +7,24 @@ import java.time.format.DateTimeFormatter;
 import cn.featherfly.conversion.string.basic.LocalDateTimeConvertor;
 
 /**
- * <p>
  * LocalDate类转换器
- * </p>
  *
  * @author 钟冀
  */
 public class LocalDateTimeFormatConvertor extends AbstractLocalDateTimeFormatConvertor<LocalDateTime> {
 
-	/**
-	 */
-	public LocalDateTimeFormatConvertor() {
-		super(new LocalDateTimeConvertor());
-	}
+    /**
+     * Instantiates a new local date time format convertor.
+     */
+    public LocalDateTimeFormatConvertor() {
+        super(new LocalDateTimeConvertor());
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected LocalDateTime convert(String value, DateTimeFormatter formatter) {		
-		return LocalDateTime.parse(value, formatter);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected LocalDateTime convert(String value, DateTimeFormatter formatter) {
+        return LocalDateTime.parse(value, formatter);
+    }
 }

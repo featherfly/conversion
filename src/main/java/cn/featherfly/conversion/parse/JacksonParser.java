@@ -22,23 +22,20 @@ public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.
      *
      * @param objectMapper the object mapper
      */
-    public JacksonParser(ObjectMapper objectMapper) {
+    protected JacksonParser(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
     /**
-     * <p>
-     * 创建ParameterizedType
-     * </p>
-     * .
+     * 创建ParameterizedType.
      *
-     * @param rawType            rawType
-     * @param ownerType          ownerType
+     * @param rawType rawType
+     * @param ownerType ownerType
      * @param ctualTypeArguments ctualTypeArguments
      * @return ParameterizedType
      */
     protected ParameterizedType createParameterizedType(final Type rawType, final Type ownerType,
-            final Type... ctualTypeArguments) {
+        final Type... ctualTypeArguments) {
         return new ParameterizedType() {
             @Override
             public Type[] getActualTypeArguments() {
@@ -58,10 +55,7 @@ public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.
     }
 
     /**
-     * <p>
-     * 返回正文对象
-     * </p>
-     * .
+     * 返回正文对象.
      *
      * @param content 正文
      * @return Content对象
@@ -69,10 +63,7 @@ public abstract class JacksonParser<G extends cn.featherfly.common.lang.reflect.
     protected abstract Content getContent(String content);
 
     /**
-     * <p>
-     * 内部解析使用对象Content
-     * </p>
-     * .
+     * 内部解析使用对象Content.
      *
      * @author 钟冀
      */

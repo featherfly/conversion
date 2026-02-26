@@ -5,16 +5,17 @@ import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * json class类协议解析器
- * </p>
+ * json class类协议解析器.
  *
  * @author 钟冀
  */
 public class JsonClassParser extends JsonParser<ClassType<Class<?>>> {
+
     /**
+     * Instantiates a new json class parser.
      */
     public JsonClassParser() {
+        super();
     }
 
     /**

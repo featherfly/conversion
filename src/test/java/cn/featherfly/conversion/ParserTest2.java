@@ -36,9 +36,7 @@ import cn.featherfly.conversion.parse.YamlBeanPropertyParser;
 import cn.featherfly.conversion.parse.YamlClassParser;
 
 /**
- * <p>
- * ParserTest
- * </p>
+ * ParserTest.
  *
  * @author zhongj
  */

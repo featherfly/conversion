@@ -1,11 +1,8 @@
 
 package cn.featherfly.conversion.string.basic;
 
-
 /**
- * <p>
- * Class[]转换器
- * </p>
+ * Class[]转换器.
  *
  * @author 钟冀
  */
@@ -13,6 +10,7 @@ package cn.featherfly.conversion.string.basic;
 public class ClassArrayConvertor extends GenericTypeArrayConvertor<Class[], Class> {
 
     /**
+     * Instantiates a new class array convertor.
      */
     public ClassArrayConvertor() {
         super(new ClassConvertor());

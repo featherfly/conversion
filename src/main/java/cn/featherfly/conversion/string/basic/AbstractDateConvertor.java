@@ -7,47 +7,41 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cn.featherfly.common.lang.ArrayUtils;
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 
 /**
- * <p>
- * Date类转换器
- * </p>
+ * Date类转换器.
  *
  * @author 钟冀
+ * @param <T> the generic type
  */
 public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasicConvertor<T, Type<T>> {
 
     /**
+     * Instantiates a new abstract date convertor.
      */
-    public AbstractDateConvertor() {
+    protected AbstractDateConvertor() {
     }
 
     /**
-     * <p>
-     * 返回转换日期到字符串的格式
-     * </p>
+     * 返回转换日期到字符串的格式.
      *
      * @return 转换日期到字符串的格式
      */
     protected abstract String getFormat();
 
     /**
-     * <p>
-     * 返回转换字符串到日期格式支持的格式
-     * </p>
+     * 返回转换字符串到日期格式支持的格式.
      *
      * @return 转换字符串到日期格式支持的格式
      */
     protected abstract String[] getFormats();
 
     /**
-     * <p>
-     * 转换传入类型为目标类型
-     * </p>
+     * 转换传入类型为目标类型.
      *
      * @param date date
      * @return 转换目标类型
@@ -92,7 +86,7 @@ public abstract class AbstractDateConvertor<T extends Date> extends AbstractBasi
                 }
             }
             throw new ConversionException("#convert_failed_with_type",
-                    new Object[] { value, ArrayUtils.toString(formats), getSourceType().getName() });
+                new Object[] { value, ArrayUtils.toString(formats), getSourceType().getName() });
         }
         return null;
     }

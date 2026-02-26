@@ -8,12 +8,10 @@ import cn.featherfly.conversion.string.format.FormatConvertor;
 import cn.featherfly.conversion.string.format.FormatType;
 
 /**
- * <p>
  * 格式化转换器
- * </p>
  *
- * @param  <T> 转换对象类型
- * @author     钟冀
+ * @param <T> 转换对象类型
+ * @author 钟冀
  */
 public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
 
@@ -31,13 +29,8 @@ public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
      */
     @Override
     protected String doToString(T value, BeanProperty<?, T> beanProperty) {
-        FormatType<T> formatType = new FormatType<>(getSourceType());
-        Format format = beanProperty.getAnnotation(Format.class);
-        if (beanProperty != null && format != null) {
-            formatType.setFormat(format.format());
-            formatType.setFormats(ArrayUtils.toList(format.formats()));
-        }
-        return convertor.sourceToTarget(value, formatType);
+        return convertor.sourceToTarget(value,
+            initFormatType(beanProperty));
     }
 
     /**
@@ -45,13 +38,20 @@ public class BeanPropertyFormatConvertor<T> extends BeanPropertyConvertor<T> {
      */
     @Override
     protected T doToObject(String value, BeanProperty<?, T> beanProperty) {
+        return convertor.targetToSource(value,
+            initFormatType(beanProperty));
+    }
+
+    private FormatType<T> initFormatType(BeanProperty<?, T> beanProperty) {
         FormatType<T> formatType = new FormatType<>(getSourceType());
-        Format format = beanProperty.getAnnotation(Format.class);
-        if (beanProperty != null && format != null) {
-            formatType.setFormat(format.format());
-            formatType.setFormats(ArrayUtils.toList(format.formats()));
+        if (beanProperty != null) {
+            Format format = beanProperty.getAnnotation(Format.class);
+            if (format != null) {
+                formatType.setFormat(format.format());
+                formatType.setFormats(ArrayUtils.toList(format.formats()));
+            }
         }
-        return convertor.targetToSource(value, formatType);
+        return formatType;
     }
 
     /**

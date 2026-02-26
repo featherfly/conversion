@@ -3,20 +3,21 @@ package cn.featherfly.conversion.vo;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
 
 import cn.featherfly.conversion.annotation.Assign;
 import cn.featherfly.conversion.annotation.Format;
 import cn.featherfly.conversion.string.basic.DateConvertor;
 
 /**
- * <p>
- * 类的说明放这里
- * </p>
- * <p>
- * copyright featherfly 2010-2020, all rights reserved.
- * </p>
+ * The Class User.
  *
  * @author 钟冀
  */
@@ -59,8 +60,14 @@ public class User {
     @SuppressWarnings("rawtypes")
     private Optional obj2;
 
+    private Set<String> nameSet = new HashSet<>();
+
+    private List<String> addressList = new ArrayList<>();
+
+    private Queue<String> queue = new ArrayDeque<>();
+
     /**
-     * 返回sex
+     * 返回sex.
      *
      * @return sex
      */
@@ -69,7 +76,7 @@ public class User {
     }
 
     /**
-     * 设置sex
+     * 设置sex.
      *
      * @param sex sex
      */
@@ -81,7 +88,7 @@ public class User {
     private Date date;
 
     /**
-     * 返回date
+     * 返回date.
      *
      * @return date
      */
@@ -90,7 +97,7 @@ public class User {
     }
 
     /**
-     * 设置date
+     * 设置date.
      *
      * @param date date
      */
@@ -99,7 +106,7 @@ public class User {
     }
 
     /**
-     * 返回name
+     * 返回name.
      *
      * @return name
      */
@@ -108,7 +115,7 @@ public class User {
     }
 
     /**
-     * 设置name
+     * 设置name.
      *
      * @param name name
      */
@@ -117,7 +124,7 @@ public class User {
     }
 
     /**
-     * 返回age
+     * 返回age.
      *
      * @return age
      */
@@ -126,7 +133,7 @@ public class User {
     }
 
     /**
-     * 设置age
+     * 设置age.
      *
      * @param age age
      */
@@ -135,7 +142,7 @@ public class User {
     }
 
     /**
-     * 返回salary
+     * 返回salary.
      *
      * @return salary
      */
@@ -144,7 +151,7 @@ public class User {
     }
 
     /**
-     * 设置salary
+     * 设置salary.
      *
      * @param salary salary
      */
@@ -153,7 +160,7 @@ public class User {
     }
 
     /**
-     * 返回dates
+     * 返回dates.
      *
      * @return dates
      */
@@ -162,7 +169,7 @@ public class User {
     }
 
     /**
-     * 设置dates
+     * 设置dates.
      *
      * @param dates dates
      */
@@ -171,7 +178,7 @@ public class User {
     }
 
     /**
-     * 返回sqlDate
+     * 返回sqlDate.
      *
      * @return sqlDate
      */
@@ -180,7 +187,7 @@ public class User {
     }
 
     /**
-     * 设置sqlDate
+     * 设置sqlDate.
      *
      * @param sqlDate sqlDate
      */
@@ -189,7 +196,7 @@ public class User {
     }
 
     /**
-     * 返回time
+     * 返回time.
      *
      * @return time
      */
@@ -198,7 +205,7 @@ public class User {
     }
 
     /**
-     * 设置time
+     * 设置time.
      *
      * @param time time
      */
@@ -207,7 +214,7 @@ public class User {
     }
 
     /**
-     * 返回timestamp
+     * 返回timestamp.
      *
      * @return timestamp
      */
@@ -216,7 +223,7 @@ public class User {
     }
 
     /**
-     * 设置timestamp
+     * 设置timestamp.
      *
      * @param timestamp timestamp
      */
@@ -225,7 +232,7 @@ public class User {
     }
 
     /**
-     * 返回sqlDate2
+     * 返回sqlDate2.
      *
      * @return sqlDate2
      */
@@ -234,7 +241,7 @@ public class User {
     }
 
     /**
-     * 设置sqlDate2
+     * 设置sqlDate2.
      *
      * @param sqlDate2 sqlDate2
      */
@@ -243,7 +250,7 @@ public class User {
     }
 
     /**
-     * 返回time2
+     * 返回time2.
      *
      * @return time2
      */
@@ -252,7 +259,7 @@ public class User {
     }
 
     /**
-     * 设置time2
+     * 设置time2.
      *
      * @param time2 time2
      */
@@ -261,7 +268,7 @@ public class User {
     }
 
     /**
-     * 返回timestamp2
+     * 返回timestamp2.
      *
      * @return timestamp2
      */
@@ -270,7 +277,7 @@ public class User {
     }
 
     /**
-     * 设置timestamp2
+     * 设置timestamp2.
      *
      * @param timestamp2 timestamp2
      */
@@ -279,7 +286,7 @@ public class User {
     }
 
     /**
-     * 返回username
+     * 返回username.
      *
      * @return username
      */
@@ -288,7 +295,7 @@ public class User {
     }
 
     /**
-     * 设置username
+     * 设置username.
      *
      * @param username username
      */
@@ -297,7 +304,7 @@ public class User {
     }
 
     /**
-     * 返回obj
+     * 返回obj.
      *
      * @return obj
      */
@@ -306,7 +313,7 @@ public class User {
     }
 
     /**
-     * 设置obj
+     * 设置obj.
      *
      * @param obj obj
      */
@@ -315,7 +322,7 @@ public class User {
     }
 
     /**
-     * 返回obj2
+     * 返回obj2.
      *
      * @return obj2
      */
@@ -325,7 +332,7 @@ public class User {
     }
 
     /**
-     * 设置obj2
+     * 设置obj2.
      *
      * @param obj2 obj2
      */
@@ -334,7 +341,7 @@ public class User {
     }
 
     /**
-     * 返回date1
+     * 返回date1.
      *
      * @return date1
      */
@@ -343,7 +350,7 @@ public class User {
     }
 
     /**
-     * 设置date1
+     * 设置date1.
      *
      * @param date1 date1
      */
@@ -351,4 +358,27 @@ public class User {
         this.date1 = date1;
     }
 
+    public Set<String> getNameSet() {
+        return nameSet;
+    }
+
+    public void setNameSet(Set<String> nameSet) {
+        this.nameSet = nameSet;
+    }
+
+    public List<String> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<String> addressList) {
+        this.addressList = addressList;
+    }
+
+    public Queue<String> getQueue() {
+        return queue;
+    }
+
+    public void setQueue(Queue<String> queue) {
+        this.queue = queue;
+    }
 }

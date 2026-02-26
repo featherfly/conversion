@@ -6,22 +6,21 @@ import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * class类协议解析器
- * </p>
+ * class类协议解析器.
  *
- * @param <G> 解析的目标类型描述
  * @author 钟冀
+ * @param <G> 解析的目标类型描述
  */
 public class ClassParser<G extends Type<?>> extends AbstractIterableParser<G> {
-    /**
-     * 协议字符串常量
-     */
+
+    /** 协议字符串常量. */
     public static final String PROTOCOL = "class";
 
     /**
+     * Instantiates a new class parser.
      */
     public ClassParser() {
+        super();
     }
 
     /**

@@ -7,13 +7,15 @@ import cn.featherfly.conversion.string.ToStringConvertor;
 /**
  * 数组转换器.
  *
+ * @author 钟冀
  * @param <A> 数组自身类型
  * @param <E> 数组项类型
- * @author 钟冀
  */
 public class GenericClassArrayConvertor<A, E> extends ArrayConvertor<A, ClassType<A>, E, ClassType<E>> {
 
     /**
+     * Instantiates a new generic class array convertor.
+     *
      * @param convertor conversion
      */
     public GenericClassArrayConvertor(ToStringConvertor<E> convertor) {

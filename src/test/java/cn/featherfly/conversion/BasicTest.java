@@ -6,7 +6,12 @@ import static org.testng.Assert.assertNull;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayDeque;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -15,8 +20,11 @@ import cn.featherfly.common.bean.BeanDescriptor;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ArrayUtils;
 import cn.featherfly.common.lang.Dates;
+import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.structure.ChainSetImpl;
+import cn.featherfly.conversion.convertors.ContainerType;
 import cn.featherfly.conversion.string.ToStringBeanPropertyConversion;
-import cn.featherfly.conversion.string.ToStringConversionPolicy;
+import cn.featherfly.conversion.string.ToStringConversionPolicyImpl;
 import cn.featherfly.conversion.string.ToStringConversionPolicys;
 import cn.featherfly.conversion.string.ToStringTypeConversion;
 import cn.featherfly.conversion.string.basic.ClassConvertor;
@@ -30,20 +38,18 @@ import cn.featherfly.conversion.vo.Sex;
 import cn.featherfly.conversion.vo.User;
 
 /**
- * <p>
- * BasicTest 类的说明放这里
- * </p>
+ * BasicTest.
  *
  * @author 钟冀
  */
 public class BasicTest {
 
-    ToStringConversionPolicy policy;
+    ToStringConversionPolicyImpl policy;
 
     @BeforeClass
     public void setUp() {
         //        policy = ToStringConversionPolicys.getBasicConversionPolicy();
-        policy = new ToStringConversionPolicy();
+        policy = new ToStringConversionPolicyImpl();
         policy.addConvertors(new IntConvertor(), new IntegerConvertor(), new ClassConvertor(), new StringConvertor(),
             new DateFormatConvertor(), new IntArrayConvertor(), new EnumConvertor<>());
     }
@@ -54,21 +60,41 @@ public class BasicTest {
         //        convertor.setConversionPolicy(policy);
 
         assertEquals(new Integer(12), conversion.targetToSource("12", Integer.class));
-        //        assertEquals("12", convertor.sourceToTarget(12, Integer.class));
         assertEquals("12", conversion.sourceToTarget(12, String.class));
 
-        assertEquals(Sex.male, conversion.targetToSource("male", Sex.class));
-        //        assertEquals("female", convertor.sourceToTarget(Sex.female, Sex.class));
-        assertEquals("female", conversion.sourceToTarget(Sex.female, String.class));
+        assertEquals(Sex.MALE, conversion.targetToSource(Sex.MALE.name(), Sex.class));
+        assertEquals(Sex.FEMALE.name(), conversion.sourceToTarget(Sex.FEMALE, String.class));
 
-        assertEquals(new Integer[] { 1, 2, 3, 4, 5 }, conversion.targetToSource("1,2,3,4,5", Integer[].class));
-        //        assertEquals("5,4,3,2,1", conversion.sourceToTarget(new Integer[] { 5, 4, 3, 2, 1 }, Integer[].class));
-        assertEquals("5,4,3,2,1", conversion.sourceToTarget(new Integer[] { 5, 4, 3, 2, 1 }, String.class));
+        String nums = "1,2,3,4,5";
+        String nums2 = "5,4,3,2,1";
+        assertEquals(new Integer[] { 1, 2, 3, 4, 5 }, conversion.targetToSource(nums, Integer[].class));
+        assertEquals(nums2, conversion.sourceToTarget(new Integer[] { 5, 4, 3, 2, 1 }, String.class));
+
+        assertEquals(Lang.list(1, 2, 3, 4, 5),
+            conversion.targetToSource(nums, new ContainerType<>(List.class, int.class)));
+        assertEquals(nums2, conversion.sourceToTarget(Lang.list(5, 4, 3, 2, 1), String.class));
+
+        assertEquals(Lang.set(1, 2, 3, 4, 5),
+            conversion.targetToSource(nums, new ContainerType<>(Set.class, int.class)));
+        assertEquals(Lang.set(5, 4, 3, 2, 1),
+            conversion.targetToSource(nums, new ContainerType<>(Set.class, int.class)));
+        assertEquals(nums, conversion.sourceToTarget(Lang.set(5, 4, 3, 2, 1), String.class));
+        assertEquals(nums2,
+            conversion.sourceToTarget(new ChainSetImpl<>(new LinkedHashSet<>()).addChain(5, 4, 3, 2, 1), String.class));
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(1);
+        queue.add(2);
+        queue.add(3);
+        queue.add(4);
+        queue.add(5);
+        assertEquals(queue,
+            conversion.targetToSource(nums, new ContainerType<>(Queue.class, int.class)));
+        assertEquals(nums, conversion.sourceToTarget(queue, String.class));
 
         String className = User.class.getName();
         assertEquals(User.class, conversion.targetToSource(className, Class.class));
 
-        //        assertEquals(className, conversion.sourceToTarget(User.class, Class.class));
         assertEquals(className, conversion.sourceToTarget(User.class, String.class));
     }
 
@@ -77,21 +103,24 @@ public class BasicTest {
         ToStringBeanPropertyConversion beanPropertyConversion = new ToStringBeanPropertyConversion();
         beanPropertyConversion.setConversionPolicy(policy);
 
+        final String age = "18";
+
         BeanDescriptor<User> bd = BeanDescriptor.getBeanDescriptor(User.class);
 
         BeanProperty<User, Integer> beanProperty = null;
 
         beanProperty = bd.getBeanProperty("age");
         assertEquals(new Integer(18), beanPropertyConversion.targetToSource("18", beanProperty));
-        assertEquals("18", beanPropertyConversion.sourceToTarget(18, beanProperty, String.class));
-        assertEquals("18", beanPropertyConversion.sourceToString(18, beanProperty));
+        assertEquals(age, beanPropertyConversion.sourceToTarget(18, beanProperty, String.class));
+        assertEquals(age, beanPropertyConversion.sourceToTarget(18, beanProperty));
+        assertEquals(age, beanPropertyConversion.sourceToString(18, beanProperty));
 
         BeanProperty<User, Sex> beanProperty2 = null;
         beanProperty2 = bd.getBeanProperty("sex");
-        assertEquals(Sex.male, beanPropertyConversion.targetToSource("male", beanProperty2));
-        assertEquals(Sex.male, beanPropertyConversion.targetToSource("0", beanProperty2));
-        assertEquals("female", beanPropertyConversion.sourceToTarget(Sex.female, beanProperty2, String.class));
-        assertEquals("female", beanPropertyConversion.sourceToString(Sex.female, beanProperty2));
+        assertEquals(Sex.MALE, beanPropertyConversion.targetToSource("MALE", beanProperty2));
+        assertEquals(Sex.MALE, beanPropertyConversion.targetToSource("0", beanProperty2));
+        assertEquals(Sex.FEMALE.name(), beanPropertyConversion.sourceToTarget(Sex.FEMALE, beanProperty2, String.class));
+        assertEquals(Sex.FEMALE.name(), beanPropertyConversion.sourceToString(Sex.FEMALE, beanProperty2));
     }
 
     @Test

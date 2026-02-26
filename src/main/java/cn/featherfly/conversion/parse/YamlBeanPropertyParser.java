@@ -14,17 +14,17 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * json BeanProperty协议解析器
- * </p>
+ * json BeanProperty协议解析器.
  *
  * @author 钟冀
  */
 public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?, ?>> {
 
     /**
+     * Instantiates a new yaml bean property parser.
      */
     public YamlBeanPropertyParser() {
+        super();
     }
 
     /**
@@ -70,7 +70,6 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?, ?>> {
                 } else {
                     toType = toBeanProperty.getType();
                 }
-                classType = ClassUtils.forName(toType.getTypeName());
             } else {
                 classType = Class.forName(objContent.className);
                 if (objContent.isMulty) {

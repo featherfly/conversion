@@ -8,41 +8,28 @@ import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 
 /**
- * <p>
  * 使用BeanProperty作为参数的转换器.
- * </p>
  *
  * @author 钟冀
  */
-public abstract class AbstractToStringConversion implements ToStringConversion {
+public abstract class AbstractToStringConversion {
 
     private ToStringConversionPolicy conversionPolicy;
 
-    /**
-     * 日志
-     */
+    /** 日志. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * 使用BASIC_CONVERSION_POLICY
-     */
-    public AbstractToStringConversion() {
-        this(ToStringConversionPolicys.getBasicConversionPolicy());
-    }
-
-    /**
-     * 使用传入conversionPolicy
+     * 使用传入conversionPolicy.
      *
      * @param conversionPolicy conversionPolicy
      */
-    public AbstractToStringConversion(ToStringConversionPolicy conversionPolicy) {
+    protected AbstractToStringConversion(ToStringConversionPolicy conversionPolicy) {
         this.conversionPolicy = conversionPolicy;
     }
 
     /**
-     * <p>
-     * 内部状态检查
-     * </p>
+     * 内部状态检查.
      */
     protected void check() {
         if (conversionPolicy == null) {
@@ -51,11 +38,9 @@ public abstract class AbstractToStringConversion implements ToStringConversion {
     }
 
     /**
-     * <p>
-     * 获取指定类型的转换器
-     * </p>
+     * 获取指定类型的转换器.
      *
-     * @param <E>  泛型
+     * @param <E> 泛型
      * @param type 类型
      * @return 转换器
      */
@@ -68,7 +53,7 @@ public abstract class AbstractToStringConversion implements ToStringConversion {
     }
 
     /**
-     * 返回conversionPolicy
+     * 返回conversionPolicy.
      *
      * @return conversionPolicy
      */
@@ -77,7 +62,7 @@ public abstract class AbstractToStringConversion implements ToStringConversion {
     }
 
     /**
-     * 设置conversionPolicy
+     * 设置conversionPolicy.
      *
      * @param conversionPolicy conversionPolicy
      */

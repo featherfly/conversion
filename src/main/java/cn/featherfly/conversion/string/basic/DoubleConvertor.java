@@ -1,18 +1,15 @@
 
 package cn.featherfly.conversion.string.basic;
 
-
-
 /**
- * <p>
- * 双精度浮点数转换器
- * </p>
+ * 双精度浮点数转换器.
  *
  * @author 钟冀
  */
-public class DoubleConvertor extends NumberBasicTypeConvertor<Double>{
+public class DoubleConvertor extends NumberBasicTypeConvertor<Double> {
 
     /**
+     * Instantiates a new double convertor.
      */
     public DoubleConvertor() {
     }
@@ -25,14 +22,14 @@ public class DoubleConvertor extends NumberBasicTypeConvertor<Double>{
         return double.class;
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    protected Double doToObject(String value, Type<Double> genericType) {
-//        if (StringUtils.isNotBlank(value)) {
-//            return Double.parseDouble(value);
-//        }
-//        return -1d;
-//    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected Double doToObject(String value, Type<Double> genericType) {
+    //        if (StringUtils.isNotBlank(value)) {
+    //            return Double.parseDouble(value);
+    //        }
+    //        return -1d;
+    //    }
 }

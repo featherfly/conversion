@@ -13,16 +13,16 @@ import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.basic.NumberConvertor;
 
 /**
- * <p>
- * 数字格式化转换器
- * </p>
+ * 数字格式化转换器.
  *
- * @param <T> 转换对象
  * @author 钟冀
+ * @param <T> 转换对象
  */
 public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T> {
 
     /**
+     * Instantiates a new number format convertor.
+     *
      * @param convertor convertor
      */
     public NumberFormatConvertor(NumberConvertor<T> convertor) {
@@ -57,7 +57,7 @@ public class NumberFormatConvertor<T extends Number> extends FormatConvertor<T> 
                 }
             }
             throw new ConversionException("#convert_failed_with_type",
-                    new Object[] { value, formats, getSourceType().getName() });
+                new Object[] { value, formats, getSourceType().getName() });
 
         }
         return null;

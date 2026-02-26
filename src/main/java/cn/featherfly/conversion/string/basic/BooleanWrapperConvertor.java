@@ -3,17 +3,15 @@ package cn.featherfly.conversion.string.basic;
 
 import cn.featherfly.common.lang.reflect.Type;
 
-
 /**
- * <p>
- * 布尔包装类转换器
- * </p>
+ * 布尔包装类转换器.
  *
  * @author 钟冀
  */
-public class BooleanWrapperConvertor extends AbstractBasicConvertor<Boolean, Type<Boolean>>{
+public class BooleanWrapperConvertor extends AbstractBasicConvertor<Boolean, Type<Boolean>> {
 
     /**
+     * Instantiates a new boolean wrapper convertor.
      */
     public BooleanWrapperConvertor() {
     }

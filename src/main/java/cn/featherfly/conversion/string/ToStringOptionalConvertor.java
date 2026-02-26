@@ -3,12 +3,10 @@ package cn.featherfly.conversion.string;
 import java.util.Optional;
 
 /**
- * <p>
- * 转换器
- * </p>
+ * to string optional convertor.
  *
- * @param <S> 类型
  * @author 钟冀
+ * @param <S> 类型
  */
 public interface ToStringOptionalConvertor<S> extends ToStringConvertor<Optional<S>> {
 

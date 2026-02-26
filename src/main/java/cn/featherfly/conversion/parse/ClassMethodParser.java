@@ -2,13 +2,11 @@
 package cn.featherfly.conversion.parse;
 
 import cn.featherfly.common.lang.ClassUtils;
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * class类协议解析器
- * </p>
+ * class类协议解析器.
  *
  * @param <G> 解析的目标类型描述
  * @author 钟冀
@@ -20,8 +18,10 @@ public class ClassMethodParser<G extends Type<?>> extends AbstractIterableParser
     public static final String PROTOCOL = "method";
 
     /**
+     * Instantiates a new class method parser.
      */
     public ClassMethodParser() {
+        super();
     }
 
     /**

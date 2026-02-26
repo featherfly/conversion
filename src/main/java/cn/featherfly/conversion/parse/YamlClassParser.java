@@ -5,16 +5,17 @@ import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * json class类协议解析器
- * </p>
+ * json class类协议解析器.
  *
  * @author 钟冀
  */
 public class YamlClassParser extends YamlParser<ClassType<Class<?>>> {
+
     /**
+     * Instantiates a new yaml class parser.
      */
     public YamlClassParser() {
+        super();
     }
 
     /**

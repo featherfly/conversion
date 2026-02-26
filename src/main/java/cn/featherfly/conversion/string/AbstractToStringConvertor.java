@@ -9,13 +9,11 @@ import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.TypePolicys;
 
 /**
- * <p>
- * 抽象转换器
- * </p>
+ * 抽象转换器.
  *
+ * @author 钟冀
  * @param <S> 转换对象
  * @param <G> Type
- * @author 钟冀
  */
 public abstract class AbstractToStringConvertor<S, G extends Type<S>> implements ToStringConvertor<S> {
 
@@ -24,20 +22,17 @@ public abstract class AbstractToStringConvertor<S, G extends Type<S>> implements
     private TypePolicys policy = TypePolicys.CLASS;
 
     /**
+     * Instantiates a new abstract to string convertor.
      */
-    public AbstractToStringConvertor() {
+    protected AbstractToStringConvertor() {
         type = ClassUtils.getSuperClassGenericType(this.getClass());
     }
 
-    /**
-     * 日志
-     */
+    /** 日志. */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * <p>
-     * 是否提供对传入类型的支持
-     * </p>
+     * 是否提供对传入类型的支持.
      *
      * @param generecType generecType
      * @return 是否支持
@@ -45,22 +40,18 @@ public abstract class AbstractToStringConvertor<S, G extends Type<S>> implements
     protected abstract boolean supportFor(Type<S> generecType);
 
     /**
-     * <p>
-     * 对象转换为字符串
-     * </p>
+     * 对象转换为字符串.
      *
-     * @param value       对象
+     * @param value 对象
      * @param genericType 指定对象的上下文属性
      * @return 字符串
      */
     protected abstract String doToString(S value, G genericType);
 
     /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
+     * 字符串转换为对象.
      *
-     * @param value       字符串
+     * @param value 字符串
      * @param genericType 指定对象的上下文属性
      * @return 对象
      */
@@ -107,7 +98,7 @@ public abstract class AbstractToStringConvertor<S, G extends Type<S>> implements
     }
 
     /**
-     * 返回policy
+     * 返回policy.
      *
      * @return policy
      */
@@ -117,7 +108,7 @@ public abstract class AbstractToStringConvertor<S, G extends Type<S>> implements
     }
 
     /**
-     * 设置policy
+     * 设置policy.
      *
      * @param policy policy
      */

@@ -5,22 +5,22 @@ import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.string.AbstractToStringConvertor;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
-
 /**
- * <p>
- * 格式化转换器
- * </p>
- * @param <T> 转换对象
+ * 格式化转换器.
+ *
  * @author 钟冀
+ * @param <T> 转换对象
  */
-public abstract class FormatConvertor<T> extends AbstractToStringConvertor<T, FormatType<T>>{
+public abstract class FormatConvertor<T> extends AbstractToStringConvertor<T, FormatType<T>> {
 
     private ToStringConvertor<T> convertor;
-    
+
     /**
+     * Instantiates a new format convertor.
+     *
      * @param convertor convertor
      */
-    public FormatConvertor(ToStringConvertor<T> convertor) {
+    protected FormatConvertor(ToStringConvertor<T> convertor) {
         this.convertor = convertor;
     }
 
@@ -34,7 +34,7 @@ public abstract class FormatConvertor<T> extends AbstractToStringConvertor<T, Fo
         }
         return FormatType.class == generecType.getClass();
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -60,26 +60,26 @@ public abstract class FormatConvertor<T> extends AbstractToStringConvertor<T, Fo
     }
 
     /**
-     * 返回convertor
+     * 返回convertor.
+     *
      * @return convertor
      */
     public ToStringConvertor<T> getConvertor() {
         return convertor;
     }
-    
+
     /**
-     * <p>
-     * 对象转换为字符串
-     * </p>
+     * 对象转换为字符串.
+     *
      * @param value 对象
      * @param genericType 指定对象的上下文属性
      * @return 字符串
      */
     protected abstract String formatToString(T value, FormatType<T> genericType);
+
     /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
+     * 字符串转换为对象.
+     *
      * @param value 字符串
      * @param genericType 指定对象的上下文属性
      * @return 对象

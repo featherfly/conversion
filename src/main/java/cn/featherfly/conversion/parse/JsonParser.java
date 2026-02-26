@@ -3,27 +3,24 @@ package cn.featherfly.conversion.parse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * json协议解析器抽象类
- * </p>
+ * json协议解析器抽象类.
  *
- * @param <G> 解析的目标类型描述
  * @author 钟冀
+ * @param <G> 解析的目标类型描述
  */
 public abstract class JsonParser<G extends Type<?>> extends JacksonParser<G> {
 
-    /**
-     * 协议字符串常量
-     */
+    /** 协议字符串常量. */
     public static final String PROTOCOL = "json";
 
     /**
+     * Instantiates a new json parser.
      */
-    public JsonParser() {
+    protected JsonParser() {
         super(new ObjectMapper());
     }
 

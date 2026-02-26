@@ -7,16 +7,16 @@ import java.util.List;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * Format
- * </p>
- * @param <T> 对象类型
+ * Format.
+ *
  * @author 钟冀
+ * @param <T> 对象类型
  */
-public class FormatType<T> implements Type<T>{
-    
+public class FormatType<T> implements Type<T> {
+
     /**
-     * 
+     * Instantiates a new format type.
+     *
      * @param type type
      */
     public FormatType(Class<T> type) {
@@ -24,11 +24,11 @@ public class FormatType<T> implements Type<T>{
     }
 
     private Class<T> type;
-    
+
     private String format;
-    
+
     private List<String> formats = new ArrayList<>(0);
-    
+
     /**
      * {@inheritDoc}
      */
@@ -38,7 +38,8 @@ public class FormatType<T> implements Type<T>{
     }
 
     /**
-     * 返回format
+     * 返回format.
+     *
      * @return format
      */
     public String getFormat() {
@@ -46,7 +47,8 @@ public class FormatType<T> implements Type<T>{
     }
 
     /**
-     * 设置format
+     * 设置format.
+     *
      * @param format format
      */
     public void setFormat(String format) {
@@ -54,7 +56,8 @@ public class FormatType<T> implements Type<T>{
     }
 
     /**
-     * 返回formats
+     * 返回formats.
+     *
      * @return formats
      */
     public List<String> getFormats() {
@@ -62,7 +65,8 @@ public class FormatType<T> implements Type<T>{
     }
 
     /**
-     * 设置formats
+     * 设置formats.
+     *
      * @param formats formats
      */
     public void setFormats(List<String> formats) {

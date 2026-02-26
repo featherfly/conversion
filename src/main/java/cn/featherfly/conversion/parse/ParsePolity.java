@@ -6,22 +6,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * 解析策略
- * </p>
+ * 解析策略.
  *
  * @author 钟冀
  */
 public class ParsePolity {
 
     /**
+     * Instantiates a new parses the polity.
      */
     public ParsePolity() {
+        super();
     }
 
     /*
@@ -30,20 +30,15 @@ public class ParsePolity {
     private Map<String, Parser> parsers = new HashMap<>();
 
     /**
-     * <p>
-     * 解析传入的字符串
-     * </p>
+     * 解析传入的字符串.
      *
-     * @param <T>     返回类型
+     * @param <T> 返回类型
      * @param resolve 需要解析的字符串
-     * @param gt      需要解析完成后的目标Type
+     * @param gt 需要解析完成后的目标Type
      * @return 解析后的对象
      */
     public <T> T parse(String resolve, Type<T> gt) {
-        String protocol = null;
-        if (Lang.isNotEmpty(resolve)) {
-            protocol = getProtocol(resolve);
-        }
+        String protocol = getProtocol(resolve);
         if (Lang.isEmpty(protocol)) {
             return null;
         }
@@ -57,9 +52,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 判断传入的字符串是否可以被解析
-     * </p>
+     * 判断传入的字符串是否可以被解析.
      *
      * @param resolve 需要解析的字符串
      * @return 是否可以解析传入字符串
@@ -74,9 +67,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 批量注册解析器
-     * </p>
+     * 批量注册解析器.
      *
      * @param parsers 解析器集合
      */
@@ -89,9 +80,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 批量注册解析器
-     * </p>
+     * 批量注册解析器.
      *
      * @param parsers 解析器数组
      */
@@ -104,9 +93,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 注册解析器
-     * </p>
+     * 注册解析器.
      *
      * @param parser 解析器
      */
@@ -118,16 +105,14 @@ public class ParsePolity {
                 //                        , parser.getProtocol()
                 //                        , getParser(parser.getProtocol()).getClass().getName()));
                 throw new ParseException(Str.format("协议[{0}]已经被[{1}]注册", parser.getProtocol(),
-                        getParser(parser.getProtocol()).getClass().getName()));
+                    getParser(parser.getProtocol()).getClass().getName()));
             }
             parsers.put(parser.getProtocol(), parser);
         }
     }
 
     /**
-     * <p>
-     * 注销协议
-     * </p>
+     * 注销协议.
      *
      * @param protocol 解析协议
      */
@@ -136,9 +121,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 注销解析器
-     * </p>
+     * 注销解析器.
      *
      * @param parser 解析解析器
      */
@@ -149,9 +132,8 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
      * 返回已经注册的所有协议
-     * </p>
+     * .
      *
      * @return 已经注册的所有协议
      */
@@ -160,9 +142,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 返回已经注册的所有解析器
-     * </p>
+     * 返回已经注册的所有解析器.
      *
      * @return 已经注册的所有解析器
      */
@@ -171,9 +151,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 返回是否注册有传入的协议
-     * </p>
+     * 返回是否注册有传入的协议.
      *
      * @param protocol 解析协议
      * @return 是否注册协议
@@ -183,9 +161,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 返回是否注册有传入解析器
-     * </p>
+     * 返回是否注册有传入解析器.
      *
      * @param parser 解析器
      * @return 是否注册解析器
@@ -195,9 +171,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 返回指定协议解析器
-     * </p>
+     * 返回指定协议解析器.
      *
      * @param protocol 解析协议
      * @return 解析器
@@ -210,14 +184,8 @@ public class ParsePolity {
     //
     // ********************************************************************
 
-    // ********************************************************************
-    //
-    // ********************************************************************
-
     /**
-     * <p>
-     * 获取传入字符串的解析协议
-     * </p>
+     * 获取传入字符串的解析协议.
      *
      * @param resolve 需要解析的字符串
      * @return 传入字符串的解析协议
@@ -234,9 +202,7 @@ public class ParsePolity {
     }
 
     /**
-     * <p>
-     * 获取传入字符串的内容
-     * </p>
+     * 获取传入字符串的内容.
      *
      * @param resolve 需要解析的字符串
      * @return 传入字符串的内容

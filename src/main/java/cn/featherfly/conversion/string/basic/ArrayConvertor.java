@@ -7,28 +7,30 @@ import java.util.Iterator;
 import java.util.List;
 
 import cn.featherfly.common.constant.Chars;
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
 /**
- * <p>
- * 数组转换器
- * </p>
+ * 数组转换器.
  *
- * @param <A>  数组自身类型
- * @param <G>  描述类型
- * @param <E>  数组项类型
- * @param <GT> 描述类型
  * @author 钟冀
+ * @param <A> 数组自身类型
+ * @param <G> 描述类型
+ * @param <E> 数组项类型
+ * @param <GT> 描述类型
  */
 public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>>
-        extends AbstractBasicConvertor<A, G> {
+    extends AbstractBasicConvertor<A, G> {
+
+    private String splitSign = Chars.COMMA;
 
     /**
+     * Instantiates a new array convertor.
+     *
      * @param convertor conversion
      */
-    public ArrayConvertor(ToStringConvertor<E> convertor) {
+    protected ArrayConvertor(ToStringConvertor<E> convertor) {
         this.convertor = convertor;
     }
 
@@ -45,8 +47,8 @@ public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>
                 for (int i = 0; i < Array.getLength(value); i++) {
                     // TODO 这里只能使用null
                     result.append(
-                            convertor.sourceToTarget((E) Array.get(value, i), getArrayItemType(genericType)))
-                            .append(Chars.COMMA);
+                        convertor.sourceToTarget((E) Array.get(value, i), getArrayItemType(genericType)))
+                        .append(splitSign);
                 }
                 if (result.length() > 0) {
                     result.deleteCharAt(result.length() - 1);
@@ -65,7 +67,7 @@ public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>
     public A doToObject(String value, G genericType) {
         Class<A> type = getSourceType();
         if (Str.isNotBlank(value) && type != null) {
-            String[] values = Str.split(value, Chars.COMMA);
+            String[] values = Str.split(value, splitSign);
             List<String> valueList = Arrays.asList(values);
             Iterator<String> it = valueList.iterator();
             while (it.hasNext()) {
@@ -85,9 +87,7 @@ public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>
     }
 
     /**
-     * <p>
-     * 获取数组元素Type
-     * </p>
+     * 获取数组元素Type.
      *
      * @param genericType genericType
      * @return 数组元素Type
@@ -214,11 +214,19 @@ public abstract class ArrayConvertor<A, G extends Type<A>, E, GT extends Type<E>
     private ToStringConvertor<E> convertor;
 
     /**
-     * 返回conversion
+     * 返回conversion.
      *
      * @return conversion
      */
     public ToStringConvertor<E> getConvertor() {
         return convertor;
+    }
+
+    public String getSplitSign() {
+        return splitSign;
+    }
+
+    public void setSplitSign(String splitSign) {
+        this.splitSign = splitSign;
     }
 }

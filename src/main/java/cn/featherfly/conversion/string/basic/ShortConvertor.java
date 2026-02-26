@@ -1,20 +1,18 @@
 
 package cn.featherfly.conversion.string.basic;
 
-
-
 /**
- * <p>
- * 短整形转换器
- * </p>
+ * 短整形转换器.
  *
  * @author 钟冀
  */
-public class ShortConvertor extends NumberBasicTypeConvertor<Short>{
+public class ShortConvertor extends NumberBasicTypeConvertor<Short> {
 
     /**
+     * Instantiates a new short convertor.
      */
     public ShortConvertor() {
+        super();
     }
 
     /**
@@ -25,14 +23,14 @@ public class ShortConvertor extends NumberBasicTypeConvertor<Short>{
         return short.class;
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    protected Short doToObject(String value, Type<Short> genericType) {
-//        if (StringUtils.isNotBlank(value)) {
-//            return Short.parseShort(value);
-//        }
-//        return -1;
-//    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected Short doToObject(String value, Type<Short> genericType) {
+    //        if (StringUtils.isNotBlank(value)) {
+    //            return Short.parseShort(value);
+    //        }
+    //        return -1;
+    //    }
 }

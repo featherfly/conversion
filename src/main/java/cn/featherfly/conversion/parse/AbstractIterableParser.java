@@ -11,28 +11,21 @@ import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * 可迭代对象抽象解析器，完成可迭代对象（数组，集合）配置的解析，具体解析方式由子类实现类实现。
- * </p>
+ * 可迭代对象抽象解析器，完成可迭代对象（数组，集合）配置的解析，具体解析方式由子类实现类实现.
  *
- * @param <G> 解析的目标类型描述
  * @author 钟冀
+ * @param <G> 解析的目标类型描述
  */
 public abstract class AbstractIterableParser<G extends Type<?>> extends AbstractParser<G> {
-    //    /**
-    //     * 协议字符串常量
-    //     */
-    //    public static final String CLASS_PROTOCOL = "constant";
 
     /**
+     * Instantiates a new abstract iterable parser.
      */
-    public AbstractIterableParser() {
+    protected AbstractIterableParser() {
     }
 
     /**
-     * <p>
-     * 解析传入的字符串
-     * </p>
+     * 解析传入的字符串.
      *
      * @param <T> 返回类型
      * @param content 需要解析的内容
@@ -80,9 +73,7 @@ public abstract class AbstractIterableParser<G extends Type<?>> extends Abstract
     }
 
     /**
-     * <p>
-     * 判断传入类型是否是多对象
-     * </p>
+     * 判断传入类型是否是多对象.
      *
      * @param type type
      * @return 否是多对象

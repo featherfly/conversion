@@ -8,22 +8,19 @@ import cn.featherfly.conversion.string.format.FormatConvertor;
 import cn.featherfly.conversion.string.format.FormatType;
 
 /**
- * <p>
- * 数组转换器
- * </p>
+ * 数组转换器.
  *
- * @param  <A>
- *                 数组自身类型
- * @param  <E>
- *                 数组项类型
- * @author     钟冀
+ * @author 钟冀
+ * @param <A> the generic type
+ * @param <E> the element type
  */
 public abstract class BeanPropertyArrayFormatConvertor<A, E>
     extends ArrayConvertor<A, BeanProperty<?, A>, E, FormatType<E>> {
 
     /**
-     * @param convertor
-     *                      conversion
+     * Instantiates a new bean property array format convertor.
+     *
+     * @param convertor conversion
      */
     protected BeanPropertyArrayFormatConvertor(FormatConvertor<E> convertor) {
         super(convertor);

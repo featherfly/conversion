@@ -2,37 +2,31 @@
 package cn.featherfly.conversion.convertors;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Optional;
 
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.lang.ClassUtils;
+import cn.featherfly.common.lang.Lang;
 import cn.featherfly.common.lang.reflect.ClassType;
 import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.Convertor;
-import cn.featherfly.conversion.TypePolicys;
 
 /**
- * <p>
- * OptionalToStringConvertor
- * </p>
- * .
+ * optional convertor.
  *
- * @author     zhongj
- * @param  <T> the generic type
+ * @author zhongj
+ * @param <T> the generic type
  */
 @SuppressWarnings("rawtypes")
-public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T, Type<Optional>> {
-
-    private Map<Class<?>, Convertor<?, T>> convertors = new HashMap<>();
+public abstract class OptionalConvertor<T> extends ContainerConvertor<Optional, T> {
 
     /**
      * Instantiates a new optional convertor.
      */
-    public OptionalConvertor() {
-        this(null);
+    protected OptionalConvertor() {
+        this(Collections.emptyList());
     }
 
     /**
@@ -40,46 +34,9 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      *
      * @param convertors the convertors
      */
-    public OptionalConvertor(Collection<Convertor<?, T>> convertors) {
-        setPolicy(TypePolicys.INSTANCE);
+    protected OptionalConvertor(Collection<Convertor<?, T>> convertors) {
+        super(convertors, Optional.class, null);
         setTargetType(ClassUtils.getSuperClassGenericType(this.getClass()));
-        setSourceType(Optional.class);
-        addConvertors(convertors);
-    }
-
-    /**
-     * 设置convertors.
-     *
-     * @param convertors convertors
-     */
-    public void setConvertors(Collection<Convertor<?, T>> convertors) {
-        this.convertors.clear();
-        addConvertors(convertors);
-    }
-
-    /**
-     * 设置convertors.
-     *
-     * @param convertors convertors
-     */
-    @SuppressWarnings("unchecked")
-    public void addConvertor(Convertor convertors) {
-        if (convertors != null) {
-            this.convertors.put(convertors.getSourceType(), convertors);
-        }
-    }
-
-    /**
-     * 设置convertors.
-     *
-     * @param convertors convertors
-     */
-    public void addConvertors(Collection<Convertor<?, T>> convertors) {
-        if (convertors != null) {
-            for (Convertor<?, T> c : convertors) {
-                this.convertors.put(c.getSourceType(), c);
-            }
-        }
     }
 
     /**
@@ -87,7 +44,7 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
      */
     @Override
     protected boolean supportFor(Type<Optional> generecType) {
-        return generecType != null && generecType.getClass() == BeanProperty.class;
+        return generecType != null && generecType.getType() == Optional.class;
     }
 
     /**
@@ -96,12 +53,12 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     @SuppressWarnings("unchecked")
     @Override
     protected T doSourceToTarget(Optional source, Type<Optional> genericType) {
-        if (source != null && source.isPresent()) {
-            Class<?> type = source.get().getClass();
-            Convertor c = getConvertor(type);
-            return (T) c.sourceToTarget(source.get(), new ClassType<>(type));
+        if (Lang.isEmpty(source)) {
+            return null;
         }
-        return null;
+        Class<?> type = source.get().getClass();
+        Convertor c = getConvertor(type);
+        return (T) c.sourceToTarget(source.get(), new ClassType<>(type));
     }
 
     /**
@@ -112,24 +69,14 @@ public abstract class OptionalConvertor<T> extends AbstractConvertor<Optional, T
     protected Optional doTargetToSource(T target, Type<Optional> genericType) {
         if (genericType instanceof BeanProperty) {
             BeanProperty<?, Optional> bp = (BeanProperty<?, Optional>) genericType;
-            Class<Optional> type = bp.getType();
-            Convertor c = getConvertor(type);
-            return Optional.of(c.targetToSource(target, new Proxy<>(bp, type)));
+            Convertor<Object, T> c = getConvertor(bp.getGenericType());
+            return Optional.of(c.targetToSource(target, new ClassType<>((Class<Object>) bp.getGenericType())));
+        } else if (genericType instanceof ContainerType) {
+            ContainerType<Optional, ?> cp = (ContainerType<Optional, ?>) genericType;
+            Convertor<Object, T> c = getConvertor(cp.getInnerType());
+            return Optional.of(c.targetToSource(target, new ClassType<>((Class<Object>) cp.getInnerType())));
         }
-        return null;
-    }
-
-    /**
-     * Gets the convertor.
-     *
-     * @param  type the type
-     * @return      the convertor
-     */
-    protected Convertor getConvertor(Class<?> type) {
-        Convertor convertor = convertors.get(type);
-        if (convertor == null) {
-            throw new ConversionException("#no_convertor_with_type", new Object[] { type.getName() });
-        }
-        return convertor;
+        throw new ConversionException("#container_not_support_type",
+            new Object[] { Optional.class.getName(), genericType.getClass().getName() });
     }
 }

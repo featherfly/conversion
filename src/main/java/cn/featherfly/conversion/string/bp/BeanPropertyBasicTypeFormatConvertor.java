@@ -3,21 +3,20 @@ package cn.featherfly.conversion.string.bp;
 
 import cn.featherfly.conversion.string.format.FormatConvertor;
 
-
 /**
- * <p>
- * 格式化转换器
- * </p>
- * @param <T> 转换对象泛型
+ * 格式化转换器.
+ *
  * @author 钟冀
+ * @param <T> 转换对象泛型
  */
-public class BeanPropertyBasicTypeFormatConvertor<T> extends BeanPropertyFormatConvertor<T>{
+public class BeanPropertyBasicTypeFormatConvertor<T> extends BeanPropertyFormatConvertor<T> {
 
     /**
-     * 
+     * Instantiates a new bean property basic type format convertor.
+     *
      * @param convertor convertor
      */
-    public BeanPropertyBasicTypeFormatConvertor(FormatConvertor<T> convertor) {        
+    public BeanPropertyBasicTypeFormatConvertor(FormatConvertor<T> convertor) {
         super(convertor);
     }
 

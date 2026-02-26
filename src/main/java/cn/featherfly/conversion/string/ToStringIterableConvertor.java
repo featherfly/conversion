@@ -1,12 +1,10 @@
 package cn.featherfly.conversion.string;
 
 /**
- * <p>
- * 转换器
- * </p>
+ * to string iterable convertor.
  *
- * @param <S> 类型
  * @author 钟冀
+ * @param <S> 类型
  */
 public interface ToStringIterableConvertor<S> extends ToStringConvertor<Iterable<S>> {
 }

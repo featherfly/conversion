@@ -5,17 +5,17 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * <p>
- * Timestamp类转换器
- * </p>
+ * Timestamp类转换器.
  *
  * @author 钟冀
  */
 public class SqlTimestampConvertor extends AbstractDateConvertor<Timestamp> {
 
     /**
+     * Instantiates a new sql timestamp convertor.
      */
     public SqlTimestampConvertor() {
+        super();
     }
 
     /**

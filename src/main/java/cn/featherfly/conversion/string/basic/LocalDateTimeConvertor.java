@@ -4,14 +4,12 @@ package cn.featherfly.conversion.string.basic;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 
 /**
- * <p>
- * LocalDateTime类转换器
- * </p>
+ * LocalDateTime类转换器.
  *
  * @author 钟冀
  */
@@ -22,8 +20,10 @@ public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime
     private static final DateTimeFormatter DATE_TIME_PATTERN = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
 
     /**
+     * Instantiates a new local date time convertor.
      */
     public LocalDateTimeConvertor() {
+        super();
     }
 
     /**
@@ -48,7 +48,7 @@ public class LocalDateTimeConvertor extends AbstractBasicConvertor<LocalDateTime
                 return LocalDateTime.parse(value, DATE_TIME_PATTERN);
             } catch (Exception e) {
                 throw new ConversionException("#convert_failed_with_type",
-                        new Object[] { value, DATE_TIME_FORMAT, getSourceType().getName() });
+                    new Object[] { value, DATE_TIME_FORMAT, getSourceType().getName() });
             }
         }
         return null;

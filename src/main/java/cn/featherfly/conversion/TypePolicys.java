@@ -4,16 +4,13 @@ package cn.featherfly.conversion;
 import cn.featherfly.common.lang.ClassUtils;
 
 /**
- * <p>
- * TypePolicys
- * </p>
+ * TypePolicys.
  *
  * @author zhongj
  */
 public enum TypePolicys implements TypePolicy {
-    /**
-     * class level, use sourceType == checkedType
-     */
+
+    /** class level, use sourceType == checkedType. */
     CLASS,
     /**
      * class level, use sourceType.isAssignableFrom(checkedType)

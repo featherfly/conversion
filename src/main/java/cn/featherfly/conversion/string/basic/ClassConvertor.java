@@ -1,15 +1,13 @@
 
 package cn.featherfly.conversion.string.basic;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.LogUtils;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.ConversionException;
 
 /**
- * <p>
- * class类转换器
- * </p>
+ * class类转换器.
  *
  * @author 钟冀
  */
@@ -17,8 +15,10 @@ import cn.featherfly.conversion.ConversionException;
 public class ClassConvertor extends AbstractBasicConvertor<Class, Type<Class>> {
 
     /**
+     * Instantiates a new class convertor.
      */
     public ClassConvertor() {
+        super();
     }
 
     /**

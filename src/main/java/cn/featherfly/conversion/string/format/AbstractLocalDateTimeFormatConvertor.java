@@ -12,21 +12,29 @@ import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.string.ToStringConvertor;
 
 /**
- * <p>
  * 带格式支持的日期转换器，在属性字段上使用@DateFormat来指定格式.
- * </p>
  *
  * @author 钟冀
+ * @param <T> the generic type
  */
 public abstract class AbstractLocalDateTimeFormatConvertor<T extends Temporal> extends FormatConvertor<T> {
 
     /**
+     * Instantiates a new abstract local date time format convertor.
+     *
      * @param convertor convertor
      */
-    public AbstractLocalDateTimeFormatConvertor(ToStringConvertor<T> convertor) {
+    protected AbstractLocalDateTimeFormatConvertor(ToStringConvertor<T> convertor) {
         super(convertor);
     }
 
+    /**
+     * Convert.
+     *
+     * @param value the value
+     * @param formatter the formatter
+     * @return the t
+     */
     protected abstract T convert(String value, DateTimeFormatter formatter);
 
     /**
@@ -60,7 +68,7 @@ public abstract class AbstractLocalDateTimeFormatConvertor<T extends Temporal> e
                 }
             }
             throw new ConversionException("#convert_failed_with_type",
-                    new Object[] { value, formats, getSourceType().getName() });
+                new Object[] { value, formats, getSourceType().getName() });
         }
         return null;
     }

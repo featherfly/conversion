@@ -14,17 +14,17 @@ import cn.featherfly.common.lang.ClassUtils;
 import cn.featherfly.common.lang.Lang;
 
 /**
- * <p>
- * json BeanProperty协议解析器
- * </p>
+ * json BeanProperty协议解析器.
  *
  * @author 钟冀
  */
 public class JsonBeanPropertyParser extends JsonParser<BeanProperty<?, ?>> {
 
     /**
+     * Instantiates a new json bean property parser.
      */
     public JsonBeanPropertyParser() {
+        super();
     }
 
     /**

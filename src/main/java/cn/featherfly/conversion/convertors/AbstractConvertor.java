@@ -18,6 +18,9 @@ import cn.featherfly.conversion.TypePolicys;
  */
 public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Convertor<S, T> {
 
+    /** 日志. */
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private Class<S> sourceType;
 
     private Class<T> targetType;
@@ -26,32 +29,20 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
 
     /**
      * Instantiates a new abstract convertor.
-     */
-    public AbstractConvertor() {
-    }
-
-    /**
-     * Instantiates a new abstract convertor.
      *
      * @param sourceType the source type
      * @param targetType the target type
-     * @param policy     the policy
+     * @param policy the policy
      */
-    public AbstractConvertor(Class<S> sourceType, Class<T> targetType, TypePolicys policy) {
+    protected AbstractConvertor(Class<S> sourceType, Class<T> targetType, TypePolicys policy) {
         super();
         this.sourceType = sourceType;
         this.targetType = targetType;
         this.policy = policy;
     }
 
-    /** 日志. */
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     /**
-     * <p>
-     * 是否提供对传入类型的支持
-     * </p>
-     * .
+     * 是否提供对传入类型的支持.
      *
      * @param generecType generecType
      * @return 是否支持
@@ -59,28 +50,22 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     protected abstract boolean supportFor(Type<S> generecType);
 
     /**
-     * <p>
-     * 源转目标
-     * </p>
-     * .
+     * 源转目标.
      *
-     * @param source      源对象
-     * @param genericType 指定对象的上下文属性
+     * @param source 源对象
+     * @param sourceType 指定对象的上下文属性
      * @return 目标对象
      */
-    protected abstract T doSourceToTarget(S source, G genericType);
+    protected abstract T doSourceToTarget(S source, G sourceType);
 
     /**
-     * <p>
-     * 目标转源
-     * </p>
-     * .
+     * 目标转源.
      *
-     * @param target      目标对象
-     * @param genericType 指定对象的上下文属性
+     * @param target 目标对象
+     * @param sourceType 指定对象的上下文属性
      * @return 源对象
      */
-    protected abstract S doTargetToSource(T target, G genericType);
+    protected abstract S doTargetToSource(T target, G sourceType);
 
     /**
      * {@inheritDoc}
@@ -107,9 +92,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 返回sourceType.
-     *
-     * @return sourceType
+     * {@inheritDoc}
      */
     @Override
     public Class<S> getSourceType() {
@@ -126,9 +109,7 @@ public abstract class AbstractConvertor<S, T, G extends Type<S>> implements Conv
     }
 
     /**
-     * 返回targetType.
-     *
-     * @return targetType
+     * {@inheritDoc}
      */
     @Override
     public Class<T> getTargetType() {

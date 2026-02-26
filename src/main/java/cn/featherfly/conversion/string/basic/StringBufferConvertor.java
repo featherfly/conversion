@@ -4,17 +4,17 @@ package cn.featherfly.conversion.string.basic;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * StringBuffer类转换器
- * </p>
+ * StringBuffer类转换器.
  *
  * @author 钟冀
  */
-public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, Type<StringBuffer>>{
+public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, Type<StringBuffer>> {
 
     /**
+     * Instantiates a new string buffer convertor.
      */
     public StringBufferConvertor() {
+        super();
     }
 
     /**
@@ -22,7 +22,7 @@ public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, 
      */
     @Override
     protected String doToString(StringBuffer value,
-            Type<StringBuffer> genericType) {
+        Type<StringBuffer> genericType) {
         if (value != null) {
             return value.toString();
         }
@@ -34,7 +34,7 @@ public class StringBufferConvertor extends AbstractBasicConvertor<StringBuffer, 
      */
     @Override
     protected StringBuffer doToObject(String value,
-            Type<StringBuffer> genericType) {
+        Type<StringBuffer> genericType) {
         if (value != null) {
             return new StringBuffer(value);
         }

@@ -9,19 +9,16 @@ import java.lang.annotation.Target;
 import cn.featherfly.conversion.Convertor;
 
 /**
- * <p>
- * 手动设置转换类的注解
- * </p>
+ * 手动设置转换类的注解.
  *
  * @author 钟冀
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Assign {
+
     /**
-     * <p>
-     * 手动设置转换类
-     * </p>
+     * 手动设置转换类.
      *
      * @return 转换器类型
      */

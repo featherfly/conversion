@@ -1,18 +1,15 @@
 
 package cn.featherfly.conversion.string.basic;
 
-
-
 /**
- * <p>
- * 字节转换器
- * </p>
+ * 字节转换器.
  *
  * @author 钟冀
  */
-public class ByteConvertor extends NumberBasicTypeConvertor<Byte>{
+public class ByteConvertor extends NumberBasicTypeConvertor<Byte> {
 
     /**
+     * Instantiates a new byte convertor.
      */
     public ByteConvertor() {
     }

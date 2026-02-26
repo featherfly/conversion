@@ -1,6 +1,12 @@
 下一步实现	
 	1.实现原子类型(线程池包中Atomic开头的类）
 
+# 1.6.0 2026-02-26
+
+1. 升级common-core到1.16.0
+2. 重构ToStringConversionPolicy逻辑，`ToStringConversionPolicys`使用`ImmutableToStringConversionPolicy`重构逻辑
+3. 加入List|Set|Queue的转换器支持
+
 # 1.5.1 2025-12-22
 
 1. 升级common-core到1.15.2
@@ -23,13 +29,13 @@
 # 1.4.0 2020-4-11
 1. 加入Optional支持
 1. 升级依赖
-    
+   
 # 1.3.4 2019-12-03
 1. 升级依赖
-    
+   
 # 1.3.3 2019-12-03
 1. 升级依赖
-    
+   
 # 1.3.2 2019-08-28
 1. ConversionPolicys实现了1.8的支持
     	

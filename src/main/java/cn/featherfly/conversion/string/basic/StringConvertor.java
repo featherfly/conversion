@@ -4,17 +4,17 @@ package cn.featherfly.conversion.string.basic;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * String类转换器
- * </p>
+ * String类转换器.
  *
  * @author 钟冀
  */
-public class StringConvertor extends AbstractBasicConvertor<String, Type<String>>{
+public class StringConvertor extends AbstractBasicConvertor<String, Type<String>> {
 
     /**
+     * Instantiates a new string convertor.
      */
     public StringConvertor() {
+        super();
     }
 
     /**

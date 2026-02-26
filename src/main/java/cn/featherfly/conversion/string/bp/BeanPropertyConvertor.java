@@ -6,12 +6,10 @@ import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.string.AbstractToStringConvertor;
 
 /**
- * <p>
- * 格式化转换器
- * </p>
+ * 格式化转换器.
  *
- * @param  <T> 转换对象泛型
- * @author     钟冀
+ * @author 钟冀
+ * @param <T> the generic type
  */
 public abstract class BeanPropertyConvertor<T> extends AbstractToStringConvertor<T, BeanProperty<?, T>> {
 

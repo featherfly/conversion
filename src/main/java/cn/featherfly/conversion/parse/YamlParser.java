@@ -11,23 +11,20 @@ import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * json协议解析器抽象类
- * </p>
+ * json协议解析器抽象类.
  *
- * @param <G> 解析的目标类型描述
  * @author 钟冀
+ * @param <G> 解析的目标类型描述
  */
 public abstract class YamlParser<G extends Type<?>> extends JacksonParser<G> {
 
-    /**
-     * 协议字符串常量
-     */
+    /** 协议字符串常量. */
     public static final String PROTOCOL = "yaml";
 
     /**
+     * Instantiates a new yaml parser.
      */
-    public YamlParser() {
+    protected YamlParser() {
         super(new ObjectMapper(new YAMLFactory()));
     }
 
@@ -58,7 +55,7 @@ public abstract class YamlParser<G extends Type<?>> extends JacksonParser<G> {
     }
 
     private String trimContent(String content) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String[] lines = content.split("\n");
         List<String> newLines = new ArrayList<>();
         for (String line : lines) {
@@ -69,9 +66,9 @@ public abstract class YamlParser<G extends Type<?>> extends JacksonParser<G> {
         String firstLine = newLines.get(0);
         int first = firstLine.length() - Str.trimStart(firstLine).length();
         for (String line : newLines) {
-            result += line.substring(first) + "\n";
+            result.append(line.substring(first)).append("\n");
         }
-        return result.trim();
+        return result.toString().trim();
     }
 
     /**

@@ -7,6 +7,7 @@ import java.util.Map;
 import cn.featherfly.common.bean.BeanProperty;
 import cn.featherfly.common.bean.BeanUtils;
 import cn.featherfly.common.lang.reflect.Type;
+import cn.featherfly.conversion.BeanPropertyConversion;
 import cn.featherfly.conversion.ConversionException;
 import cn.featherfly.conversion.annotation.Assign;
 
@@ -15,20 +16,21 @@ import cn.featherfly.conversion.annotation.Assign;
  *
  * @author 钟冀
  */
-public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
+public class ToStringBeanPropertyConversion extends AbstractToStringConversion
+    implements BeanPropertyConversion<String> {
 
     private static final Map<Class<? extends ToStringConvertor<?>>,
         ToStringConvertor<?>> ASSIGN_CONVERSIONS = new HashMap<>();
 
     /**
-     * 使用BASIC_CONVERSION_POLICY
+     * 使用ToStringConversionPolicys.FORMAT_CONVERSION_POLICY.
      */
     public ToStringBeanPropertyConversion() {
-        super();
+        super(ToStringConversionPolicys.FORMAT_CONVERSION_POLICY);
     }
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param conversionPolicy conversionPolicy
      */
@@ -36,112 +38,55 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
         super(conversionPolicy);
     }
 
-    //    /**
-    //     * <p>
-    //     * 对象转换为字符串
-    //     * </p>
-    //     *
-    //     * @param  <E>         泛型
-    //     * @param  value       对象
-    //     * @param  genericType 指定对象的指定属性，否则为null
-    //     * @return             字符串
-    //     */
-    //    @SuppressWarnings("unchecked")
-    //    @Override
-    //    public <E, G extends Type<E>> String sourceToTarget(E value, G genericType) {
-    //        if (genericType instanceof BeanProperty) {
-    //            return sourceToTarget(value, (BeanProperty<?, E>) genericType);
-    //        }
-    //        throw new ConversionException("#type_with_muliti_convertor",
-    //            new Object[] { this.getClass().getName(), genericType.getClass().getName() });
-    //    }
-
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <S, G extends Type<S>, G2 extends Type<String>> String sourceToTarget(S source, G sourceType, G2 tagetType) {
-        if (sourceType instanceof BeanProperty) {
-            return sourceToTarget(source, (BeanProperty<?, S>) sourceType);
-        }
-        throw new ConversionException("#type_with_muliti_convertor",
-            new Object[] { this.getClass().getName(), sourceType });
+    public <S, G extends Type<String>> String sourceToTarget(S source, BeanProperty<?, S> beanProperty, G targetType) {
+        return sourceToString(source, beanProperty);
     }
 
     /**
-     * <p>
-     * 对象转换为字符串
-     * </p>
+     * 对象转换为字符串.
      *
-     * @param  <E>          泛型
-     * @param  value        对象
-     * @param  beanProperty 指定对象的指定属性，否则为null
-     * @return              字符串
+     * @param <S> 泛型
+     * @param source 对象
+     * @param beanProperty 指定对象的指定属性，否则为null
+     * @return 字符串
+     */
+    public <S> String sourceToTarget(S source, BeanProperty<?, S> beanProperty) {
+        return sourceToString(source, beanProperty);
+    }
+
+    /**
+     * 对象转换为字符串.
+     *
+     * @param <S> 泛型
+     * @param source 对象
+     * @param beanProperty 指定对象的指定属性，否则为null
+     * @return 字符串
      */
     @SuppressWarnings("unchecked")
-    private <E> String sourceToTarget(E value, BeanProperty<?, E> beanProperty) {
+    public <S> String sourceToString(S source, BeanProperty<?, S> beanProperty) {
+        if (source == null) {
+            return null;
+        }
         Assign assign = beanProperty.getAnnotation(Assign.class);
         if (assign != null && assignable) {
             logger.debug("类 {} 的属性 {} 指定了转换器{} 使用该转换器进行转换", beanProperty.getOwnerType().getName(),
                 beanProperty.getName(), assign.conversion().getClass().getName());
-            Class<ToStringConvertor<E>> ct = (Class<ToStringConvertor<E>>) assign.conversion();
-            return getAssignConvertor(ct, beanProperty).sourceToTarget(value, beanProperty);
+            Class<ToStringConvertor<S>> ct = (Class<ToStringConvertor<S>>) assign.conversion();
+            return getAssignConvertor(ct, beanProperty).sourceToTarget(source, beanProperty);
         } else {
             check();
-            //            if (beanProperty.getType() == Optional.class) {
-            //                BeanPropertyContainerType<E> ct = new BeanPropertyContainerType<>(beanProperty);
-            //                return getConvertor(ct).sourceToTarget(((Optional<E>) value).get(), ct);
-            //            }
-            return getConvertor(beanProperty).sourceToTarget(value, beanProperty);
+            return getConvertor(beanProperty).sourceToTarget(source, beanProperty);
         }
-    }
-
-    /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
-     *
-     * @param  <E>        泛型
-     * @param  target     字符串
-     * @param  sourceType 指定对象的指定属性，否则为null
-     * @return            对象
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <E, G extends Type<E>> E targetToSource(String target, G sourceType) {
-        if (sourceType instanceof BeanProperty) {
-            return targetToSource(target, (BeanProperty<?, E>) sourceType);
-        }
-        throw new ConversionException("#type_with_muliti_convertor",
-            new Object[] { this.getClass().getName(), sourceType.getClass().getName() });
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <S, G extends Type<String>, G2 extends Type<S>> S targetToSource(String target, G targetType,
-        G2 sourceType) {
-        // ToString targetType always String
-        if (sourceType instanceof BeanProperty) {
-            return targetToSource(target, (BeanProperty<?, S>) sourceType);
-        }
-        throw new ConversionException("#type_with_muliti_convertor",
-            new Object[] { this.getClass().getName(), sourceType.getClass().getName() });
-    }
-
-    /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
-     *
-     * @param  <E>          泛型
-     * @param  value        字符串
-     * @param  beanProperty 指定对象的指定属性，否则为null
-     * @return              对象
-     */
     @SuppressWarnings("unchecked")
     public <E> E targetToSource(String value, BeanProperty<?, E> beanProperty) {
         Assign assign = beanProperty.getAnnotation(Assign.class);
@@ -179,7 +124,7 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
     private boolean assignable = true;
 
     /**
-     * 返回是否开启指派类型转换器
+     * 返回是否开启指派类型转换器.
      *
      * @return assignable
      */
@@ -188,7 +133,7 @@ public class ToStringBeanPropertyConversion extends AbstractToStringConversion {
     }
 
     /**
-     * 设置是否开启指派类型转换器
+     * 设置是否开启指派类型转换器.
      *
      * @param assignable assignable
      */

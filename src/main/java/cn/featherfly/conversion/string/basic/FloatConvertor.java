@@ -1,20 +1,17 @@
-
 package cn.featherfly.conversion.string.basic;
 
-
-
 /**
- * <p>
- * 单精度浮点数转换器
- * </p>
+ * 单精度浮点数转换器.
  *
  * @author 钟冀
  */
-public class FloatConvertor extends NumberBasicTypeConvertor<Float>{
+public class FloatConvertor extends NumberBasicTypeConvertor<Float> {
 
     /**
+     * Instantiates a new float convertor.
      */
     public FloatConvertor() {
+        super();
     }
 
     /**
@@ -25,14 +22,14 @@ public class FloatConvertor extends NumberBasicTypeConvertor<Float>{
         return float.class;
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    protected Float doToObject(String value, Type<Float> genericType) {
-//        if (StringUtils.isNotBlank(value)) {
-//            return Float.parseFloat(value);
-//        }
-//        return -1f;
-//    }
+    //    /**
+    //     * {@inheritDoc}
+    //     */
+    //    @Override
+    //    protected Float doToObject(String value, Type<Float> genericType) {
+    //        if (StringUtils.isNotBlank(value)) {
+    //            return Float.parseFloat(value);
+    //        }
+    //        return -1f;
+    //    }
 }

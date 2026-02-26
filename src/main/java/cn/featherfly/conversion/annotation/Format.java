@@ -7,28 +7,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- * 格式化转换注解类
- * </p>
+ * 格式化转换注解类.
  *
  * @author 钟冀
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Format {
+
     /**
-     * <p>
-     * 格式化转换器转换时使用的格式
-     * </p>
+     * 格式化转换器转换时使用的格式.
      *
      * @return format
      */
     String format();
 
     /**
-     * <p>
-     * 格式化转换器转换时使用的格式
-     * </p>
+     * 格式化转换器转换时使用的格式.
      *
      * @return formats
      */

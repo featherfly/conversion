@@ -1,23 +1,22 @@
 
 package cn.featherfly.conversion.string.basic;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.common.lang.Num;
 import cn.featherfly.common.lang.Str;
+import cn.featherfly.common.lang.reflect.Type;
 
 /**
- * <p>
- * 数字类型转换器
- * </p>
+ * 数字类型转换器.
  *
- * @param <T> 转换器对应的转换类型
  * @author 钟冀
+ * @param <T> 转换器对应的转换类型
  */
 public abstract class NumberConvertor<T extends Number> extends AbstractBasicConvertor<T, Type<T>> {
 
     /**
+     * Instantiates a new number convertor.
      */
-    public NumberConvertor() {
+    protected NumberConvertor() {
     }
 
     /**

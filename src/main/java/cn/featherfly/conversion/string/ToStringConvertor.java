@@ -1,16 +1,13 @@
 package cn.featherfly.conversion.string;
 
-import cn.featherfly.common.lang.reflect.Type;
 import cn.featherfly.conversion.Convertor;
 import cn.featherfly.conversion.TypePolicys;
 
 /**
- * <p>
- * 转换器
- * </p>
+ * to string convertor.
  *
- * @param <S> 类型
  * @author 钟冀
+ * @param <S> 类型
  */
 public interface ToStringConvertor<S> extends Convertor<S, String> {
 
@@ -22,31 +19,10 @@ public interface ToStringConvertor<S> extends Convertor<S, String> {
         return String.class;
     }
 
+    /**
+     * Gets the policy.
+     *
+     * @return the policy
+     */
     TypePolicys getPolicy();
-
-    /**
-     * <p>
-     * 对象转换为字符串
-     * </p>
-     *
-     * @param value       对象
-     * @param genericType 指定对象的上下文属性
-     * @param <GT>        Type子类泛型
-     * @return 字符串
-     */
-    @Override
-    <GT extends Type<S>> String sourceToTarget(S value, GT genericType);
-
-    /**
-     * <p>
-     * 字符串转换为对象
-     * </p>
-     *
-     * @param value       字符串
-     * @param genericType 指定对象的上下文属性
-     * @param <GT>        Type子类泛型
-     * @return 对象
-     */
-    @Override
-    <GT extends Type<S>> S targetToSource(String value, GT genericType);
 }

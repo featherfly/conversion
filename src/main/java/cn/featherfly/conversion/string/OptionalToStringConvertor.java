@@ -1,15 +1,12 @@
 
-package cn.featherfly.conversion.string.bp;
+package cn.featherfly.conversion.string;
 
 import java.util.Optional;
 
 import cn.featherfly.conversion.convertors.OptionalConvertor;
-import cn.featherfly.conversion.string.ToStringConvertor;
 
 /**
- * <p>
- * OptionalToStringConvertor
- * </p>
+ * OptionalToStringConvertor.
  *
  * @author zhongj
  */
