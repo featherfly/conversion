@@ -10,3 +10,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'conversion'
+
+// include "conversion-api"
+// include "conversion-string"
+include "conversion-codegen"
