@@ -20,11 +20,11 @@ public interface Parser {
     /**
      * 解析传入的字符串.
      *
-     * @param <TO> 类型描述
+     * @param <T0> 类型描述
      * @param <T> 返回类型
      * @param content 需要解析的内容
      * @param to 解析的目标类型描述信息
      * @return 解析后的对象
      */
-    <TO extends Type<T>, T> T parse(String content, TO to);
+    <T0 extends Type<T>, T> T parse(String content, T0 to);
 }

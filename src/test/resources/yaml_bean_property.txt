@@ -1,6 +1,5 @@
-yaml:org.yufei.Person#[
+yaml:org.yufei.Person
   - name: actors1
     age: 11
   - name: "actors2"
     age: 21
-]  

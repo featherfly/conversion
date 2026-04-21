@@ -32,10 +32,7 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?, ?>> {
      */
     @Override
     protected boolean supportFor(Type<?> to) {
-        if (to == null) {
-            return false;
-        }
-        return to.getClass() == BeanProperty.class;
+        return to == null ? false : to.getClass() == BeanProperty.class;
     }
 
     /**
@@ -49,13 +46,11 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?, ?>> {
         }
         try {
             Content objContent = getContent(content);
-            String className = objContent.className;
-            String yamlContent = objContent.content;
 
             java.lang.reflect.Type toType = null;
             Class<?> classType = null;
 
-            if (Lang.isEmpty(className)) {
+            if (Lang.isEmpty(objContent.className)) {
                 if (toBeanProperty == null) {
                     throw new IllegalArgumentException("当没有指定类型时，toBeanProperty不能为空");
                 }
@@ -92,9 +87,9 @@ public class YamlBeanPropertyParser extends YamlParser<BeanProperty<?, ?>> {
                     public java.lang.reflect.Type getType() {
                         return parameterizedType;
                     }
-                }).readValue(yamlContent);
+                }).readValue(objContent.content);
             } else {
-                return (T) objectMapper.readerFor((Class<?>) toType).readValue(yamlContent);
+                return (T) objectMapper.readerFor((Class<?>) toType).readValue(objContent.content);
             }
         } catch (Exception e) {
             throw new ParseException(e);

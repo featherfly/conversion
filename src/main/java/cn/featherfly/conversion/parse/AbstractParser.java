@@ -40,10 +40,9 @@ public abstract class AbstractParser<G extends Type<?>> implements Parser {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <TO extends Type<T>, T> T parse(String content, TO to) {
+    public <T0 extends Type<T>, T> T parse(String content, T0 to) {
         if (supportFor(to)) {
-            T result = doParse(content, (G) to);
-            return result;
+            return doParse(content, (G) to);
         }
         return null;
     }

@@ -42,13 +42,12 @@ public class ParsePolity {
         if (Lang.isEmpty(protocol)) {
             return null;
         }
-        String content = getContent(resolve);
-        for (Parser parser : parsers.values()) {
-            if (protocol.equals(parser.getProtocol())) {
-                return parser.parse(content, gt);
-            }
+        Parser parser = parsers.get(protocol);
+        if (parser == null) {
+            throw new ParseException("no parser found for protocol {}", protocol);
         }
-        return null;
+        String content = getContent(resolve);
+        return parser.parse(content, gt);
     }
 
     /**

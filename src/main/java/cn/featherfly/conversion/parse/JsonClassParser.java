@@ -23,10 +23,7 @@ public class JsonClassParser extends JsonParser<ClassType<Class<?>>> {
      */
     @Override
     protected boolean supportFor(Type<?> to) {
-        if (to == null) {
-            return false;
-        }
-        return to.getClass() == ClassType.class;
+        return to == null ? true : to.getClass() == ClassType.class;
     }
 
     /**
@@ -38,18 +35,18 @@ public class JsonClassParser extends JsonParser<ClassType<Class<?>>> {
         if (Lang.isEmpty(content)) {
             return null;
         }
+        Content objContent = getContent(content);
+        String className = objContent.className;
+        String jsonContent = objContent.content;
+
+        if (Lang.isEmpty(className) && gt != null) {
+            className = gt.getType().getName();
+        }
+
+        if (Lang.isEmpty(className)) {
+            throw new ParseException("parse没有在content中找到类型，也没有设置ClassType<Class<?>>参数");
+        }
         try {
-            Content objContent = getContent(content);
-            String className = objContent.className;
-            String jsonContent = objContent.content;
-
-            if (Lang.isEmpty(className)) {
-                className = gt.getType().getName();
-            }
-
-            if (Lang.isEmpty(className)) {
-                throw new IllegalArgumentException("parse(String content)必须显示指定类型（class）");
-            }
             return (T) objectMapper.readerFor(Class.forName(className)).readValue(jsonContent);
         } catch (Exception e) {
             throw new ParseException(e);

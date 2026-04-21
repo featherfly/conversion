@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import cn.featherfly.common.constant.Chars;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.lang.reflect.Type;
 
@@ -36,27 +37,50 @@ public abstract class YamlParser<G extends Type<?>> extends JacksonParser<G> {
         Content objContent = new Content();
         String className = null;
         String yamlContent = null;
-        int index = content.indexOf("#{");
-        if (index == -1) {
-            index = content.indexOf("#[");
-            objContent.isMulty = index != -1;
-        }
-        content = content.trim();
-        if (index != -1) {
-            className = org.apache.commons.lang3.StringUtils.substring(content, 0, index);
-            yamlContent = org.apache.commons.lang3.StringUtils.substring(content, index + 3, content.length() - 1);
-        } else {
-            yamlContent = content;
-        }
 
-        objContent.className = Str.trim(className);
-        objContent.content = trimContent(yamlContent);
-        return objContent;
+        int index = content.indexOf("\r\n");
+        int symbolSize = 2;
+        if (index == -1) {
+            symbolSize = 1;
+            index = content.indexOf('\r');
+        }
+        if (index == -1) {
+            index = content.indexOf('\n');
+        }
+        if (index != -1) {
+            if (hasLetter(content, index)) {
+                className = org.apache.commons.lang3.StringUtils.substring(content, 0, index);
+                yamlContent = org.apache.commons.lang3.StringUtils.substring(content, index + symbolSize);
+            } else {
+                yamlContent = content;
+            }
+            objContent.className = Str.trim(className);
+            objContent.content = trimContent(yamlContent);
+            objContent.isMulty = objContent.content.charAt(0) == '-';
+            return objContent;
+        }
+        throw new ParseException("yaml：协议后没有换行符（\r\n，\r，\n）");
+    }
+
+    private boolean hasLetter(String content, int index) {
+        for (int i = 0; i < index; i++) {
+            if (Character.isLetter(content.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String trimContent(String content) {
         StringBuilder result = new StringBuilder();
-        String[] lines = content.split("\n");
+        String[] lines = null;
+        if (content.contains("\r\n")) {
+            lines = content.split("\r\n");
+        } else if (content.contains(Chars.CARRIAGE_RETURN)) {
+            lines = content.split(Chars.CARRIAGE_RETURN);
+        } else {
+            lines = content.split(Chars.NEW_LINE);
+        }
         List<String> newLines = new ArrayList<>();
         for (String line : lines) {
             if (Str.isNotBlank(line)) {

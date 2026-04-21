@@ -8,13 +8,11 @@ import cn.featherfly.common.lang.reflect.Type;
 /**
  * class类协议解析器.
  *
- * @param <G> 解析的目标类型描述
  * @author 钟冀
  */
-public class ClassMethodParser<G extends Type<?>> extends AbstractIterableParser<G> {
-    /**
-     * 协议字符串常量
-     */
+public class ClassMethodParser extends AbstractIterableParser<Type<?>> {
+
+    /** 协议字符串常量. */
     public static final String PROTOCOL = "method";
 
     /**
@@ -29,7 +27,7 @@ public class ClassMethodParser<G extends Type<?>> extends AbstractIterableParser
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected <T> T doParseContent(String content, G to) {
+    protected <T> T doParseContent(String content, Type<?> to) {
         if (Lang.isEmpty(content)) {
             return null;
         }

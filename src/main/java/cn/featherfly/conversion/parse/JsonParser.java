@@ -32,14 +32,15 @@ public abstract class JsonParser<G extends Type<?>> extends JacksonParser<G> {
         Content objContent = new Content();
         String className = null;
         String jsonContent = null;
-        int index = content.indexOf("#{");
-        if (index == -1) {
-            index = content.indexOf("#[");
+        int index = content.indexOf('{');
+        int index2 = content.indexOf("[");
+        if (index2 > 0 && index2 < index) {
+            index = index2;
             objContent.isMulty = index != -1;
         }
-        if (index != -1) {
+        if (index > 0) {
             className = org.apache.commons.lang3.StringUtils.substring(content, 0, index);
-            jsonContent = org.apache.commons.lang3.StringUtils.substring(content, index + 1);
+            jsonContent = org.apache.commons.lang3.StringUtils.substring(content, index);
         } else {
             jsonContent = content;
         }
