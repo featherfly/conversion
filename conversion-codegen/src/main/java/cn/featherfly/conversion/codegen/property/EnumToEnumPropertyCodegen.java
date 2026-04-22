@@ -69,7 +69,7 @@ public class EnumToEnumPropertyCodegen implements PropertyConverterCodegen {
         String upperCasePropertyName = WordUtils.upperCaseFirst(propertyName);
         if (Lang.isEmpty(sourceObjectName)) {
             return Str.format(
-                "{ifNotNull}{targetObjectName}.set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({targetType}.class, get{propertyName}()))",
+                "{ifNotNull}{targetObjectName}.set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({targetType}.class, get{propertyName}()));",
                 new ChainMapImpl<String, Object>().set("targetObjectName", targetObjectName)
                     .set("propertyName", upperCasePropertyName)
                     .set("ifNotNull",
@@ -78,7 +78,7 @@ public class EnumToEnumPropertyCodegen implements PropertyConverterCodegen {
                     .set("targetType", targetType));
         } else {
             return Str.format(
-                "{ifNotNull}{targetObjectName}.set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({targetType}.class, {sourceObjectName}.get{propertyName}()))",
+                "{ifNotNull}{targetObjectName}.set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({targetType}.class, {sourceObjectName}.get{propertyName}()));",
                 new ChainMapImpl<String, Object>().set("targetObjectName", targetObjectName)
                     .set("propertyName", upperCasePropertyName)
                     .set("ifNotNull",
@@ -100,14 +100,14 @@ public class EnumToEnumPropertyCodegen implements PropertyConverterCodegen {
             upperCasePropertyName);
         if (Lang.isEmpty(sourceObjectName)) {
             return Str.format(
-                "{ifNotNull}set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({sourceType}.class, {targetObjectName}.get{propertyName}()))",
+                "{ifNotNull}set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({sourceType}.class, {targetObjectName}.get{propertyName}()));",
                 new ChainMapImpl<String, Object>().set("targetObjectName", targetObjectName)
                     .set("propertyName", upperCasePropertyName)
                     .set("ifNotNull", ifNotNull)
                     .set("sourceType", sourceType));
         } else {
             return Str.format(
-                "{ifNotNull}{sourceObjectName}.set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({sourceType}.class, {targetObjectName}.get{propertyName}()))",
+                "{ifNotNull}{sourceObjectName}.set{propertyName}(cn.featherfly.common.lang.Lang.toEnum({sourceType}.class, {targetObjectName}.get{propertyName}()));",
                 new ChainMapImpl<String, Object>().set("targetObjectName", targetObjectName)
                     .set("propertyName", upperCasePropertyName)
                     .set("ifNotNull", ifNotNull)

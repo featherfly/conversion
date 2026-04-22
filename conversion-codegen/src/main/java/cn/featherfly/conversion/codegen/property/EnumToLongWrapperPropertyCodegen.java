@@ -27,7 +27,7 @@ public class EnumToLongWrapperPropertyCodegen extends ConvertorPropertyCodegen i
      * @param inverse the inverse
      */
     public EnumToLongWrapperPropertyCodegen(String sourceType, boolean inverse) {
-        super(sourceType, int.class.getName(), new EnumToLongWrapperConvertorCodegen(sourceType), inverse);
+        super(sourceType, int.class.getName(), new EnumToLongWrapperConvertorCodegen(sourceType, inverse));
     }
 
     /**

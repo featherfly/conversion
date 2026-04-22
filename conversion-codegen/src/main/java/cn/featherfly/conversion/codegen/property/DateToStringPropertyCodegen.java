@@ -26,6 +26,16 @@ public class DateToStringPropertyCodegen extends ConvertorPropertyCodegen implem
     /**
      * Instantiates a new date to string property codegen.
      *
+     * @param format the format
+     * @param inverse the inverse
+     */
+    public DateToStringPropertyCodegen(String format, boolean inverse) {
+        this(Date.class, String.class.getName(), inverse);
+    }
+
+    /**
+     * Instantiates a new date to string property codegen.
+     *
      * @param <D> the generic type
      * @param sourceType the source type
      * @param format the format
@@ -59,21 +69,11 @@ public class DateToStringPropertyCodegen extends ConvertorPropertyCodegen implem
     /**
      * Instantiates a new date to string property codegen.
      *
-     * @param format the format
-     * @param inverse the inverse
-     */
-    public DateToStringPropertyCodegen(String format, boolean inverse) {
-        super(Date.class.getName(), String.class.getName(), new DateToStringConvertorCodegen(format), inverse);
-    }
-
-    /**
-     * Instantiates a new date to string property codegen.
-     *
      * @param sourceType the source type
      * @param format the format
      * @param inverse the inverse
      */
     public DateToStringPropertyCodegen(String sourceType, String format, boolean inverse) {
-        super(sourceType, String.class.getName(), new DateToStringConvertorCodegen(format), inverse);
+        super(sourceType, String.class.getName(), new DateToStringConvertorCodegen(format, inverse));
     }
 }

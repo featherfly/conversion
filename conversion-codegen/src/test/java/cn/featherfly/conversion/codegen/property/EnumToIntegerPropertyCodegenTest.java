@@ -29,9 +29,9 @@ public class EnumToIntegerPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, user.getGender()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, user.getGender()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(Integer.valueOf(userDto.getGender().ordinal()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(Integer.valueOf(userDto.getGender().ordinal()));");
 
         EnumToIntegerPropertyCodegen intToEnum = new EnumToIntegerPropertyCodegen(
             genderClass, true);
@@ -40,9 +40,9 @@ public class EnumToIntegerPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(Integer.valueOf(user.getGender().ordinal()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(Integer.valueOf(user.getGender().ordinal()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userDto.getGender()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userDto.getGender()));");
 
         System.out.println();
 
@@ -51,17 +51,17 @@ public class EnumToIntegerPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, user.getGender()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, user.getGender()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(Integer.valueOf(getGender().ordinal()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(Integer.valueOf(getGender().ordinal()));");
 
         fromTarget = intToEnum.generateFromTarget("gender", "", "user");
         toTarget = intToEnum.generateToTarget("gender", "", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(Integer.valueOf(user.getGender().ordinal()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(Integer.valueOf(user.getGender().ordinal()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, getGender()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, getGender()));");
     }
 }

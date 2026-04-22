@@ -10,22 +10,33 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Dates;
+import cn.featherfly.common.lang.Iterables;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.conversion.codegen.convertor.BeanToBeanConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.DateToLocalDateTimeConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.DateToLongConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.DateToLongWrapperConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.DateToStringConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.DirectAssignConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.EnumToEnumConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.LocalDateTimeToStringConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.LocalDateToStringConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.LocalTimeToStringConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.TimeToLocalTimeConvertorCodegen;
+import cn.featherfly.conversion.codegen.property.BeanToBeanPropertyCodegen;
+import cn.featherfly.conversion.codegen.property.CommentPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToLocalDateTimePropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToLongPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToLongWrapperPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToStringPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DirectAssignPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.EnumToEnumPropertyCodegen;
-import cn.featherfly.conversion.codegen.property.EnumToIntPropertyCodegen;
-import cn.featherfly.conversion.codegen.property.EnumToIntegerPropertyCodegen;
-import cn.featherfly.conversion.codegen.property.EnumToLongPropertyCodegen;
-import cn.featherfly.conversion.codegen.property.EnumToLongWrapperPropertyCodegen;
-import cn.featherfly.conversion.codegen.property.EnumToStringPropertyCodegen;
+import cn.featherfly.conversion.codegen.property.IterablePropertyCodegen;
 import cn.featherfly.conversion.codegen.property.LocalDateTimeToStringPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.LocalDateToStringPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.LocalTimeToStringPropertyCodegen;
@@ -45,7 +56,11 @@ public class BeanCodegenImpl implements BeanCodegen {
 
     private final Map<String, PropertyCodegen> propertyCodegenMap;
 
+    private final Map<String, ConvertorCodegen> convertorMap;
+
     private final int indentStart;
+
+    private boolean noConvertorException;
 
     /**
      * Instantiates a new bean codegen impl.
@@ -79,12 +94,154 @@ public class BeanCodegenImpl implements BeanCodegen {
      * @param propertyCodegenMap the property codegen map
      */
     public BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap) {
+        this(indentStart, propertyCodegenMap, Collections.emptyMap());
+    }
+
+    /**
+     * Instantiates a new bean codegen impl.
+     *
+     * @param indentStart the indent start
+     * @param propertyCodegenMap the property codegen map
+     * @param convertorMap the convertor map
+     */
+    public BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap,
+        Map<String, ConvertorCodegen> convertorMap) {
         super();
         this.indentStart = indentStart;
+        // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
         this.propertyCodegenMap = addTime(addSqlTimestamp(addSqlTime(addSqlDate(
             addDate(new ChainMapImpl<>())))));
         this.propertyCodegenMap.putAll(propertyCodegenMap);
+        // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
+        this.convertorMap = addTimeConvertor(addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(
+            addDateConvertor(new ChainMapImpl<>())))));
+        this.convertorMap.putAll(convertorMap);
     }
+
+    // ****************************************************************************************************************
+
+    private static ChainMap<String, ConvertorCodegen> addTimeConvertor(
+        ChainMap<String, ConvertorCodegen> convertorCodegens) {
+        return convertorCodegens
+            // java.time.LocalDateTime
+            .putChain(LocalDateTime.class.getName() + "#" + String.class.getName(),
+                new LocalDateTimeToStringConvertorCodegen())
+            .putChain(String.class.getName() + "#" + LocalDateTime.class.getName(),
+                new LocalDateTimeToStringConvertorCodegen(true))
+            // java.time.LocalDate
+            .putChain(LocalDate.class.getName() + "#" + String.class.getName(),
+                new LocalDateToStringConvertorCodegen())
+            .putChain(String.class.getName() + "#" + LocalDate.class.getName(),
+                new LocalDateToStringConvertorCodegen(true))
+            // java.time.LocalTime
+            .putChain(LocalTime.class.getName() + "#" + String.class.getName(),
+                new LocalTimeToStringConvertorCodegen())
+            .putChain(String.class.getName() + "#" + LocalTime.class.getName(),
+                new LocalTimeToStringConvertorCodegen(true));
+    }
+
+    private static ChainMap<String, ConvertorCodegen> addSqlTimeConvertor(
+        ChainMap<String, ConvertorCodegen> convertorCodegens) {
+        // java.sql.Time
+        return convertorCodegens.putChain(Time.class.getName() + "#" + String.class.getName(),
+            new DateToStringConvertorCodegen(Time.class, Dates.FORMAT_TIME))
+            .putChain(String.class.getName() + "#" + Time.class.getName(),
+                new DateToStringConvertorCodegen(Time.class, Dates.FORMAT_TIME, true))
+            //
+            .putChain(Time.class.getName() + "#" + long.class.getName(),
+                new DateToLongConvertorCodegen(Time.class))
+            .putChain(long.class.getName() + "#" + Time.class.getName(),
+                new DateToLongConvertorCodegen(Time.class, true))
+            //
+            .putChain(Time.class.getName() + "#" + Long.class.getName(),
+                new DateToLongWrapperConvertorCodegen(Time.class))
+            .putChain(Long.class.getName() + "#" + Time.class.getName(),
+                new DateToLongWrapperConvertorCodegen(Time.class, true))
+            //
+            .putChain(Time.class.getName() + "#" + LocalTime.class.getName(),
+                new TimeToLocalTimeConvertorCodegen())
+            .putChain(LocalTime.class.getName() + "#" + Time.class.getName(),
+                new TimeToLocalTimeConvertorCodegen(true));
+    }
+
+    private static ChainMap<String, ConvertorCodegen> addSqlTimestampConvertor(
+        ChainMap<String, ConvertorCodegen> convertorCodegens) {
+        // java.sql.Timestamp
+        return convertorCodegens.putChain(Timestamp.class.getName() + "#" + String.class.getName(),
+            new DateToStringConvertorCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME))
+            .putChain(String.class.getName() + "#" + Timestamp.class.getName(),
+                new DateToStringConvertorCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME, true))
+            //
+            .putChain(Timestamp.class.getName() + "#" + long.class.getName(),
+                new DateToLongConvertorCodegen(Timestamp.class))
+            .putChain(long.class.getName() + "#" + Timestamp.class.getName(),
+                new DateToLongConvertorCodegen(Timestamp.class, true))
+            //
+            .putChain(Timestamp.class.getName() + "#" + Long.class.getName(),
+                new DateToLongWrapperConvertorCodegen(Timestamp.class))
+            .putChain(Long.class.getName() + "#" + Timestamp.class.getName(),
+                new DateToLongWrapperConvertorCodegen(Timestamp.class, true))
+            //
+            .putChain(Timestamp.class.getName() + "#" + LocalDateTime.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(Timestamp.class))
+            .putChain(LocalDateTime.class.getName() + "#" + Timestamp.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(Timestamp.class, true));
+    }
+
+    private static ChainMap<String, ConvertorCodegen> addSqlDateConvertor(
+        ChainMap<String, ConvertorCodegen> convertorCodegens) {
+        // java.sql.Date
+        return convertorCodegens.putChain(java.sql.Date.class.getName() + "#" + String.class.getName(),
+            new DateToStringConvertorCodegen(java.sql.Date.class, Dates.FORMAT_DATE))
+            .putChain(String.class.getName() + "#" + java.sql.Date.class.getName(),
+                new DateToStringConvertorCodegen(java.sql.Date.class, Dates.FORMAT_DATE, true))
+            //
+            .putChain(java.sql.Date.class.getName() + "#" + long.class.getName(),
+                new DateToLongConvertorCodegen(java.sql.Date.class))
+            .putChain(long.class.getName() + "#" + java.sql.Date.class.getName(),
+                new DateToLongConvertorCodegen(java.sql.Date.class, true))
+            //
+            .putChain(java.sql.Date.class.getName() + "#" + Long.class.getName(),
+                new DateToLongWrapperConvertorCodegen(java.sql.Date.class))
+            .putChain(Long.class.getName() + "#" + java.sql.Date.class.getName(),
+                new DateToLongWrapperConvertorCodegen(java.sql.Date.class, true))
+            //
+            .putChain(java.sql.Date.class.getName() + "#" + LocalDate.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(java.sql.Date.class))
+            .putChain(LocalDate.class.getName() + "#" + java.sql.Date.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(java.sql.Date.class, true));
+    }
+
+    private static ChainMap<String, ConvertorCodegen> addDateConvertor(
+        ChainMap<String, ConvertorCodegen> convertorCodegens) {
+        // java.util.Date
+        return convertorCodegens.putChain(Date.class.getName() + "#" + String.class.getName(),
+            new DateToStringConvertorCodegen(Date.class, Dates.FORMAT_DATE_TIME))
+            .putChain(String.class.getName() + "#" + Date.class.getName(),
+                new DateToStringConvertorCodegen(Date.class, Dates.FORMAT_DATE_TIME, true))
+            //
+            .putChain(Date.class.getName() + "#" + long.class.getName(),
+                new DateToLongConvertorCodegen(Date.class))
+            .putChain(long.class.getName() + "#" + Date.class.getName(),
+                new DateToLongConvertorCodegen(Date.class, true))
+            //
+            .putChain(Date.class.getName() + "#" + Long.class.getName(),
+                new DateToLongWrapperConvertorCodegen(Date.class))
+            .putChain(Long.class.getName() + "#" + Date.class.getName(),
+                new DateToLongWrapperConvertorCodegen(Date.class, true))
+            //
+            .putChain(Date.class.getName() + "#" + LocalDateTime.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(Date.class))
+            .putChain(LocalDateTime.class.getName() + "#" + Date.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(Date.class, true))
+            //
+            .putChain(Date.class.getName() + "#" + LocalDate.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(Date.class))
+            .putChain(LocalDate.class.getName() + "#" + Date.class.getName(),
+                new DateToLocalDateTimeConvertorCodegen(Date.class, true));
+    }
+
+    // ****************************************************************************************************************
 
     private static ChainMap<String, PropertyCodegen> addTime(
         ChainMap<String, PropertyCodegen> propertyCodegens) {
@@ -205,66 +362,82 @@ public class BeanCodegenImpl implements BeanCodegen {
     }
 
     private PropertyCodegen getPropertyCodegen(ConvertibleProperty property) {
-        if (property.sourceType().name().equals(property.targetType().name())) {
+        if ((property.sourceType().elementType() == null || property.targetType().elementType() == null)
+            && property.sourceType().name().equals(property.targetType().name())) {
             return ASSIGN_PROPERTY_CODEGEN;
-        } else {
-            TypeMetadata st = property.sourceType();
-            TypeMetadata tt = property.targetType();
-            PropertyCodegen propertyCodegen = null;
-            if (st.isEnum() && tt.isEnum()) {
-                propertyCodegen = new EnumToEnumPropertyCodegen(CodegenUtils.getClassName(st.name()),
-                    CodegenUtils.getClassName(tt.name()));
-            } else if (st.isEnum()) {
-                propertyCodegen = getEnumToTarget(st, tt);
-            } else if (tt.isEnum()) {
-                propertyCodegen = getEnumFromTarget(st, tt);
-            }
-            if (propertyCodegen != null) {
-                return propertyCodegen;
-            }
         }
-        PropertyCodegen propertyCodegen =
-            propertyCodegenMap.get(property.sourceType().name() + "#" + property.targetType().name());
+        PropertyCodegen propertyCodegen = null;
+        TypeMetadata st = property.sourceType();
+        TypeMetadata tt = property.targetType();
+        if (st.isEnum() && tt.isEnum()) {
+            propertyCodegen = new EnumToEnumPropertyCodegen(CodegenUtils.getClassName(st.name()),
+                CodegenUtils.getClassName(tt.name()));
+        } else if (st.isEnum()) {
+            propertyCodegen = CodegenUtils.getEnumToTargetPropertyCodegen(st, tt);
+        } else if (tt.isEnum()) {
+            propertyCodegen = CodegenUtils.getEnumFromTargetPropertyCodegen(st, tt);
+        } else if (st.isArray() && tt.isArray()) {
+            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt), Iterables.ARRAY);
+        } else if (st.isIterable() && tt.isIterable()) {
+            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt), Iterables.LIST);
+        }
+        return getPropertyCodegen(property, propertyCodegen);
+    }
+
+    private PropertyCodegen getPropertyCodegen(ConvertibleProperty property, PropertyCodegen propertyCodegen) {
+        if (propertyCodegen != null) {
+            return propertyCodegen;
+        }
+        propertyCodegen = propertyCodegenMap.get(property.sourceType().name() + "#" + property.targetType().name());
         if (propertyCodegen == null) {
             propertyCodegen = propertyCodegenMap.get(property.targetType().name() + "#" + property.sourceType().name());
         }
-        if (propertyCodegen == null) {
-            throw new IllegalArgumentException(
-                Str.format("未找到对应类型{} {}的转换实现", property.sourceType().name(), property.targetType().name()));
+        if (propertyCodegen != null) {
+            return propertyCodegen;
         }
-        return propertyCodegen;
+
+        if (property.sourceType().name().startsWith("java") || property.sourceType().name().indexOf('.') == -1
+            || property.targetType().name().startsWith("java") || property.targetType().name().indexOf('.') == -1) {
+            if (noConvertorException) {
+                throw new IllegalArgumentException(Str.format("未找到转换属性{0}的转换器[{1} <-> {2}]",
+                    property.name(), property.sourceType().name(), property.targetType().name()));
+            }
+            return new CommentPropertyCodegen(property.sourceType().name(), property.targetType().name());
+        }
+        return new BeanToBeanPropertyCodegen(property.sourceType().name(), property.targetType().name());
     }
 
-    private PropertyCodegen getEnumToTarget(TypeMetadata st, TypeMetadata tt) {
-        String typeName = CodegenUtils.getClassName(st.name());
-        if (tt.name().equals(String.class.getName())) {
-            return new EnumToStringPropertyCodegen(typeName);
-        } else if (tt.name().equals(int.class.getName())) {
-            return new EnumToIntPropertyCodegen(typeName);
-        } else if (tt.name().equals(Integer.class.getName())) {
-            return new EnumToIntegerPropertyCodegen(typeName);
-        } else if (tt.name().equals(long.class.getName())) {
-            return new EnumToLongPropertyCodegen(typeName);
-        } else if (tt.name().equals(Long.class.getName())) {
-            return new EnumToLongWrapperPropertyCodegen(typeName);
+    private ConvertorCodegen getElementConvertorCodegen(TypeMetadata souceType, TypeMetadata targetType) {
+        if (souceType.elementType().name().equals(targetType.elementType().name())) {
+            return new DirectAssignConvertorCodegen(targetType.elementType().name());
         }
-        return null;
-    }
+        ConvertorCodegen convertorCodegen = null;
+        TypeMetadata st = souceType.elementType();
+        TypeMetadata tt = targetType.elementType();
+        if (st.isEnum() && tt.isEnum()) {
+            convertorCodegen = new EnumToEnumConvertorCodegen(CodegenUtils.getClassName(st.name()),
+                CodegenUtils.getClassName(tt.name()));
+        } else if (st.isEnum()) {
+            convertorCodegen = CodegenUtils.getEnumToTargetConvertorCodegen(st, tt);
+        } else if (tt.isEnum()) {
+            convertorCodegen = CodegenUtils.getEnumFromTargetConvertorCodegen(st, tt);
+        } else if (st.isArray() && tt.isArray()) {
+            throw new NotImplementedException("nested array is not implement");
+        } else if (st.isIterable() && tt.isIterable()) {
+            throw new NotImplementedException("nested iterable is not implement");
+        }
+        if (convertorCodegen != null) {
+            return convertorCodegen;
+        }
 
-    private PropertyCodegen getEnumFromTarget(TypeMetadata st, TypeMetadata tt) {
-        String typeName = CodegenUtils.getClassName(tt.name());
-        if (st.name().equals(String.class.getName())) {
-            return new EnumToStringPropertyCodegen(typeName, true);
-        } else if (st.name().equals(int.class.getName())) {
-            return new EnumToIntPropertyCodegen(typeName, true);
-        } else if (st.name().equals(Integer.class.getName())) {
-            return new EnumToIntegerPropertyCodegen(typeName, true);
-        } else if (st.name().equals(long.class.getName())) {
-            return new EnumToLongPropertyCodegen(typeName, true);
-        } else if (st.name().equals(Long.class.getName())) {
-            return new EnumToLongWrapperPropertyCodegen(typeName, true);
+        convertorCodegen = convertorMap.get(st.name() + "#" + tt.name());
+        if (convertorCodegen == null) {
+            convertorCodegen = convertorMap.get(tt.name() + "#" + st.name());
         }
-        return null;
+        if (convertorCodegen == null) {
+            convertorCodegen = new BeanToBeanConvertorCodegen(st.name(), tt.name());
+        }
+        return convertorCodegen;
     }
 
     private String getIndent(int size) {
@@ -296,10 +469,15 @@ public class BeanCodegenImpl implements BeanCodegen {
         src.append(indent2).append(targetObjectType).append(" ").append(targetObjectName).append(" = ").append("new ")
             .append(targetObjectType)
             .append("();\n");
+        if (method.isStatic()) {
+            src.append(indent2).append("if (").append(sourceObjectName).append(" == null) return ")
+                .append(targetObjectName).append(";\n");
+        }
         for (ConvertibleProperty prop : properties) {
             PropertyCodegen pc = getPropertyCodegen(prop);
-            src.append(indent2).append(pc.generateToTarget(prop.name(), sourceObjectName, targetObjectName))
-                .append(";\n");
+            for (String line : pc.generateToTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
+                src.append(indent2).append(line).append("\n");
+            }
         }
         src.append(indent2).append("return ").append(targetObjectName).append(";\n");
         src.append(indent).append("}");
@@ -323,21 +501,34 @@ public class BeanCodegenImpl implements BeanCodegen {
                 .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
                 .append(targetObjectName).append(") {\n");
         }
-        if (!method.isConstructor()) {
+        if (method.isConstructor()) {
+            src.append(indent2).append("if (").append(targetObjectName).append(" == null) return;\n");
+        } else {
             src.append(indent2).append(sourceObjectType).append(" ").append(sourceObjectName).append(" = ")
                 .append("new ")
                 .append(sourceObjectType)
                 .append("();\n");
+            src.append(indent2).append("if (").append(targetObjectName).append(" == null) return ")
+                .append(sourceObjectName).append(";\n");
         }
         for (ConvertibleProperty prop : properties) {
             PropertyCodegen pc = getPropertyCodegen(prop);
-            src.append(indent2).append(pc.generateFromTarget(prop.name(), sourceObjectName, targetObjectName))
-                .append(";\n");
+            for (String line : pc.generateFromTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
+                src.append(indent2).append(line).append("\n");
+            }
         }
         if (!method.isConstructor()) {
             src.append(indent2).append("return ").append(sourceObjectName).append(";\n");
         }
         src.append(indent).append("}");
         return src.toString();
+    }
+
+    public boolean isNoConvertorException() {
+        return noConvertorException;
+    }
+
+    public void setNoConvertorException(boolean noConvertorException) {
+        this.noConvertorException = noConvertorException;
     }
 }

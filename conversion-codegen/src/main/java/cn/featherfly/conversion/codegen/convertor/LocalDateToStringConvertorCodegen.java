@@ -4,16 +4,16 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
+import cn.featherfly.conversion.codegen.CodegenUtils;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
- * The Class LocalDateToStringConvertorCodegen.
+ * LocalDate to String convertor codegen.
  *
  * @author zhongj
  * @since 0.1.0
  */
-public class LocalDateToStringConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class LocalDateToStringConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     private final String format;
 
@@ -27,11 +27,32 @@ public class LocalDateToStringConvertorCodegen extends AbstractConvertible imple
     /**
      * Instantiates a new local date to string convertor codegen.
      *
+     * @param inverse the inverse
+     */
+    public LocalDateToStringConvertorCodegen(boolean inverse) {
+        this(null, inverse);
+    }
+
+    /**
+     * Instantiates a new local date to string convertor codegen.
+     *
      * @param <D> the generic type
      * @param format the format
      */
     public <D extends Date> LocalDateToStringConvertorCodegen(String format) {
-        super(LocalDate.class.getName(), long.class.getName());
+        super(LocalDate.class.getName(), CodegenUtils.getClassName(String.class));
+        this.format = format;
+    }
+
+    /**
+     * Instantiates a new local date to string convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param format the format
+     * @param inverse the inverse
+     */
+    public <D extends Date> LocalDateToStringConvertorCodegen(String format, boolean inverse) {
+        super(LocalDate.class.getName(), CodegenUtils.getClassName(String.class), inverse);
         this.format = format;
     }
 
@@ -40,11 +61,10 @@ public class LocalDateToStringConvertorCodegen extends AbstractConvertible imple
      */
     @Override
     public String generateToTarget(String source) {
-        if (format == null) {
-            return Str.format("cn.featherfly.common.lang.Dates.formatDate({0})", source);
-        } else {
-            return Str.format("cn.featherfly.common.lang.Dates.format({0}, \"{1}\")", source, format);
+        if (inverse) {
+            return parse(source);
         }
+        return format(source);
     }
 
     /**
@@ -52,10 +72,26 @@ public class LocalDateToStringConvertorCodegen extends AbstractConvertible imple
      */
     @Override
     public String generateToSource(String target) {
+        if (inverse) {
+            return format(target);
+        }
+        return parse(target);
+
+    }
+
+    private String format(String src) {
         if (format == null) {
-            return Str.format("cn.featherfly.common.lang.Dates.parseLocalDate({0})", target);
+            return Str.format("cn.featherfly.common.lang.Dates.formatDate({0})", src);
         } else {
-            return Str.format("java.time.LocalDate.parse({0}, \"{1}\")", target, format);
+            return Str.format("cn.featherfly.common.lang.Dates.format({0}, \"{1}\")", src, format);
+        }
+    }
+
+    private String parse(String src) {
+        if (format == null) {
+            return Str.format("cn.featherfly.common.lang.Dates.parseLocalDate({0})", src);
+        } else {
+            return Str.format("java.time.LocalDate.parse({0}, \"{1}\")", src, format);
         }
     }
 }

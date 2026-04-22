@@ -4,26 +4,34 @@ import java.sql.Time;
 import java.time.LocalTime;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
- * The type Date to LocalTime convertor codegen.
+ * The type Time to LocalTime convertor codegen.
  *
  * @author zhongj
  * @since 0.1.0
  */
-public class TimeToLocalTimeConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class TimeToLocalTimeConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     /**
-     * Instantiates a new Date to long convertor codegen.
+     * Instantiates a new time to local time convertor codegen.
      */
     public TimeToLocalTimeConvertorCodegen() {
         this(Time.class);
     }
 
     /**
-     * Instantiates a new Date to long convertor codegen.
+     * Instantiates a new time to local time convertor codegen.
+     *
+     * @param inverse the inverse
+     */
+    public TimeToLocalTimeConvertorCodegen(boolean inverse) {
+        this(Time.class, inverse);
+    }
+
+    /**
+     * Instantiates a new time to local time convertor codegen.
      *
      * @param sourceType the source type
      */
@@ -32,7 +40,17 @@ public class TimeToLocalTimeConvertorCodegen extends AbstractConvertible impleme
     }
 
     /**
-     * Instantiates a new Date to long convertor codegen.
+     * Instantiates a new time to local time convertor codegen.
+     *
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public TimeToLocalTimeConvertorCodegen(String sourceType, boolean inverse) {
+        super(sourceType, LocalTime.class.getName(), inverse);
+    }
+
+    /**
+     * Instantiates a new time to local time convertor codegen.
      *
      * @param <D> the generic type
      * @param sourceType the source type
@@ -42,11 +60,25 @@ public class TimeToLocalTimeConvertorCodegen extends AbstractConvertible impleme
     }
 
     /**
+     * Instantiates a new time to local time convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public <D extends Time> TimeToLocalTimeConvertorCodegen(Class<Time> sourceType, boolean inverse) {
+        this(sourceType.getName(), inverse);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String generateToTarget(String source) {
-        return Str.format("{0}.toLocalTime()", source);
+        if (inverse) {
+            return toTime(source);
+        }
+        return toLocalTime(source);
     }
 
     /**
@@ -54,6 +86,17 @@ public class TimeToLocalTimeConvertorCodegen extends AbstractConvertible impleme
      */
     @Override
     public String generateToSource(String target) {
-        return Str.format("java.sql.Time.valueOf({0})", target);
+        if (inverse) {
+            return toLocalTime(target);
+        }
+        return toTime(target);
+    }
+
+    private String toTime(String src) {
+        return Str.format("java.sql.Time.valueOf({0})", src);
+    }
+
+    private String toLocalTime(String src) {
+        return Str.format("{0}.toLocalTime()", src);
     }
 }

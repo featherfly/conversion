@@ -45,7 +45,7 @@ public class LocalDateToStringPropertyCodegen extends ConvertorPropertyCodegen i
      * @param inverse the inverse
      */
     public LocalDateToStringPropertyCodegen(String format, boolean inverse) {
-        super(LocalDate.class.getName(), String.class.getName(), new LocalDateToStringConvertorCodegen(format),
-            inverse);
+        super(LocalDate.class.getName(), String.class.getName(), new LocalDateToStringConvertorCodegen(format,
+            inverse));
     }
 }

@@ -1,7 +1,6 @@
 package cn.featherfly.conversion.codegen.convertor;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
@@ -10,7 +9,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class EnumToIntConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class EnumToIntConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     /**
      * Instantiates a new Enum to int convertor codegen.
@@ -21,13 +20,39 @@ public class EnumToIntConvertorCodegen extends AbstractConvertible implements Co
         super(sourceType, int.class.getName());
     }
 
-    @Override
-    public String generateToTarget(String source) {
-        return Str.format("{0}.ordinal()", source);
+    /**
+     * Instantiates a new enum to int convertor codegen.
+     *
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public EnumToIntConvertorCodegen(String sourceType, boolean inverse) {
+        super(sourceType, int.class.getName(), inverse);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateToTarget(String source) {
+        if (inverse) {
+            return toEnum(sourceType, source);
+        }
+        return toInt(source);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String generateToSource(String target) {
-        return Str.format("cn.featherfly.common.lang.Lang.toEnum({0}.class, {1})", sourceType, target);
+        if (inverse) {
+            return toInt(target);
+        }
+        return toEnum(sourceType, target);
+    }
+
+    private String toInt(String src) {
+        return Str.format("{0}.ordinal()", src);
     }
 }

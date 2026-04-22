@@ -45,8 +45,8 @@ public class LocalDateTimeToStringPropertyCodegen extends ConvertorPropertyCodeg
      * @param inverse the inverse
      */
     public LocalDateTimeToStringPropertyCodegen(String format, boolean inverse) {
-        super(LocalDateTime.class.getName(), String.class.getName(), new LocalDateTimeToStringConvertorCodegen(format),
-            inverse);
+        super(LocalDateTime.class.getName(), String.class.getName(), new LocalDateTimeToStringConvertorCodegen(format,
+            inverse));
     }
 
 }

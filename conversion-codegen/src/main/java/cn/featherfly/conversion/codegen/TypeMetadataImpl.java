@@ -8,6 +8,8 @@
  */
 package cn.featherfly.conversion.codegen;
 
+import cn.featherfly.common.lang.ClassUtils;
+
 /**
  * TypeMetadataImpl.
  *
@@ -17,7 +19,13 @@ public class TypeMetadataImpl implements TypeMetadata {
 
     private final String name;
 
-    private boolean isEnum;
+    private final TypeMetadata elementType;
+
+    private final boolean isEnum;
+
+    private final boolean isArray;
+
+    private final boolean isIterable;
 
     /**
      * Instantiates a new type metadata impl.
@@ -25,7 +33,20 @@ public class TypeMetadataImpl implements TypeMetadata {
      * @param type the type
      */
     public TypeMetadataImpl(Class<?> type) {
-        this(type.getName(), type.isEnum());
+        this(CodegenUtils.getClassName(type.getName()), type.isEnum(), type.isArray(),
+            ClassUtils.isParent(Iterable.class, type),
+            type.isArray() ? new TypeMetadataImpl(type.getComponentType()) : null);
+    }
+
+    /**
+     * Instantiates a new type metadata impl.
+     *
+     * @param type the type
+     * @param elementType the element type
+     */
+    public TypeMetadataImpl(Class<?> type, Class<?> elementType) {
+        this(CodegenUtils.getClassName(type.getName()), type.isEnum(), type.isArray(),
+            ClassUtils.isParent(Iterable.class, type), new TypeMetadataImpl(elementType));
     }
 
     /**
@@ -44,9 +65,49 @@ public class TypeMetadataImpl implements TypeMetadata {
      * @param isEnum the is enum
      */
     public TypeMetadataImpl(String name, boolean isEnum) {
+        this(name, isEnum, false, false);
+    }
+
+    /**
+     * Instantiates a new type metadata impl.
+     *
+     * @param name the name
+     * @param isArray the is array
+     * @param isIterable the is iterable
+     */
+    public TypeMetadataImpl(String name, boolean isArray, boolean isIterable) {
+        this(name, false, isArray, isIterable);
+    }
+
+    /**
+     * Instantiates a new type metadata impl.
+     *
+     * @param name the name
+     * @param isEnum the is enum
+     * @param isArray the is array
+     * @param isIterable the is iterable
+     */
+    public TypeMetadataImpl(String name, boolean isEnum, boolean isArray, boolean isIterable) {
+        this(name, isEnum, isArray, isIterable, null);
+    }
+
+    /**
+     * Instantiates a new type metadata impl.
+     *
+     * @param name the name
+     * @param elementType the element type
+     * @param isEnum the is enum
+     * @param isArray the is array
+     * @param isIterable the is iterable
+     */
+    public TypeMetadataImpl(String name, boolean isEnum, boolean isArray, boolean isIterable,
+        TypeMetadata elementType) {
         super();
         this.name = name;
+        this.elementType = elementType;
         this.isEnum = isEnum;
+        this.isArray = isArray;
+        this.isIterable = isIterable;
     }
 
     /**
@@ -63,6 +124,30 @@ public class TypeMetadataImpl implements TypeMetadata {
     @Override
     public boolean isEnum() {
         return isEnum;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isArray() {
+        return isArray;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isIterable() {
+        return isIterable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TypeMetadata elementType() {
+        return elementType;
     }
 
 }

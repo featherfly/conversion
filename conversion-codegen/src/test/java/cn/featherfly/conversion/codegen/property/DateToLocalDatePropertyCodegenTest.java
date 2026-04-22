@@ -29,9 +29,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(userDto.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(userDto.getCreateTime()));");
 
         DateToLocalDatePropertyCodegen localDateToDate =
             new DateToLocalDatePropertyCodegen("java.util.Date", true);
@@ -41,9 +41,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(userDto.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(userDto.getCreateTime()));");
 
         dateToLocalDate = new DateToLocalDatePropertyCodegen("java.util.Date");
         fromTarget = dateToLocalDate.generateFromTarget("createTime", "", "user");
@@ -52,9 +52,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(getCreateTime()));");
 
         localDateToDate = new DateToLocalDatePropertyCodegen("java.util.Date", true);
         fromTarget = localDateToDate.generateFromTarget("createTime", "", "user");
@@ -62,9 +62,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(getCreateTime()));");
     }
 
     @Test
@@ -77,9 +77,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(userDto.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(userDto.getCreateTime()));");
 
         DateToLocalDatePropertyCodegen localDateToDate =
             new DateToLocalDatePropertyCodegen("java.sql.Date", true);
@@ -89,9 +89,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(userDto.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(userDto.getCreateTime()));");
 
         dateToLocalDate = new DateToLocalDatePropertyCodegen("java.sql.Date");
         fromTarget = dateToLocalDate.generateFromTarget("createTime", null, "user");
@@ -99,9 +99,9 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(getCreateTime()));");
 
         localDateToDate = new DateToLocalDatePropertyCodegen(
             "java.sql.Date", true);
@@ -110,8 +110,8 @@ public class DateToLocalDatePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.toLocalDate(user.getCreateTime()));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(getCreateTime()))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.toDate(getCreateTime()));");
     }
 }

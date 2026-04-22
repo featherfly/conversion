@@ -9,6 +9,13 @@ package cn.featherfly.conversion.codegen;
 public interface ConvertorCodegen extends Convertible {
 
     /**
+     * Checks if is inverse.
+     *
+     * @return true, if is inverse
+     */
+    boolean isInverse();
+
+    /**
      * Generate to target.
      *
      * @param source the source

@@ -3,7 +3,7 @@ package cn.featherfly.conversion.codegen.convertor;
 import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
+import cn.featherfly.conversion.codegen.CodegenUtils;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
@@ -12,7 +12,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class DateToLongWrapperConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class DateToLongWrapperConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     /**
      * Instantiates a new Date to long wrapper convertor codegen.
@@ -24,11 +24,31 @@ public class DateToLongWrapperConvertorCodegen extends AbstractConvertible imple
     /**
      * Instantiates a new Date to long wrapper convertor codegen.
      *
+     * @param inverse the inverse
+     */
+    public DateToLongWrapperConvertorCodegen(boolean inverse) {
+        this(Date.class, inverse);
+    }
+
+    /**
+     * Instantiates a new Date to long wrapper convertor codegen.
+     *
      * @param <D> the generic type
      * @param sourceType the source type
      */
     public <D extends Date> DateToLongWrapperConvertorCodegen(Class<D> sourceType) {
-        super(sourceType.getName(), Long.class.getName());
+        this(CodegenUtils.getClassName(sourceType));
+    }
+
+    /**
+     * Instantiates a new Date to long wrapper convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public <D extends Date> DateToLongWrapperConvertorCodegen(Class<D> sourceType, boolean inverse) {
+        this(CodegenUtils.getClassName(sourceType), inverse);
     }
 
     /**
@@ -38,7 +58,18 @@ public class DateToLongWrapperConvertorCodegen extends AbstractConvertible imple
      * @param sourceType the source type
      */
     public <D extends Date> DateToLongWrapperConvertorCodegen(String sourceType) {
-        super(sourceType, Long.class.getName());
+        super(CodegenUtils.getClassName(sourceType), CodegenUtils.getClassName(Long.class));
+    }
+
+    /**
+     * Instantiates a new date to long wrapper convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public <D extends Date> DateToLongWrapperConvertorCodegen(String sourceType, boolean inverse) {
+        super(CodegenUtils.getClassName(sourceType), CodegenUtils.getClassName(Long.class), inverse);
     }
 
     /**
@@ -46,7 +77,10 @@ public class DateToLongWrapperConvertorCodegen extends AbstractConvertible imple
      */
     @Override
     public String generateToTarget(String source) {
-        return Str.format("{0}.getTime()", source);
+        if (inverse) {
+            return toDate(source);
+        }
+        return toLong(source);
     }
 
     /**
@@ -54,6 +88,17 @@ public class DateToLongWrapperConvertorCodegen extends AbstractConvertible imple
      */
     @Override
     public String generateToSource(String target) {
-        return Str.format("new {0}({1})", sourceType, target);
+        if (inverse) {
+            return toLong(target);
+        }
+        return toDate(target);
+    }
+
+    private String toDate(String src) {
+        return Str.format("new {0}({1})", sourceType, src);
+    }
+
+    private String toLong(String src) {
+        return Str.format("{0}.getTime()", src);
     }
 }

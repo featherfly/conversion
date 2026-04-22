@@ -1,7 +1,6 @@
 package cn.featherfly.conversion.codegen.convertor;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
@@ -10,7 +9,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class EnumToLongConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class EnumToLongConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     /**
      * Instantiates a new Enum to long convertor codegen.
@@ -21,13 +20,39 @@ public class EnumToLongConvertorCodegen extends AbstractConvertible implements C
         super(sourceType, long.class.getName());
     }
 
-    @Override
-    public String generateToTarget(String source) {
-        return Str.format("{0}.ordinal()", source);
+    /**
+     * Instantiates a new Enum to long convertor codegen.
+     *
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public EnumToLongConvertorCodegen(String sourceType, boolean inverse) {
+        super(sourceType, long.class.getName(), inverse);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateToTarget(String source) {
+        if (inverse) {
+            return toEnum(sourceType, source);
+        }
+        return toLong(source);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String generateToSource(String target) {
-        return Str.format("cn.featherfly.common.lang.Lang.toEnum({0}.class, {1})", sourceType, target);
+        if (inverse) {
+            return toLong(target);
+        }
+        return toEnum(sourceType, target);
+    }
+
+    private String toLong(String src) {
+        return Str.format("{0}.ordinal()", src);
     }
 }

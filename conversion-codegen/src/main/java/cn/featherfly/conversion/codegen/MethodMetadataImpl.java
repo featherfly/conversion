@@ -50,6 +50,9 @@ public class MethodMetadataImpl implements MethodMetadata {
      */
     public MethodMetadataImpl(String name, boolean isConstructor, boolean isStatic) {
         super();
+        if (isConstructor && isStatic) {
+            throw new IllegalArgumentException("isConstructor and isStatic both true");
+        }
         this.name = name;
         this.isStatic = isStatic;
         this.isConstructor = isConstructor;

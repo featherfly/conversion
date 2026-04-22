@@ -18,9 +18,16 @@ public interface TypeMetadata {
     /**
      * Name.
      *
-     * @return the string
+     * @return the name
      */
     String name();
+
+    /**
+     * array or iterable element type if is array or iterable.
+     *
+     * @return the element type
+     */
+    TypeMetadata elementType();
 
     /**
      * Checks if is enum.
@@ -28,4 +35,18 @@ public interface TypeMetadata {
      * @return true, if is enum
      */
     boolean isEnum();
+
+    /**
+     * Checks if is array.
+     *
+     * @return true, if is array
+     */
+    boolean isArray();
+
+    /**
+     * Checks if is iterable.
+     *
+     * @return true, if is iterable
+     */
+    boolean isIterable();
 }

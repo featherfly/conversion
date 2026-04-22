@@ -3,7 +3,6 @@ package cn.featherfly.conversion.codegen.convertor;
 import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
 import cn.featherfly.conversion.codegen.CodegenUtils;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
@@ -13,7 +12,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class DateToStringConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class DateToStringConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     private final String format;
 
@@ -29,12 +28,35 @@ public class DateToStringConvertorCodegen extends AbstractConvertible implements
     /**
      * Instantiates a new Date to long convertor codegen.
      *
+     * @param format the format
+     * @param inverse the inverse
+     */
+    public DateToStringConvertorCodegen(String format, boolean inverse) {
+        this(Date.class, format, inverse);
+    }
+
+    /**
+     * Instantiates a new Date to long convertor codegen.
+     *
      * @param <D> the generic type
      * @param sourceType the source type
      * @param format the format
      */
     public <D extends Date> DateToStringConvertorCodegen(String sourceType, String format) {
-        super(sourceType, long.class.getName());
+        super(CodegenUtils.getClassName(sourceType), long.class.getName());
+        this.format = format;
+    }
+
+    /**
+     * Instantiates a new Date to long convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param sourceType the source type
+     * @param format the format
+     * @param inverse the inverse
+     */
+    public <D extends Date> DateToStringConvertorCodegen(String sourceType, String format, boolean inverse) {
+        super(CodegenUtils.getClassName(sourceType), long.class.getName(), inverse);
         this.format = format;
     }
 
@@ -50,11 +72,26 @@ public class DateToStringConvertorCodegen extends AbstractConvertible implements
     }
 
     /**
+     * Instantiates a new Date to long convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param sourceType the source type
+     * @param format the format
+     * @param inverse the inverse
+     */
+    public <D extends Date> DateToStringConvertorCodegen(Class<D> sourceType, String format, boolean inverse) {
+        this(CodegenUtils.getClassName(sourceType), format, inverse);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public String generateToTarget(String source) {
-        return Str.format("cn.featherfly.common.lang.Dates.format({0}, \"{1}\")", source, format);
+        if (inverse) {
+            return parse(source);
+        }
+        return format(source, format);
     }
 
     /**
@@ -62,6 +99,13 @@ public class DateToStringConvertorCodegen extends AbstractConvertible implements
      */
     @Override
     public String generateToSource(String target) {
-        return Str.format("cn.featherfly.common.lang.Dates.parse({0}, \"{1}\")", target, format);
+        if (inverse) {
+            return format(target, format);
+        }
+        return parse(target);
+    }
+
+    private String parse(String src) {
+        return Str.format("cn.featherfly.common.lang.Dates.parse({0}, \"{1}\")", src, format);
     }
 }

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.AbstractConvertible;
+import cn.featherfly.conversion.codegen.CodegenUtils;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
@@ -13,7 +13,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class DateToLocalDateTimeConvertorCodegen extends AbstractConvertible implements ConvertorCodegen {
+public class DateToLocalDateTimeConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
 
     /**
      * Instantiates a new Date to long convertor codegen.
@@ -25,10 +25,29 @@ public class DateToLocalDateTimeConvertorCodegen extends AbstractConvertible imp
     /**
      * Instantiates a new Date to long convertor codegen.
      *
+     * @param inverse the inverse
+     */
+    public DateToLocalDateTimeConvertorCodegen(boolean inverse) {
+        this(Date.class, inverse);
+    }
+
+    /**
+     * Instantiates a new Date to long convertor codegen.
+     *
      * @param sourceType the source type
      */
     public DateToLocalDateTimeConvertorCodegen(String sourceType) {
-        super(sourceType, LocalDateTime.class.getName());
+        super(CodegenUtils.getClassName(sourceType), LocalDateTime.class.getName());
+    }
+
+    /**
+     * Instantiates a new Date to long convertor codegen.
+     *
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public DateToLocalDateTimeConvertorCodegen(String sourceType, boolean inverse) {
+        super(CodegenUtils.getClassName(sourceType), LocalDateTime.class.getName(), inverse);
     }
 
     /**
@@ -38,7 +57,18 @@ public class DateToLocalDateTimeConvertorCodegen extends AbstractConvertible imp
      * @param sourceType the source type
      */
     public <D extends Date> DateToLocalDateTimeConvertorCodegen(Class<D> sourceType) {
-        this(sourceType.getName());
+        this(CodegenUtils.getClassName(sourceType));
+    }
+
+    /**
+     * Instantiates a new Date to long convertor codegen.
+     *
+     * @param <D> the generic type
+     * @param sourceType the source type
+     * @param inverse the inverse
+     */
+    public <D extends Date> DateToLocalDateTimeConvertorCodegen(Class<D> sourceType, boolean inverse) {
+        this(CodegenUtils.getClassName(sourceType), inverse);
     }
 
     /**
@@ -46,7 +76,10 @@ public class DateToLocalDateTimeConvertorCodegen extends AbstractConvertible imp
      */
     @Override
     public String generateToTarget(String source) {
-        return Str.format("cn.featherfly.common.lang.Dates.toLocalDateTime({0})", source);
+        if (inverse) {
+            return toDate(source);
+        }
+        return toLocalDateTime(source);
     }
 
     /**
@@ -54,6 +87,17 @@ public class DateToLocalDateTimeConvertorCodegen extends AbstractConvertible imp
      */
     @Override
     public String generateToSource(String target) {
-        return Str.format("cn.featherfly.common.lang.Dates.toDate({0})", target);
+        if (inverse) {
+            return toLocalDateTime(target);
+        }
+        return toDate(target);
+    }
+
+    private String toDate(String src) {
+        return Str.format("cn.featherfly.common.lang.Dates.toDate({0})", src);
+    }
+
+    private String toLocalDateTime(String src) {
+        return Str.format("cn.featherfly.common.lang.Dates.toLocalDateTime({0})", src);
     }
 }

@@ -68,6 +68,6 @@ public class TimeToLocalTimePropertyCodegen extends ConvertorPropertyCodegen imp
      * @param inverse the inverse
      */
     public TimeToLocalTimePropertyCodegen(String sourceType, boolean inverse) {
-        super(sourceType, LocalDate.class.getName(), new TimeToLocalTimeConvertorCodegen(sourceType), inverse);
+        super(sourceType, LocalDate.class.getName(), new TimeToLocalTimeConvertorCodegen(sourceType, inverse));
     }
 }

@@ -39,7 +39,7 @@ public class DateToLocalDatePropertyCodegen extends ConvertorPropertyCodegen imp
      * @param sourceType the source type
      */
     public <D extends Date> DateToLocalDatePropertyCodegen(Class<D> sourceType) {
-        this(CodegenUtils.getClassName(sourceType), false);
+        this(CodegenUtils.getClassName(sourceType));
     }
 
     /**
@@ -69,6 +69,6 @@ public class DateToLocalDatePropertyCodegen extends ConvertorPropertyCodegen imp
      * @param inverse the inverse
      */
     public DateToLocalDatePropertyCodegen(String sourceType, boolean inverse) {
-        super(sourceType, LocalDate.class.getName(), new DateToLocalDateConvertorCodegen(sourceType), inverse);
+        super(sourceType, LocalDate.class.getName(), new DateToLocalDateConvertorCodegen(sourceType, inverse));
     }
 }

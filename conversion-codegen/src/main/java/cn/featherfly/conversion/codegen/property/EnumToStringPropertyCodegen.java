@@ -28,7 +28,7 @@ public class EnumToStringPropertyCodegen extends ConvertorPropertyCodegen implem
      * @param inverse the inverse
      */
     public EnumToStringPropertyCodegen(String sourceType, boolean inverse) {
-        super(sourceType, String.class.getName(), new EnumToStringConvertorCodegen(sourceType), inverse);
+        super(sourceType, String.class.getName(), new EnumToStringConvertorCodegen(sourceType, inverse));
     }
 
     /**

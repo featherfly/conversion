@@ -38,7 +38,7 @@ public class DateToLongWrapperPropertyCodegen extends ConvertorPropertyCodegen i
      * @param sourceType the source type
      */
     public <D extends Date> DateToLongWrapperPropertyCodegen(Class<D> sourceType) {
-        this(CodegenUtils.getClassName(sourceType), false);
+        this(CodegenUtils.getClassName(sourceType));
     }
 
     /**
@@ -68,6 +68,6 @@ public class DateToLongWrapperPropertyCodegen extends ConvertorPropertyCodegen i
      * @param inverse the inverse
      */
     public DateToLongWrapperPropertyCodegen(String sourceType, boolean inverse) {
-        super(sourceType, String.class.getName(), new DateToLongWrapperConvertorCodegen(sourceType), inverse);
+        super(sourceType, String.class.getName(), new DateToLongWrapperConvertorCodegen(sourceType, inverse));
     }
 }

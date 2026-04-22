@@ -29,9 +29,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
 
         DateToStringPropertyCodegen stringToDate =
             new DateToStringPropertyCodegen("java.util.Date", "yyyy-MM-dd HH:mm:ss", true);
@@ -41,9 +41,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
 
         dateToString = new DateToStringPropertyCodegen("java.util.Date", "yyyy-MM-dd HH:mm:ss");
         fromTarget = dateToString.generateFromTarget("createTime", "", "user");
@@ -52,9 +52,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
 
         stringToDate = new DateToStringPropertyCodegen("java.util.Date", "yyyy-MM-dd HH:mm:ss", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "", "user");
@@ -62,9 +62,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
     }
 
     @Test
@@ -77,9 +77,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
 
         DateToStringPropertyCodegen stringToDate =
             new DateToStringPropertyCodegen("java.sql.Date", "yyyy-MM-dd HH:mm:ss", true);
@@ -89,9 +89,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(userDto.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
 
         dateToString = new DateToStringPropertyCodegen("java.sql.Date", "yyyy-MM-dd HH:mm:ss");
         fromTarget = dateToString.generateFromTarget("createTime", null, "user");
@@ -99,9 +99,9 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.parse(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.format(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
 
         stringToDate = new DateToStringPropertyCodegen(
             "java.sql.Date", "yyyy-MM-dd HH:mm:ss", true);
@@ -110,8 +110,8 @@ public class DateToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(cn.featherfly.common.lang.Dates.format(user.getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"))");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(cn.featherfly.common.lang.Dates.parse(getCreateTime(), \"yyyy-MM-dd HH:mm:ss\"));");
     }
 }
