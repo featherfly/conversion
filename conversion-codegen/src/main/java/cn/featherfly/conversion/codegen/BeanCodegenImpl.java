@@ -376,10 +376,10 @@ public class BeanCodegenImpl implements BeanCodegen {
             propertyCodegen = CodegenUtils.getEnumToTargetPropertyCodegen(st, tt);
         } else if (tt.isEnum()) {
             propertyCodegen = CodegenUtils.getEnumFromTargetPropertyCodegen(st, tt);
-        } else if (st.isArray() && tt.isArray()) {
-            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt), Iterables.ARRAY);
-        } else if (st.isIterable() && tt.isIterable()) {
-            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt), Iterables.LIST);
+        } else if ((st.isArray() || st.isIterable()) && (tt.isArray() || tt.isIterable())) {
+            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt),
+                st.isArray() ? Iterables.ARRAY : Iterables.LIST,
+                tt.isArray() ? Iterables.ARRAY : Iterables.LIST);
         }
         return getPropertyCodegen(property, propertyCodegen);
     }
@@ -421,10 +421,8 @@ public class BeanCodegenImpl implements BeanCodegen {
             convertorCodegen = CodegenUtils.getEnumToTargetConvertorCodegen(st, tt);
         } else if (tt.isEnum()) {
             convertorCodegen = CodegenUtils.getEnumFromTargetConvertorCodegen(st, tt);
-        } else if (st.isArray() && tt.isArray()) {
-            throw new NotImplementedException("nested array is not implement");
-        } else if (st.isIterable() && tt.isIterable()) {
-            throw new NotImplementedException("nested iterable is not implement");
+        } else if ((st.isArray() || st.isIterable()) && (tt.isArray() || tt.isIterable())) {
+            throw new NotImplementedException("nested array or iterable is not implement");
         }
         if (convertorCodegen != null) {
             return convertorCodegen;

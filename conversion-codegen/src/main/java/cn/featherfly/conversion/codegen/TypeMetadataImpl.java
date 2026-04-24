@@ -45,8 +45,18 @@ public class TypeMetadataImpl implements TypeMetadata {
      * @param elementType the element type
      */
     public TypeMetadataImpl(Class<?> type, Class<?> elementType) {
+        this(type, new TypeMetadataImpl(elementType));
+    }
+
+    /**
+     * Instantiates a new type metadata impl.
+     *
+     * @param type the type
+     * @param elementType the element type
+     */
+    public TypeMetadataImpl(Class<?> type, TypeMetadata elementType) {
         this(CodegenUtils.getClassName(type.getName()), type.isEnum(), type.isArray(),
-            ClassUtils.isParent(Iterable.class, type), new TypeMetadataImpl(elementType));
+            ClassUtils.isParent(Iterable.class, type), elementType);
     }
 
     /**
@@ -95,10 +105,10 @@ public class TypeMetadataImpl implements TypeMetadata {
      * Instantiates a new type metadata impl.
      *
      * @param name the name
-     * @param elementType the element type
      * @param isEnum the is enum
      * @param isArray the is array
      * @param isIterable the is iterable
+     * @param elementType the element type
      */
     public TypeMetadataImpl(String name, boolean isEnum, boolean isArray, boolean isIterable,
         TypeMetadata elementType) {

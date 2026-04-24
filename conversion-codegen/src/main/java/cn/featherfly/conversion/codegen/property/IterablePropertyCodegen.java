@@ -80,16 +80,39 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         //            sb.append("        {targetName}.set{PropertyName}({newIterableObj});\n");
         //            sb.append("    }\n");
         //        }
-        if (targetIterable == Iterables.ARRAY) {
+
+        if (sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY) {
             sb.append("    for (int i = 0; i < {sourceGetter}.length; i++) {\n");
             sb.append("        {elementType} {elementName} = {sourceGetter}[i];\n");
             if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
                 sb.append("        if ({elementName} != null) {\n");
-                sb.append("            {targetName}.get{PropertyName}[i] = {elementConvertor};\n");
+                sb.append("            {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
                 sb.append("        }\n");
             } else {
-                sb.append("        {targetName}.get{PropertyName}[i] = {elementConvertor};\n");
+                sb.append("        {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
             }
+            sb.append("    }\n");
+        } else if (sourceIterable == Iterables.ARRAY) {
+            sb.append("    for (int i = 0; i < {sourceGetter}.length; i++) {\n");
+            sb.append("        {elementType} {elementName} = {sourceGetter}[i];\n");
+            if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
+                sb.append("        if ({elementName} != null) {\n    ");
+            }
+            sb.append("        {targetName}.get{PropertyName}().add({elementConvertor});\n");
+            if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
+                sb.append("        } else {\n");
+                sb.append("            {targetName}.get{PropertyName}().add({null});\n");
+                sb.append("        }\n");
+            }
+            sb.append("    }\n");
+
+        } else if (targetIterable == Iterables.ARRAY) {
+            sb.append("    int i = 0;\n");
+            sb.append("    for ({elementType} {elementName} : {sourceGetter}) {\n");
+            sb.append("        if ({elementName} != null) {\n");
+            sb.append("            {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
+            sb.append("        }\n");
+            sb.append("        i++;\n");
             sb.append("    }\n");
         } else {
             sb.append("    for ({elementType} {elementName} : {sourceGetter}) {\n");
@@ -102,13 +125,15 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         }
         sb.append("}");
 
+        boolean same = sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY
+            || sourceIterable != Iterables.ARRAY && targetIterable != Iterables.ARRAY;
         String elementName = propertyName + "Element";
         return Str.format(sb.toString(), new ChainMapImpl<String, Object>()
             .set("PropertyName", upperCasePropertyName) //
             .set("elementName", elementName) //
             .set("sourceGetter", sourceGetter) //
             .set("targetName", targetObjectName) //
-            .set("newIterableObj", getNewIterable(targetIterable, convertorCodegen.targetType(), sourceGetter))
+            .set("newIterableObj", getNewIterable(targetIterable, same, convertorCodegen.targetType(), sourceGetter))
             .set("elementType", convertorCodegen.sourceType()) //
             .set("elementConvertor", convertorCodegen.generateToTarget(elementName)) //
         );
@@ -143,7 +168,7 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         //        sb.append("        {sourceGetter}.clear();\n");
         //        sb.append("    }\n");
         sb.append("    {sourceSetter}({newIterableObj});\n");
-        if (targetIterable == Iterables.ARRAY) {
+        if (sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY) {
             sb.append("    for (int i = 0; i < {targetGetter}.length; i++) {\n");
             sb.append("        {elementType} {elementName} = {targetGetter}[i];\n");
             if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
@@ -152,6 +177,27 @@ public class IterablePropertyCodegen implements PropertyCodegen {
                 sb.append("        }\n");
             } else {
                 sb.append("        {sourceGetter}[i] = {elementConvertor};\n");
+            }
+            sb.append("    }\n");
+        } else if (sourceIterable == Iterables.ARRAY) {
+            sb.append("    int i = 0;\n");
+            sb.append("    for ({elementType} {elementName} : {targetGetter}) {\n");
+            sb.append("        if ({elementName} != null) {\n");
+            sb.append("            {sourceGetter}[i] = {elementConvertor};\n");
+            sb.append("        }\n");
+            sb.append("        i++;\n");
+            sb.append("    }\n");
+        } else if (targetIterable == Iterables.ARRAY) {
+            sb.append("    for (int i = 0; i < {targetGetter}.length; i++) {\n");
+            sb.append("        {elementType} {elementName} = {targetGetter}[i];\n");
+            if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
+                sb.append("        if ({elementName} != null) {\n    ");
+            }
+            sb.append("        {sourceGetter}.add({elementConvertor});\n");
+            if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
+                sb.append("        } else {\n");
+                sb.append("            {sourceGetter}.add(null);\n");
+                sb.append("        }\n");
             }
             sb.append("    }\n");
         } else {
@@ -166,6 +212,8 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         sb.append("}");
 
         String elementName = propertyName + "Element";
+        boolean same = sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY
+            || sourceIterable != Iterables.ARRAY && targetIterable != Iterables.ARRAY;
         return Str.format(sb.toString(), new ChainMapImpl<String, Object>()
             .set("PropertyName", upperCasePropertyName) //
             .set("elementName", elementName) //
@@ -174,17 +222,16 @@ public class IterablePropertyCodegen implements PropertyCodegen {
             .set("targetGetter", targetGetter) //
             .set("targetName", targetObjectName) //
             .set("newIterableObj",
-                getNewIterable(sourceIterable, convertorCodegen.sourceType(),
-                    targetGetter))
+                getNewIterable(sourceIterable, same, convertorCodegen.sourceType(), targetGetter))
             .set("elementType", convertorCodegen.targetType()) //
             .set("elementConvertor", convertorCodegen.generateToSource(elementName)) //
         );
     }
 
-    private String getNewIterable(Iterables iterable, String elementType, String iterableSource) {
+    private String getNewIterable(Iterables iterable, boolean sameIter, String elementType, String iterableSource) {
         switch (iterable) {
             case ARRAY:
-                return "new " + elementType + "[" + iterableSource + ".length]";
+                return "new " + elementType + "[" + iterableSource + "." + (sameIter ? "length" : "size()") + "]";
             case COLLECTION:
                 // 因为collection的不同实现可能是无序的(例如Set)，所以需要和转换对象使用一样的collection
                 return "cn.featherfly.common.lang.CollectionUtils.newCollection(" + iterableSource + ".getClass())";
@@ -193,10 +240,10 @@ public class IterablePropertyCodegen implements PropertyCodegen {
                 return "cn.featherfly.common.lang.CollectionUtils.newSet(" + iterableSource + ".getClass())";
             case LIST:
                 // 有序，直接使用ArrayList就能保证和转换对象一样的顺序
-                return "new java.util.ArrayList<>(" + iterableSource + ".size())";
+                return "new java.util.ArrayList<>(" + iterableSource + "." + (sameIter ? "size()" : "length") + ")";
             case QUEUE:
                 // 有序，直接使用ArrayDeque就能保证和转换对象一样的顺序
-                return "new java.util.ArrayDeque<>(" + iterableSource + ".size())";
+                return "new java.util.ArrayDeque<>(" + iterableSource + "." + (sameIter ? "size()" : "length") + ")";
             default:
                 throw new IllegalArgumentException("unsupport enum type: " + iterable.name());
         }
