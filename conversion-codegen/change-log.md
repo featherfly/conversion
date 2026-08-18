@@ -1,5 +1,5 @@
 
-# 0.1.0 2026
+# 0.1.0 2026-08-18
 
 1. 实现属性类型相同时直接赋值`userDto.setId(user.getId())`
 2. 实现属性类型为Enum与int|Integer,long|Long,String,Enum之间的转换设置
