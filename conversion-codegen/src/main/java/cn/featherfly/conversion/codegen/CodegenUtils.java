@@ -93,7 +93,7 @@ public final class CodegenUtils {
 
     public static PropertyCodegen getEnumToTargetPropertyCodegen(TypeMetadata st, TypeMetadata tt) {
         String typeName = CodegenUtils.getClassName(st.name());
-        if (tt.name().equals(String.class.getName())) {
+        if (tt.name().equals(String.class.getName()) || tt.name().equals(String.class.getSimpleName())) {
             return new EnumToStringPropertyCodegen(typeName);
         } else if (tt.name().equals(int.class.getName())) {
             return new EnumToIntPropertyCodegen(typeName);
@@ -109,7 +109,7 @@ public final class CodegenUtils {
 
     public static PropertyCodegen getEnumFromTargetPropertyCodegen(TypeMetadata st, TypeMetadata tt) {
         String typeName = CodegenUtils.getClassName(tt.name());
-        if (st.name().equals(String.class.getName())) {
+        if (st.name().equals(String.class.getName()) || st.name().equals(String.class.getSimpleName())) {
             return new EnumToStringPropertyCodegen(typeName, true);
         } else if (st.name().equals(int.class.getName())) {
             return new EnumToIntPropertyCodegen(typeName, true);
