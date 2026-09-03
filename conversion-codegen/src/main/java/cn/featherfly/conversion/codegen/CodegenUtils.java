@@ -97,11 +97,11 @@ public final class CodegenUtils {
             return new EnumToStringPropertyCodegen(typeName);
         } else if (tt.name().equals(int.class.getName())) {
             return new EnumToIntPropertyCodegen(typeName);
-        } else if (tt.name().equals(Integer.class.getName())) {
+        } else if (tt.name().equals(Integer.class.getName()) || tt.name().equals(Integer.class.getSimpleName())) {
             return new EnumToIntegerPropertyCodegen(typeName);
         } else if (tt.name().equals(long.class.getName())) {
             return new EnumToLongPropertyCodegen(typeName);
-        } else if (tt.name().equals(Long.class.getName())) {
+        } else if (tt.name().equals(Long.class.getName()) || tt.name().equals(Long.class.getSimpleName())) {
             return new EnumToLongWrapperPropertyCodegen(typeName);
         }
         return null;
@@ -113,11 +113,11 @@ public final class CodegenUtils {
             return new EnumToStringPropertyCodegen(typeName, true);
         } else if (st.name().equals(int.class.getName())) {
             return new EnumToIntPropertyCodegen(typeName, true);
-        } else if (st.name().equals(Integer.class.getName())) {
+        } else if (st.name().equals(Integer.class.getName()) || st.name().equals(Integer.class.getSimpleName())) {
             return new EnumToIntegerPropertyCodegen(typeName, true);
         } else if (st.name().equals(long.class.getName())) {
             return new EnumToLongPropertyCodegen(typeName, true);
-        } else if (st.name().equals(Long.class.getName())) {
+        } else if (st.name().equals(Long.class.getName()) || st.name().equals(Long.class.getSimpleName())) {
             return new EnumToLongWrapperPropertyCodegen(typeName, true);
         }
         return null;

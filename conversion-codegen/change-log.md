@@ -1,3 +1,8 @@
+# 0.1.2 2026-09-03
+
+1. 修复`CodegenUtils`的方法`getEnumToTargetPropertyCodegen`，`getEnumFromTargetPropertyCodegen`没有判断类型名称为Integer,Long的情况
+
+
 # 0.1.1 2026-09-03
 
 1. 修复`CodegenUtils`的方法`getEnumToTargetPropertyCodegen`，`getEnumFromTargetPropertyCodegen`没有判断类型名称为String的情况
