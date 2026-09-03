@@ -429,13 +429,14 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
 
         convertorCodegen = convertorMap.get(st.name() + "#" + tt.name());
-        if (convertorCodegen == null) {
-            convertorCodegen = convertorMap.get(tt.name() + "#" + st.name());
+        if (convertorCodegen != null) {
+            return convertorCodegen;
         }
-        if (convertorCodegen == null) {
-            convertorCodegen = new BeanToBeanConvertorCodegen(st.name(), tt.name());
+        convertorCodegen = convertorMap.get(tt.name() + "#" + st.name());
+        if (convertorCodegen != null) {
+            return convertorCodegen;
         }
-        return convertorCodegen;
+        return new BeanToBeanConvertorCodegen(st.name(), tt.name());
     }
 
     private String getIndent(int size) {

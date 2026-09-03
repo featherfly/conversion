@@ -33,7 +33,7 @@ public class TypeMetadataImpl implements TypeMetadata {
      * @param type the type
      */
     public TypeMetadataImpl(Class<?> type) {
-        this(CodegenUtils.getClassName(type.getName()), type.isEnum(), type.isArray(),
+        this(type.getName(), type.isEnum(), type.isArray(),
             ClassUtils.isParent(Iterable.class, type),
             type.isArray() ? new TypeMetadataImpl(type.getComponentType()) : null);
     }
@@ -55,7 +55,7 @@ public class TypeMetadataImpl implements TypeMetadata {
      * @param elementType the element type
      */
     public TypeMetadataImpl(Class<?> type, TypeMetadata elementType) {
-        this(CodegenUtils.getClassName(type.getName()), type.isEnum(), type.isArray(),
+        this(type.getName(), type.isEnum(), type.isArray(),
             ClassUtils.isParent(Iterable.class, type), elementType);
     }
 
