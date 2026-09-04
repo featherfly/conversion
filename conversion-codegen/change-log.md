@@ -1,4 +1,4 @@
-# 0.2.0
+# 0.2.0 2026-09-04
 
 1. 使用builder模式创建BeanCodegenImpl
     ```java

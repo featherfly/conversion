@@ -29,6 +29,7 @@ import cn.featherfly.conversion.codegen.convertor.LocalDateToStringConvertorCode
 import cn.featherfly.conversion.codegen.convertor.LocalTimeToStringConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.TimeToLocalTimeConvertorCodegen;
 import cn.featherfly.conversion.codegen.property.BeanToBeanPropertyCodegen;
+import cn.featherfly.conversion.codegen.property.BooleanDirectAssignPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.CommentPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToLocalDateTimePropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToLongPropertyCodegen;
@@ -109,8 +110,8 @@ public class BeanCodegenImpl implements BeanCodegen {
         super();
         this.indentStart = indentStart;
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
-        this.propertyCodegenMap = addTime(addSqlTimestamp(addSqlTime(addSqlDate(
-            addDate(new ChainMapImpl<>())))));
+        this.propertyCodegenMap = addPrimitiveType(addTime(addSqlTimestamp(addSqlTime(addSqlDate(
+            addDate(new ChainMapImpl<>()))))));
         this.propertyCodegenMap.putAll(propertyCodegenMap);
 
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
@@ -230,8 +231,47 @@ public class BeanCodegenImpl implements BeanCodegen {
 
     // ****************************************************************************************************************
 
-    private static ChainMap<String, PropertyCodegen> addTime(
+    private static ChainMap<String, PropertyCodegen> addPrimitiveType(
         ChainMap<String, PropertyCodegen> propertyCodegens) {
+        return propertyCodegens
+            // boolean <> Boolean
+            .putChain(getKey(Boolean.class, boolean.class),
+                new BooleanDirectAssignPropertyCodegen(Boolean.class, boolean.class))
+            .putChain(getKey(boolean.class, Boolean.class),
+                new BooleanDirectAssignPropertyCodegen(boolean.class, Boolean.class))
+            // byte <> Byte
+            .putChain(getKey(Byte.class, byte.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(byte.class, Byte.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            // short <> Short
+            .putChain(getKey(Short.class, short.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(short.class, Short.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            // int <> Integer
+            .putChain(getKey(Integer.class, int.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(int.class, Integer.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            // long <> Long
+            .putChain(getKey(Long.class, long.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(long.class, Long.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            // double <> Double
+            .putChain(getKey(Double.class, double.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(double.class, Double.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            // float <> Float
+            .putChain(getKey(Float.class, float.class),
+                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(float.class, Float.class),
+                ASSIGN_PROPERTY_CODEGEN);
+    }
+
+    private static ChainMap<String, PropertyCodegen> addTime(ChainMap<String, PropertyCodegen> propertyCodegens) {
         return propertyCodegens
             // java.time.LocalDateTime
             .putChain(getKey(LocalDateTime.class, String.class), new LocalDateTimeToStringPropertyCodegen())
