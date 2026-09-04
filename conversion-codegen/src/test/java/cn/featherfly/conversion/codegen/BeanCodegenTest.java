@@ -73,7 +73,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test
     public void testToTarget() {
-        BeanCodegen codegen = new BeanCodegenImpl();
+        BeanCodegen codegen = BeanCodegenImpl.builder().build();
         System.out.println(
             codegen.generateToTarget(new MethodMetadataImpl("toUser", false, false),
                 UserDto.class.getName(), User.class.getName(),
@@ -109,7 +109,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test
     public void testFromTarget() {
-        BeanCodegen codegen = new BeanCodegenImpl();
+        BeanCodegen codegen = BeanCodegenImpl.builder().build();
         System.out.println(
             codegen.generateFromTarget(new MethodMetadataImpl("UserDto", true),
                 UserDto.class.getName(), User.class.getName(),
@@ -160,7 +160,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testStaticMethdoSourceObjectNameNull() {
-        BeanCodegen codegen = new BeanCodegenImpl();
+        BeanCodegen codegen = BeanCodegenImpl.builder().build();
 
         System.out.println(
             codegen.generateToTarget(new MethodMetadataImpl("toUser", false, true),
@@ -170,7 +170,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testIsStaticAndIsConstructorBothTrue() {
-        BeanCodegen codegen = new BeanCodegenImpl();
+        BeanCodegen codegen = BeanCodegenImpl.builder().build();
 
         System.out.println(
             codegen.generateToTarget(new MethodMetadataImpl("toUser", true, true),
@@ -180,7 +180,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test
     public void roleDtoToTarget() {
-        BeanCodegen codegen = new BeanCodegenImpl();
+        BeanCodegen codegen = BeanCodegenImpl.builder().build();
         System.out.println(
             codegen.generateToTarget(new MethodMetadataImpl("toRole", false, false),
                 RoleDto.class.getName(), Role.class.getName(),
@@ -215,7 +215,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test
     public void roleDtoFromTarget() {
-        BeanCodegen codegen = new BeanCodegenImpl();
+        BeanCodegen codegen = BeanCodegenImpl.builder().build();
         System.out.println(
             codegen.generateFromTarget(new MethodMetadataImpl("RoleDto", true),
                 RoleDto.class.getName(), Role.class.getName(),
@@ -265,8 +265,7 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void noConvertorException() {
-        BeanCodegenImpl codegen = new BeanCodegenImpl();
-        codegen.setNoConvertorException(true);
+        BeanCodegen codegen = BeanCodegenImpl.builder().setNoConvertorException(true).build();
         System.out.println(
             codegen.generateFromTarget(new MethodMetadataImpl("RoleDto", true),
                 RoleDto.class.getName(), Role.class.getName(),

@@ -1,3 +1,11 @@
+# 0.2.0
+
+1. 使用builder模式创建BeanCodegenImpl
+    ```java
+    BeanCodegen beancodegen = BeanCodegenImpl.builder().build();
+    BeanCodegen codegen = BeanCodegenImpl.builder().setNoConvertorException(true).build();
+    ```
+
 # 0.1.3 2026-09-03
 
 1. 修复TypeMetadataImpl参数为Class时不再对类型名称进行处理（删除java.lang等）

@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,40 +62,40 @@ public class BeanCodegenImpl implements BeanCodegen {
 
     private boolean noConvertorException;
 
-    /**
-     * Instantiates a new bean codegen impl.
-     */
-    public BeanCodegenImpl() {
-        this(Collections.emptyMap());
-    }
-
-    /**
-     * Instantiates a new bean codegen impl.
-     *
-     * @param indentStart the indent start
-     */
-    public BeanCodegenImpl(int indentStart) {
-        this(indentStart, Collections.emptyMap());
-    }
-
-    /**
-     * Instantiates a new bean codegen impl.
-     *
-     * @param propertyCodegenMap the property codegen map
-     */
-    public BeanCodegenImpl(Map<String, PropertyCodegen> propertyCodegenMap) {
-        this(0, propertyCodegenMap);
-    }
-
-    /**
-     * Instantiates a new bean codegen impl.
-     *
-     * @param indentStart the indent start
-     * @param propertyCodegenMap the property codegen map
-     */
-    public BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap) {
-        this(indentStart, propertyCodegenMap, Collections.emptyMap());
-    }
+    //    /**
+    //     * Instantiates a new bean codegen impl.
+    //     */
+    //    public BeanCodegenImpl() {
+    //        this(Collections.emptyMap());
+    //    }
+    //
+    //    /**
+    //     * Instantiates a new bean codegen impl.
+    //     *
+    //     * @param indentStart the indent start
+    //     */
+    //    public BeanCodegenImpl(int indentStart) {
+    //        this(indentStart, Collections.emptyMap());
+    //    }
+    //
+    //    /**
+    //     * Instantiates a new bean codegen impl.
+    //     *
+    //     * @param propertyCodegenMap the property codegen map
+    //     */
+    //    public BeanCodegenImpl(Map<String, PropertyCodegen> propertyCodegenMap) {
+    //        this(0, propertyCodegenMap);
+    //    }
+    //
+    //    /**
+    //     * Instantiates a new bean codegen impl.
+    //     *
+    //     * @param indentStart the indent start
+    //     * @param propertyCodegenMap the property codegen map
+    //     */
+    //    public BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap) {
+    //        this(indentStart, propertyCodegenMap, Collections.emptyMap());
+    //    }
 
     /**
      * Instantiates a new bean codegen impl.
@@ -104,7 +104,7 @@ public class BeanCodegenImpl implements BeanCodegen {
      * @param propertyCodegenMap the property codegen map
      * @param convertorMap the convertor map
      */
-    public BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap,
+    private BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap,
         Map<String, ConvertorCodegen> convertorMap) {
         super();
         this.indentStart = indentStart;
@@ -112,6 +112,7 @@ public class BeanCodegenImpl implements BeanCodegen {
         this.propertyCodegenMap = addTime(addSqlTimestamp(addSqlTime(addSqlDate(
             addDate(new ChainMapImpl<>())))));
         this.propertyCodegenMap.putAll(propertyCodegenMap);
+
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
         this.convertorMap = addTimeConvertor(addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(
             addDateConvertor(new ChainMapImpl<>())))));
@@ -124,121 +125,107 @@ public class BeanCodegenImpl implements BeanCodegen {
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         return convertorCodegens
             // java.time.LocalDateTime
-            .putChain(LocalDateTime.class.getName() + "#" + String.class.getName(),
+            .putChain(getKey(LocalDateTime.class, String.class),
                 new LocalDateTimeToStringConvertorCodegen())
-            .putChain(String.class.getName() + "#" + LocalDateTime.class.getName(),
+            .putChain(getKey(String.class, LocalDateTime.class),
                 new LocalDateTimeToStringConvertorCodegen(true))
             // java.time.LocalDate
-            .putChain(LocalDate.class.getName() + "#" + String.class.getName(),
+            .putChain(getKey(LocalDate.class, String.class),
                 new LocalDateToStringConvertorCodegen())
-            .putChain(String.class.getName() + "#" + LocalDate.class.getName(),
+            .putChain(getKey(String.class, LocalDate.class),
                 new LocalDateToStringConvertorCodegen(true))
             // java.time.LocalTime
-            .putChain(LocalTime.class.getName() + "#" + String.class.getName(),
+            .putChain(getKey(LocalTime.class, String.class),
                 new LocalTimeToStringConvertorCodegen())
-            .putChain(String.class.getName() + "#" + LocalTime.class.getName(),
+            .putChain(getKey(String.class, LocalTime.class),
                 new LocalTimeToStringConvertorCodegen(true));
     }
 
     private static ChainMap<String, ConvertorCodegen> addSqlTimeConvertor(
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         // java.sql.Time
-        return convertorCodegens.putChain(Time.class.getName() + "#" + String.class.getName(),
-            new DateToStringConvertorCodegen(Time.class, Dates.FORMAT_TIME))
-            .putChain(String.class.getName() + "#" + Time.class.getName(),
+        return convertorCodegens
+            .putChain(getKey(Time.class, String.class), new DateToStringConvertorCodegen(Time.class, Dates.FORMAT_TIME))
+            .putChain(getKey(String.class, Time.class),
                 new DateToStringConvertorCodegen(Time.class, Dates.FORMAT_TIME, true))
             //
-            .putChain(Time.class.getName() + "#" + long.class.getName(),
-                new DateToLongConvertorCodegen(Time.class))
-            .putChain(long.class.getName() + "#" + Time.class.getName(),
-                new DateToLongConvertorCodegen(Time.class, true))
+            .putChain(getKey(Time.class, long.class), new DateToLongConvertorCodegen(Time.class))
+            .putChain(getKey(long.class, Time.class), new DateToLongConvertorCodegen(Time.class, true))
             //
-            .putChain(Time.class.getName() + "#" + Long.class.getName(),
-                new DateToLongWrapperConvertorCodegen(Time.class))
-            .putChain(Long.class.getName() + "#" + Time.class.getName(),
-                new DateToLongWrapperConvertorCodegen(Time.class, true))
+            .putChain(getKey(Time.class, Long.class), new DateToLongWrapperConvertorCodegen(Time.class))
+            .putChain(getKey(Long.class, Time.class), new DateToLongWrapperConvertorCodegen(Time.class, true))
             //
-            .putChain(Time.class.getName() + "#" + LocalTime.class.getName(),
-                new TimeToLocalTimeConvertorCodegen())
-            .putChain(LocalTime.class.getName() + "#" + Time.class.getName(),
-                new TimeToLocalTimeConvertorCodegen(true));
+            .putChain(getKey(Time.class, LocalTime.class), new TimeToLocalTimeConvertorCodegen())
+            .putChain(getKey(LocalTime.class, Time.class), new TimeToLocalTimeConvertorCodegen(true));
     }
 
     private static ChainMap<String, ConvertorCodegen> addSqlTimestampConvertor(
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         // java.sql.Timestamp
-        return convertorCodegens.putChain(Timestamp.class.getName() + "#" + String.class.getName(),
-            new DateToStringConvertorCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME))
-            .putChain(String.class.getName() + "#" + Timestamp.class.getName(),
+        return convertorCodegens
+            .putChain(getKey(Timestamp.class, String.class),
+                new DateToStringConvertorCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME))
+            .putChain(getKey(String.class, Timestamp.class),
                 new DateToStringConvertorCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME, true))
             //
-            .putChain(Timestamp.class.getName() + "#" + long.class.getName(),
-                new DateToLongConvertorCodegen(Timestamp.class))
-            .putChain(long.class.getName() + "#" + Timestamp.class.getName(),
-                new DateToLongConvertorCodegen(Timestamp.class, true))
+            .putChain(getKey(Timestamp.class, long.class), new DateToLongConvertorCodegen(Timestamp.class))
+            .putChain(getKey(long.class, Timestamp.class), new DateToLongConvertorCodegen(Timestamp.class, true))
             //
-            .putChain(Timestamp.class.getName() + "#" + Long.class.getName(),
-                new DateToLongWrapperConvertorCodegen(Timestamp.class))
-            .putChain(Long.class.getName() + "#" + Timestamp.class.getName(),
-                new DateToLongWrapperConvertorCodegen(Timestamp.class, true))
+            .putChain(getKey(Timestamp.class, Long.class), new DateToLongWrapperConvertorCodegen(Timestamp.class))
+            .putChain(getKey(Long.class, Timestamp.class), new DateToLongWrapperConvertorCodegen(Timestamp.class, true))
             //
-            .putChain(Timestamp.class.getName() + "#" + LocalDateTime.class.getName(),
+            .putChain(getKey(Timestamp.class, LocalDateTime.class),
                 new DateToLocalDateTimeConvertorCodegen(Timestamp.class))
-            .putChain(LocalDateTime.class.getName() + "#" + Timestamp.class.getName(),
+            .putChain(getKey(LocalDateTime.class, Timestamp.class),
                 new DateToLocalDateTimeConvertorCodegen(Timestamp.class, true));
     }
 
     private static ChainMap<String, ConvertorCodegen> addSqlDateConvertor(
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         // java.sql.Date
-        return convertorCodegens.putChain(java.sql.Date.class.getName() + "#" + String.class.getName(),
-            new DateToStringConvertorCodegen(java.sql.Date.class, Dates.FORMAT_DATE))
-            .putChain(String.class.getName() + "#" + java.sql.Date.class.getName(),
+        return convertorCodegens
+            .putChain(getKey(java.sql.Date.class, String.class),
+                new DateToStringConvertorCodegen(java.sql.Date.class, Dates.FORMAT_DATE))
+            .putChain(getKey(String.class, java.sql.Date.class),
                 new DateToStringConvertorCodegen(java.sql.Date.class, Dates.FORMAT_DATE, true))
             //
-            .putChain(java.sql.Date.class.getName() + "#" + long.class.getName(),
+            .putChain(getKey(java.sql.Date.class, long.class),
                 new DateToLongConvertorCodegen(java.sql.Date.class))
-            .putChain(long.class.getName() + "#" + java.sql.Date.class.getName(),
+            .putChain(getKey(long.class, java.sql.Date.class),
                 new DateToLongConvertorCodegen(java.sql.Date.class, true))
             //
-            .putChain(java.sql.Date.class.getName() + "#" + Long.class.getName(),
+            .putChain(getKey(java.sql.Date.class, Long.class),
                 new DateToLongWrapperConvertorCodegen(java.sql.Date.class))
-            .putChain(Long.class.getName() + "#" + java.sql.Date.class.getName(),
+            .putChain(getKey(Long.class, java.sql.Date.class),
                 new DateToLongWrapperConvertorCodegen(java.sql.Date.class, true))
             //
-            .putChain(java.sql.Date.class.getName() + "#" + LocalDate.class.getName(),
+            .putChain(getKey(java.sql.Date.class, LocalDate.class),
                 new DateToLocalDateTimeConvertorCodegen(java.sql.Date.class))
-            .putChain(LocalDate.class.getName() + "#" + java.sql.Date.class.getName(),
+            .putChain(getKey(LocalDate.class, java.sql.Date.class),
                 new DateToLocalDateTimeConvertorCodegen(java.sql.Date.class, true));
     }
 
     private static ChainMap<String, ConvertorCodegen> addDateConvertor(
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         // java.util.Date
-        return convertorCodegens.putChain(Date.class.getName() + "#" + String.class.getName(),
-            new DateToStringConvertorCodegen(Date.class, Dates.FORMAT_DATE_TIME))
-            .putChain(String.class.getName() + "#" + Date.class.getName(),
+        return convertorCodegens
+            .putChain(getKey(Date.class, String.class),
+                new DateToStringConvertorCodegen(Date.class, Dates.FORMAT_DATE_TIME))
+            .putChain(getKey(String.class, Date.class),
                 new DateToStringConvertorCodegen(Date.class, Dates.FORMAT_DATE_TIME, true))
             //
-            .putChain(Date.class.getName() + "#" + long.class.getName(),
-                new DateToLongConvertorCodegen(Date.class))
-            .putChain(long.class.getName() + "#" + Date.class.getName(),
-                new DateToLongConvertorCodegen(Date.class, true))
+            .putChain(getKey(Date.class, long.class), new DateToLongConvertorCodegen(Date.class))
+            .putChain(getKey(long.class, Date.class), new DateToLongConvertorCodegen(Date.class, true))
             //
-            .putChain(Date.class.getName() + "#" + Long.class.getName(),
-                new DateToLongWrapperConvertorCodegen(Date.class))
-            .putChain(Long.class.getName() + "#" + Date.class.getName(),
-                new DateToLongWrapperConvertorCodegen(Date.class, true))
+            .putChain(getKey(Date.class, Long.class), new DateToLongWrapperConvertorCodegen(Date.class))
+            .putChain(getKey(Long.class, Date.class), new DateToLongWrapperConvertorCodegen(Date.class, true))
             //
-            .putChain(Date.class.getName() + "#" + LocalDateTime.class.getName(),
-                new DateToLocalDateTimeConvertorCodegen(Date.class))
-            .putChain(LocalDateTime.class.getName() + "#" + Date.class.getName(),
+            .putChain(getKey(Date.class, LocalDateTime.class), new DateToLocalDateTimeConvertorCodegen(Date.class))
+            .putChain(getKey(LocalDateTime.class, Date.class),
                 new DateToLocalDateTimeConvertorCodegen(Date.class, true))
             //
-            .putChain(Date.class.getName() + "#" + LocalDate.class.getName(),
-                new DateToLocalDateTimeConvertorCodegen(Date.class))
-            .putChain(LocalDate.class.getName() + "#" + Date.class.getName(),
-                new DateToLocalDateTimeConvertorCodegen(Date.class, true));
+            .putChain(getKey(Date.class, LocalDate.class), new DateToLocalDateTimeConvertorCodegen(Date.class))
+            .putChain(getKey(LocalDate.class, Date.class), new DateToLocalDateTimeConvertorCodegen(Date.class, true));
     }
 
     // ****************************************************************************************************************
@@ -247,118 +234,105 @@ public class BeanCodegenImpl implements BeanCodegen {
         ChainMap<String, PropertyCodegen> propertyCodegens) {
         return propertyCodegens
             // java.time.LocalDateTime
-            .putChain(LocalDateTime.class.getName() + "#" + String.class.getName(),
-                new LocalDateTimeToStringPropertyCodegen())
-            .putChain(String.class.getName() + "#" + LocalDateTime.class.getName(),
-                new LocalDateTimeToStringPropertyCodegen(true))
+            .putChain(getKey(LocalDateTime.class, String.class), new LocalDateTimeToStringPropertyCodegen())
+            .putChain(getKey(String.class, LocalDateTime.class), new LocalDateTimeToStringPropertyCodegen(true))
             // java.time.LocalDate
-            .putChain(LocalDate.class.getName() + "#" + String.class.getName(),
-                new LocalDateToStringPropertyCodegen())
-            .putChain(String.class.getName() + "#" + LocalDate.class.getName(),
-                new LocalDateToStringPropertyCodegen(true))
+            .putChain(getKey(LocalDate.class, String.class), new LocalDateToStringPropertyCodegen())
+            .putChain(getKey(String.class, LocalDate.class), new LocalDateToStringPropertyCodegen(true))
             // java.time.LocalTime
-            .putChain(LocalTime.class.getName() + "#" + String.class.getName(),
-                new LocalTimeToStringPropertyCodegen())
-            .putChain(String.class.getName() + "#" + LocalTime.class.getName(),
-                new LocalTimeToStringPropertyCodegen(true));
+            .putChain(getKey(LocalTime.class, String.class), new LocalTimeToStringPropertyCodegen())
+            .putChain(getKey(String.class, LocalTime.class), new LocalTimeToStringPropertyCodegen(true));
     }
 
     private static ChainMap<String, PropertyCodegen> addSqlTime(ChainMap<String, PropertyCodegen> propertyCodegens) {
         // java.sql.Time
-        return propertyCodegens.putChain(Time.class.getName() + "#" + String.class.getName(),
-            new DateToStringPropertyCodegen(Time.class, Dates.FORMAT_TIME))
-            .putChain(String.class.getName() + "#" + Time.class.getName(),
+        return propertyCodegens
+            .putChain(getKey(Time.class, String.class), new DateToStringPropertyCodegen(Time.class, Dates.FORMAT_TIME))
+            .putChain(getKey(String.class, Time.class),
                 new DateToStringPropertyCodegen(Time.class, Dates.FORMAT_TIME, true))
             //
-            .putChain(Time.class.getName() + "#" + long.class.getName(),
-                new DateToLongPropertyCodegen(Time.class))
-            .putChain(long.class.getName() + "#" + Time.class.getName(),
-                new DateToLongPropertyCodegen(Time.class, true))
+            .putChain(getKey(Time.class, long.class), new DateToLongPropertyCodegen(Time.class))
+            .putChain(getKey(long.class, Time.class), new DateToLongPropertyCodegen(Time.class, true))
             //
-            .putChain(Time.class.getName() + "#" + Long.class.getName(),
-                new DateToLongWrapperPropertyCodegen(Time.class))
-            .putChain(Long.class.getName() + "#" + Time.class.getName(),
-                new DateToLongWrapperPropertyCodegen(Time.class, true))
+            .putChain(getKey(Time.class, Long.class), new DateToLongWrapperPropertyCodegen(Time.class))
+            .putChain(getKey(Long.class, Time.class), new DateToLongWrapperPropertyCodegen(Time.class, true))
             //
-            .putChain(Time.class.getName() + "#" + LocalTime.class.getName(),
-                new TimeToLocalTimePropertyCodegen())
-            .putChain(LocalTime.class.getName() + "#" + Time.class.getName(),
-                new TimeToLocalTimePropertyCodegen(true));
+            .putChain(getKey(Time.class, LocalTime.class), new TimeToLocalTimePropertyCodegen())
+            .putChain(getKey(LocalTime.class, Time.class), new TimeToLocalTimePropertyCodegen(true));
     }
 
     private static ChainMap<String, PropertyCodegen> addSqlTimestamp(
         ChainMap<String, PropertyCodegen> propertyCodegens) {
         // java.sql.Timestamp
-        return propertyCodegens.putChain(Timestamp.class.getName() + "#" + String.class.getName(),
-            new DateToStringPropertyCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME))
-            .putChain(String.class.getName() + "#" + Timestamp.class.getName(),
+        return propertyCodegens
+            .putChain(getKey(Timestamp.class, String.class),
+                new DateToStringPropertyCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME))
+            .putChain(getKey(String.class, Timestamp.class),
                 new DateToStringPropertyCodegen(Timestamp.class, Dates.FORMAT_DATE_TIME, true))
             //
-            .putChain(Timestamp.class.getName() + "#" + long.class.getName(),
-                new DateToLongPropertyCodegen(Timestamp.class))
-            .putChain(long.class.getName() + "#" + Timestamp.class.getName(),
-                new DateToLongPropertyCodegen(Timestamp.class, true))
+            .putChain(getKey(Timestamp.class, long.class), new DateToLongPropertyCodegen(Timestamp.class))
+            .putChain(getKey(long.class, Timestamp.class), new DateToLongPropertyCodegen(Timestamp.class, true))
             //
-            .putChain(Timestamp.class.getName() + "#" + Long.class.getName(),
-                new DateToLongWrapperPropertyCodegen(Timestamp.class))
-            .putChain(Long.class.getName() + "#" + Timestamp.class.getName(),
-                new DateToLongWrapperPropertyCodegen(Timestamp.class, true))
+            .putChain(getKey(Timestamp.class, Long.class), new DateToLongWrapperPropertyCodegen(Timestamp.class))
+            .putChain(getKey(Long.class, Timestamp.class), new DateToLongWrapperPropertyCodegen(Timestamp.class, true))
             //
-            .putChain(Timestamp.class.getName() + "#" + LocalDateTime.class.getName(),
+            .putChain(getKey(Timestamp.class, LocalDateTime.class),
                 new DateToLocalDateTimePropertyCodegen(Timestamp.class))
-            .putChain(LocalDateTime.class.getName() + "#" + Timestamp.class.getName(),
+            .putChain(getKey(LocalDateTime.class, Timestamp.class),
                 new DateToLocalDateTimePropertyCodegen(Timestamp.class, true));
     }
 
     private static ChainMap<String, PropertyCodegen> addSqlDate(ChainMap<String, PropertyCodegen> propertyCodegens) {
         // java.sql.Date
-        return propertyCodegens.putChain(java.sql.Date.class.getName() + "#" + String.class.getName(),
-            new DateToStringPropertyCodegen(java.sql.Date.class, Dates.FORMAT_DATE))
-            .putChain(String.class.getName() + "#" + java.sql.Date.class.getName(),
+        return propertyCodegens
+            .putChain(getKey(java.sql.Date.class, String.class),
+                new DateToStringPropertyCodegen(java.sql.Date.class, Dates.FORMAT_DATE))
+            .putChain(getKey(String.class, java.sql.Date.class),
                 new DateToStringPropertyCodegen(java.sql.Date.class, Dates.FORMAT_DATE, true))
             //
-            .putChain(java.sql.Date.class.getName() + "#" + long.class.getName(),
+            .putChain(getKey(java.sql.Date.class, long.class),
                 new DateToLongPropertyCodegen(java.sql.Date.class))
-            .putChain(long.class.getName() + "#" + java.sql.Date.class.getName(),
+            .putChain(getKey(long.class, java.sql.Date.class),
                 new DateToLongPropertyCodegen(java.sql.Date.class, true))
             //
-            .putChain(java.sql.Date.class.getName() + "#" + Long.class.getName(),
+            .putChain(getKey(java.sql.Date.class, Long.class),
                 new DateToLongWrapperPropertyCodegen(java.sql.Date.class))
-            .putChain(Long.class.getName() + "#" + java.sql.Date.class.getName(),
+            .putChain(getKey(Long.class, java.sql.Date.class),
                 new DateToLongWrapperPropertyCodegen(java.sql.Date.class, true))
             //
-            .putChain(java.sql.Date.class.getName() + "#" + LocalDate.class.getName(),
+            .putChain(getKey(java.sql.Date.class, LocalDate.class),
                 new DateToLocalDateTimePropertyCodegen(java.sql.Date.class))
-            .putChain(LocalDate.class.getName() + "#" + java.sql.Date.class.getName(),
+            .putChain(getKey(LocalDate.class, java.sql.Date.class),
                 new DateToLocalDateTimePropertyCodegen(java.sql.Date.class, true));
     }
 
     private static ChainMap<String, PropertyCodegen> addDate(ChainMap<String, PropertyCodegen> propertyCodegens) {
         // java.util.Date
-        return propertyCodegens.putChain(Date.class.getName() + "#" + String.class.getName(),
-            new DateToStringPropertyCodegen(Date.class, Dates.FORMAT_DATE_TIME))
-            .putChain(String.class.getName() + "#" + Date.class.getName(),
+        return propertyCodegens
+            .putChain(getKey(Date.class, String.class),
+                new DateToStringPropertyCodegen(Date.class, Dates.FORMAT_DATE_TIME))
+            .putChain(getKey(String.class, Date.class),
                 new DateToStringPropertyCodegen(Date.class, Dates.FORMAT_DATE_TIME, true))
             //
-            .putChain(Date.class.getName() + "#" + long.class.getName(),
-                new DateToLongPropertyCodegen(Date.class))
-            .putChain(long.class.getName() + "#" + Date.class.getName(),
-                new DateToLongPropertyCodegen(Date.class, true))
+            .putChain(getKey(Date.class, long.class), new DateToLongPropertyCodegen(Date.class))
+            .putChain(getKey(long.class, Date.class), new DateToLongPropertyCodegen(Date.class, true))
             //
-            .putChain(Date.class.getName() + "#" + Long.class.getName(),
-                new DateToLongWrapperPropertyCodegen(Date.class))
-            .putChain(Long.class.getName() + "#" + Date.class.getName(),
-                new DateToLongWrapperPropertyCodegen(Date.class, true))
+            .putChain(getKey(Date.class, Long.class), new DateToLongWrapperPropertyCodegen(Date.class))
+            .putChain(getKey(Long.class, Date.class), new DateToLongWrapperPropertyCodegen(Date.class, true))
             //
-            .putChain(Date.class.getName() + "#" + LocalDateTime.class.getName(),
-                new DateToLocalDateTimePropertyCodegen(Date.class))
-            .putChain(LocalDateTime.class.getName() + "#" + Date.class.getName(),
-                new DateToLocalDateTimePropertyCodegen(Date.class, true))
+            .putChain(getKey(Date.class, LocalDateTime.class), new DateToLocalDateTimePropertyCodegen(Date.class))
+            .putChain(getKey(LocalDateTime.class, Date.class), new DateToLocalDateTimePropertyCodegen(Date.class, true))
             //
-            .putChain(Date.class.getName() + "#" + LocalDate.class.getName(),
-                new DateToLocalDateTimePropertyCodegen(Date.class))
-            .putChain(LocalDate.class.getName() + "#" + Date.class.getName(),
-                new DateToLocalDateTimePropertyCodegen(Date.class, true));
+            .putChain(getKey(Date.class, LocalDate.class), new DateToLocalDateTimePropertyCodegen(Date.class))
+            .putChain(getKey(LocalDate.class, Date.class), new DateToLocalDateTimePropertyCodegen(Date.class, true));
+    }
+
+    private static String getKey(Class<?> source, Class<?> target) {
+        return getKey(source.getName(), target.getName());
+    }
+
+    private static String getKey(String source, String target) {
+        return source + "#" + target;
     }
 
     private PropertyCodegen getPropertyCodegen(ConvertibleProperty property) {
@@ -388,9 +362,10 @@ public class BeanCodegenImpl implements BeanCodegen {
         if (propertyCodegen != null) {
             return propertyCodegen;
         }
-        propertyCodegen = propertyCodegenMap.get(property.sourceType().name() + "#" + property.targetType().name());
+        propertyCodegen = propertyCodegenMap.get(getKey(property.sourceType().name(), property.targetType().name()));
         if (propertyCodegen == null) {
-            propertyCodegen = propertyCodegenMap.get(property.targetType().name() + "#" + property.sourceType().name());
+            propertyCodegen =
+                propertyCodegenMap.get(getKey(property.targetType().name(), property.sourceType().name()));
         }
         if (propertyCodegen != null) {
             return propertyCodegen;
@@ -428,11 +403,11 @@ public class BeanCodegenImpl implements BeanCodegen {
             return convertorCodegen;
         }
 
-        convertorCodegen = convertorMap.get(st.name() + "#" + tt.name());
+        convertorCodegen = convertorMap.get(getKey(st.name(), tt.name()));
         if (convertorCodegen != null) {
             return convertorCodegen;
         }
-        convertorCodegen = convertorMap.get(tt.name() + "#" + st.name());
+        convertorCodegen = convertorMap.get(getKey(tt.name(), st.name()));
         if (convertorCodegen != null) {
             return convertorCodegen;
         }
@@ -527,7 +502,46 @@ public class BeanCodegenImpl implements BeanCodegen {
         return noConvertorException;
     }
 
-    public void setNoConvertorException(boolean noConvertorException) {
-        this.noConvertorException = noConvertorException;
+    public static BeanCodegenBuilder builder() {
+        return new BeanCodegenBuilder();
+    }
+
+    public static class BeanCodegenBuilder {
+
+        private Map<String, PropertyCodegen> propertyCodegenMap = new HashMap<>(0);
+
+        private Map<String, ConvertorCodegen> convertorMap = new HashMap<>(0);
+
+        private int indentStart;
+
+        private boolean noConvertorException;
+
+        public BeanCodegenBuilder setIndentStart(int indentStart) {
+            this.indentStart = indentStart;
+            return this;
+        }
+
+        public BeanCodegenBuilder setNoConvertorException(boolean noConvertorException) {
+            this.noConvertorException = noConvertorException;
+            return this;
+        }
+
+        public BeanCodegenBuilder addPropertyCodegen(Class<?> source, Class<?> target,
+            PropertyCodegen propertyCodegen) {
+            propertyCodegenMap.put(getKey(source, target), propertyCodegen);
+            return this;
+        }
+
+        public BeanCodegenBuilder addConvertorCodegen(Class<?> source, Class<?> target,
+            ConvertorCodegen convertorCodegen) {
+            convertorMap.put(getKey(source, target), convertorCodegen);
+            return this;
+        }
+
+        public BeanCodegen build() {
+            BeanCodegenImpl beanCodegen = new BeanCodegenImpl(indentStart, propertyCodegenMap, convertorMap);
+            beanCodegen.noConvertorException = noConvertorException;
+            return beanCodegen;
+        }
     }
 }
