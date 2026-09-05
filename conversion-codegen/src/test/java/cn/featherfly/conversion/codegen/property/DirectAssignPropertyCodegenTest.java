@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 public class DirectAssignPropertyCodegenTest {
 
     @Test
-    public void test() {
+    public void assignProperty() {
         DirectAssignPropertyCodegen codegen = new DirectAssignPropertyCodegen();
 
         System.out.println(codegen.generateFromTarget("id", "userDto", "user"));

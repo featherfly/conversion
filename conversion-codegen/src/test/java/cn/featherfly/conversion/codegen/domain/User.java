@@ -79,6 +79,18 @@ public class User {
 
     private Long interests;
 
+    private int int2Integer;
+
+    private long long2Long;
+
+    private byte byte2Byte;
+
+    private short short2Short;
+
+    private double double2Double;
+
+    private float float2Float;
+
     public String getEweChatUserId() {
         return eweChatUserId;
     }
@@ -88,7 +100,7 @@ public class User {
     }
 
     //	@JsonIgnore
-    private Boolean available;
+    private boolean available;
 
     //	@JsonIgnore
     private Date createTime;
@@ -491,7 +503,7 @@ public class User {
      *
      * @return the available
      */
-    public Boolean getAvailable() {
+    public boolean isAvailable() {
         return available;
     }
 
@@ -500,7 +512,7 @@ public class User {
      *
      * @param available the available
      */
-    public void setAvailable(Boolean available) {
+    public void setAvailable(boolean available) {
         this.available = available;
     }
 
@@ -921,6 +933,114 @@ public class User {
      */
     public void setSmokingAge(Integer smokingAge) {
         this.smokingAge = smokingAge;
+    }
+
+    /**
+     * get int2Integer value
+     *
+     * @return int2Integer
+     */
+    public int getInt2Integer() {
+        return int2Integer;
+    }
+
+    /**
+     * set int2Integer value
+     *
+     * @param int2Integer int2Integer
+     */
+    public void setInt2Integer(int int2Integer) {
+        this.int2Integer = int2Integer;
+    }
+
+    /**
+     * get long2Long value
+     *
+     * @return long2Long
+     */
+    public long getLong2Long() {
+        return long2Long;
+    }
+
+    /**
+     * set long2Long value
+     *
+     * @param long2Long long2Long
+     */
+    public void setLong2Long(long long2Long) {
+        this.long2Long = long2Long;
+    }
+
+    /**
+     * get byte2Byte value
+     *
+     * @return byte2Byte
+     */
+    public byte getByte2Byte() {
+        return byte2Byte;
+    }
+
+    /**
+     * set byte2Byte value
+     *
+     * @param byte2Byte byte2Byte
+     */
+    public void setByte2Byte(byte byte2Byte) {
+        this.byte2Byte = byte2Byte;
+    }
+
+    /**
+     * get short2Short value
+     *
+     * @return short2Short
+     */
+    public short getShort2Short() {
+        return short2Short;
+    }
+
+    /**
+     * set short2Short value
+     *
+     * @param short2Short short2Short
+     */
+    public void setShort2Short(short short2Short) {
+        this.short2Short = short2Short;
+    }
+
+    /**
+     * get double2Double value
+     *
+     * @return double2Double
+     */
+    public double getDouble2Double() {
+        return double2Double;
+    }
+
+    /**
+     * set double2Double value
+     *
+     * @param double2Double double2Double
+     */
+    public void setDouble2Double(double double2Double) {
+        this.double2Double = double2Double;
+    }
+
+    /**
+     * get float2Float value
+     *
+     * @return float2Float
+     */
+    public float getFloat2Float() {
+        return float2Float;
+    }
+
+    /**
+     * set float2Float value
+     *
+     * @param float2Float float2Float
+     */
+    public void setFloat2Float(float float2Float) {
+        this.float2Float = float2Float;
     }
 
     public enum Gender {

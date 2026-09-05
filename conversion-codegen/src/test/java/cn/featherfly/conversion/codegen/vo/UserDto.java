@@ -48,6 +48,18 @@ public class UserDto {
     @JsonProperty("isBindingEweChat")
     private Boolean isBindingEweChat = null;
 
+    private Integer int2Integer;
+
+    private Long long2Long;
+
+    private Byte byte2Byte;
+
+    private Short short2Short;
+
+    private Double double2Double;
+
+    private Float float2Float;
+
     public UserDto id(Long id) {
 
         this.id = id;
@@ -241,6 +253,114 @@ public class UserDto {
         this.isBindingEweChat = isBindingEweChat;
     }
 
+    /**
+     * get int2Integer value
+     *
+     * @return int2Integer
+     */
+    public Integer getInt2Integer() {
+        return int2Integer;
+    }
+
+    /**
+     * set int2Integer value
+     *
+     * @param int2Integer int2Integer
+     */
+    public void setInt2Integer(Integer int2Integer) {
+        this.int2Integer = int2Integer;
+    }
+
+    /**
+     * get long2Long value
+     *
+     * @return long2Long
+     */
+    public Long getLong2Long() {
+        return long2Long;
+    }
+
+    /**
+     * set long2Long value
+     *
+     * @param long2Long long2Long
+     */
+    public void setLong2Long(Long long2Long) {
+        this.long2Long = long2Long;
+    }
+
+    /**
+     * get byte2Byte value
+     *
+     * @return byte2Byte
+     */
+    public Byte getByte2Byte() {
+        return byte2Byte;
+    }
+
+    /**
+     * set byte2Byte value
+     *
+     * @param byte2Byte byte2Byte
+     */
+    public void setByte2Byte(Byte byte2Byte) {
+        this.byte2Byte = byte2Byte;
+    }
+
+    /**
+     * get short2Short value
+     *
+     * @return short2Short
+     */
+    public Short getShort2Short() {
+        return short2Short;
+    }
+
+    /**
+     * set short2Short value
+     *
+     * @param short2Short short2Short
+     */
+    public void setShort2Short(Short short2Short) {
+        this.short2Short = short2Short;
+    }
+
+    /**
+     * get double2Double value
+     *
+     * @return double2Double
+     */
+    public Double getDouble2Double() {
+        return double2Double;
+    }
+
+    /**
+     * set double2Double value
+     *
+     * @param double2Double double2Double
+     */
+    public void setDouble2Double(Double double2Double) {
+        this.double2Double = double2Double;
+    }
+
+    /**
+     * get float2Float value
+     *
+     * @return float2Float
+     */
+    public Float getFloat2Float() {
+        return float2Float;
+    }
+
+    /**
+     * set float2Float value
+     *
+     * @param float2Float float2Float
+     */
+    public void setFloat2Float(Float float2Float) {
+        this.float2Float = float2Float;
+    }
+
     @Override
     public boolean equals(java.lang.Object o) {
         if (this == o) {
@@ -250,19 +370,14 @@ public class UserDto {
             return false;
         }
         UserDto userDto = (UserDto) o;
-        return Objects.equals(id, userDto.id) &&
-            Objects.equals(name, userDto.name) &&
-            Objects.equals(mobileNo, userDto.mobileNo) &&
-            Objects.equals(gender, userDto.gender) &&
-            Objects.equals(available, userDto.available) &&
-            Objects.equals(email, userDto.email) &&
-            Objects.equals(registerTime, userDto.registerTime) &&
-            Objects.equals(alipayUserId, userDto.alipayUserId) &&
-            Objects.equals(wechatUnionId, userDto.wechatUnionId) &&
-            Objects.equals(endTime, userDto.endTime) &&
-            Objects.equals(needModifyPass, userDto.needModifyPass) &&
-            Objects.equals(isBindingDingTalk, userDto.isBindingDingTalk) &&
-            Objects.equals(isBindingEweChat, userDto.isBindingEweChat);
+        return Objects.equals(id, userDto.id) && Objects.equals(name, userDto.name)
+            && Objects.equals(mobileNo, userDto.mobileNo) && Objects.equals(gender, userDto.gender)
+            && Objects.equals(available, userDto.available) && Objects.equals(email, userDto.email)
+            && Objects.equals(registerTime, userDto.registerTime) && Objects.equals(alipayUserId, userDto.alipayUserId)
+            && Objects.equals(wechatUnionId, userDto.wechatUnionId) && Objects.equals(endTime, userDto.endTime)
+            && Objects.equals(needModifyPass, userDto.needModifyPass)
+            && Objects.equals(isBindingDingTalk, userDto.isBindingDingTalk)
+            && Objects.equals(isBindingEweChat, userDto.isBindingEweChat);
     }
 
     @Override

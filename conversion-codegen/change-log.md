@@ -1,3 +1,13 @@
+# 0.3.0 2026-09-06
+
+feats:
+
+1. 添加基础类型（primitive type）和对应的包装类型（wrapper type）的支持
+
+fixs:
+
+​	1. BooleanDirectAssignPropertyCodegen 类中的 generateToTarget 方法在 sourceObjectName 参数不为空时会丢失 sourceObjectName 信息
+
 # 0.2.0 2026-09-04
 
 1. 使用builder模式创建BeanCodegenImpl

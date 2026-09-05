@@ -31,14 +31,10 @@ public class BooleanDirectAssignPropertyCodegen implements PropertyCodegen {
         String ifNotNull = Str.format("if (cn.featherfly.common.lang.Lang.isNotEmpty({0}.{1}())) ", targetObjectName,
             getter);
         if (Lang.isEmpty(sourceObjectName)) {
-            return Str.format("{0}set{1}({2}.{3}());",
-                ifNotNull,
-                upperCasePropertyName, targetObjectName, getter);
+            return Str.format("{0}set{1}({2}.{3}());", ifNotNull, upperCasePropertyName, targetObjectName, getter);
         } else {
-            return Str.format("{0}{1}.set{2}({3}.{4}());",
-                ifNotNull,
-                sourceObjectName,
-                upperCasePropertyName, targetObjectName, getter);
+            return Str.format("{0}{1}.set{2}({3}.{4}());", ifNotNull, sourceObjectName, upperCasePropertyName,
+                targetObjectName, getter);
         }
     }
 
@@ -47,13 +43,14 @@ public class BooleanDirectAssignPropertyCodegen implements PropertyCodegen {
         AssertIllegalArgument.isNotEmpty(targetObjectName, "targetObjectName");
         String upperCasePropertyName = WordUtils.upperCaseFirst(propertyName);
         String getter = source == Boolean.class ? "get" + upperCasePropertyName : "is" + upperCasePropertyName;
-        String ifNull = Str.format("if (cn.featherfly.common.lang.Lang.isNotEmpty({1}())) ",
-            sourceObjectName, getter);
         if (Lang.isEmpty(sourceObjectName)) {
-            return Str.format("{0}{1}.set{2}({3}());", ifNull, targetObjectName, upperCasePropertyName, getter);
+            return Str.format("{0}{1}.set{2}({3}());",
+                Str.format("if (cn.featherfly.common.lang.Lang.isNotEmpty({0}())) ", getter), targetObjectName,
+                upperCasePropertyName, getter);
         } else {
-            return Str.format("{0}{1}.set{2}({3}.{4}());", ifNull, targetObjectName, upperCasePropertyName,
-                sourceObjectName, getter);
+            return Str.format("{0}{1}.set{2}({3}.{4}());",
+                Str.format("if (cn.featherfly.common.lang.Lang.isNotEmpty({0}.{1}())) ", sourceObjectName, getter),
+                targetObjectName, upperCasePropertyName, sourceObjectName, getter);
         }
     }
 }

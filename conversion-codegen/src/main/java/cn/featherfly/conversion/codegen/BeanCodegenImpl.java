@@ -110,36 +110,72 @@ public class BeanCodegenImpl implements BeanCodegen {
         super();
         this.indentStart = indentStart;
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
-        this.propertyCodegenMap = addPrimitiveType(addTime(addSqlTimestamp(addSqlTime(addSqlDate(
-            addDate(new ChainMapImpl<>()))))));
+        this.propertyCodegenMap = addPrimitiveType(
+            addTime(addSqlTimestamp(addSqlTime(addSqlDate(addDate(new ChainMapImpl<>()))))));
         this.propertyCodegenMap.putAll(propertyCodegenMap);
 
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
-        this.convertorMap = addTimeConvertor(addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(
-            addDateConvertor(new ChainMapImpl<>())))));
+        this.convertorMap = addTimeConvertor(
+            addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(addDateConvertor(new ChainMapImpl<>())))));
         this.convertorMap.putAll(convertorMap);
     }
 
     // ****************************************************************************************************************
 
+    // ****************************************************************************************************************
+
+    //    private static ChainMap<String, ConvertorCodegen> addPrimitiveTypeConvertor(
+    //        ChainMap<String, ConvertorCodegen> propertyCodegens) {
+    //        return propertyCodegens
+    //            // boolean <> Boolean
+    ////            .putChain(getKey(Boolean.class, boolean.class),
+    ////                new BooleanDirectAssignPropertyCodegen(Boolean.class, boolean.class))
+    ////            .putChain(getKey(boolean.class, Boolean.class),
+    ////                new BooleanDirectAssignPropertyCodegen(boolean.class, Boolean.class))
+    //            // byte <> Byte
+    //            .putChain(getKey(Byte.class, byte.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(byte.class, Byte.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            // short <> Short
+    //            .putChain(getKey(Short.class, short.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(short.class, Short.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            // int <> Integer
+    //            .putChain(getKey(Integer.class, int.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(int.class, Integer.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            // long <> Long
+    //            .putChain(getKey(Long.class, long.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(long.class, Long.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            // double <> Double
+    //            .putChain(getKey(Double.class, double.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(double.class, Double.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            // float <> Float
+    //            .putChain(getKey(Float.class, float.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(float.class, Float.class),
+    //                ASSIGN_PROPERTY_CODEGEN);
+    //    }
+
     private static ChainMap<String, ConvertorCodegen> addTimeConvertor(
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         return convertorCodegens
             // java.time.LocalDateTime
-            .putChain(getKey(LocalDateTime.class, String.class),
-                new LocalDateTimeToStringConvertorCodegen())
-            .putChain(getKey(String.class, LocalDateTime.class),
-                new LocalDateTimeToStringConvertorCodegen(true))
+            .putChain(getKey(LocalDateTime.class, String.class), new LocalDateTimeToStringConvertorCodegen())
+            .putChain(getKey(String.class, LocalDateTime.class), new LocalDateTimeToStringConvertorCodegen(true))
             // java.time.LocalDate
-            .putChain(getKey(LocalDate.class, String.class),
-                new LocalDateToStringConvertorCodegen())
-            .putChain(getKey(String.class, LocalDate.class),
-                new LocalDateToStringConvertorCodegen(true))
+            .putChain(getKey(LocalDate.class, String.class), new LocalDateToStringConvertorCodegen())
+            .putChain(getKey(String.class, LocalDate.class), new LocalDateToStringConvertorCodegen(true))
             // java.time.LocalTime
-            .putChain(getKey(LocalTime.class, String.class),
-                new LocalTimeToStringConvertorCodegen())
-            .putChain(getKey(String.class, LocalTime.class),
-                new LocalTimeToStringConvertorCodegen(true));
+            .putChain(getKey(LocalTime.class, String.class), new LocalTimeToStringConvertorCodegen())
+            .putChain(getKey(String.class, LocalTime.class), new LocalTimeToStringConvertorCodegen(true));
     }
 
     private static ChainMap<String, ConvertorCodegen> addSqlTimeConvertor(
@@ -190,8 +226,7 @@ public class BeanCodegenImpl implements BeanCodegen {
             .putChain(getKey(String.class, java.sql.Date.class),
                 new DateToStringConvertorCodegen(java.sql.Date.class, Dates.FORMAT_DATE, true))
             //
-            .putChain(getKey(java.sql.Date.class, long.class),
-                new DateToLongConvertorCodegen(java.sql.Date.class))
+            .putChain(getKey(java.sql.Date.class, long.class), new DateToLongConvertorCodegen(java.sql.Date.class))
             .putChain(getKey(long.class, java.sql.Date.class),
                 new DateToLongConvertorCodegen(java.sql.Date.class, true))
             //
@@ -240,35 +275,23 @@ public class BeanCodegenImpl implements BeanCodegen {
             .putChain(getKey(boolean.class, Boolean.class),
                 new BooleanDirectAssignPropertyCodegen(boolean.class, Boolean.class))
             // byte <> Byte
-            .putChain(getKey(Byte.class, byte.class),
-                ASSIGN_PROPERTY_CODEGEN)
-            .putChain(getKey(byte.class, Byte.class),
-                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(Byte.class, byte.class), ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(byte.class, Byte.class), ASSIGN_PROPERTY_CODEGEN)
             // short <> Short
-            .putChain(getKey(Short.class, short.class),
-                ASSIGN_PROPERTY_CODEGEN)
-            .putChain(getKey(short.class, Short.class),
-                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(Short.class, short.class), ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(short.class, Short.class), ASSIGN_PROPERTY_CODEGEN)
             // int <> Integer
-            .putChain(getKey(Integer.class, int.class),
-                ASSIGN_PROPERTY_CODEGEN)
-            .putChain(getKey(int.class, Integer.class),
-                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(Integer.class, int.class), ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(int.class, Integer.class), ASSIGN_PROPERTY_CODEGEN)
             // long <> Long
-            .putChain(getKey(Long.class, long.class),
-                ASSIGN_PROPERTY_CODEGEN)
-            .putChain(getKey(long.class, Long.class),
-                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(Long.class, long.class), ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(long.class, Long.class), ASSIGN_PROPERTY_CODEGEN)
             // double <> Double
-            .putChain(getKey(Double.class, double.class),
-                ASSIGN_PROPERTY_CODEGEN)
-            .putChain(getKey(double.class, Double.class),
-                ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(Double.class, double.class), ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(double.class, Double.class), ASSIGN_PROPERTY_CODEGEN)
             // float <> Float
-            .putChain(getKey(Float.class, float.class),
-                ASSIGN_PROPERTY_CODEGEN)
-            .putChain(getKey(float.class, Float.class),
-                ASSIGN_PROPERTY_CODEGEN);
+            .putChain(getKey(Float.class, float.class), ASSIGN_PROPERTY_CODEGEN)
+            .putChain(getKey(float.class, Float.class), ASSIGN_PROPERTY_CODEGEN);
     }
 
     private static ChainMap<String, PropertyCodegen> addTime(ChainMap<String, PropertyCodegen> propertyCodegens) {
@@ -330,10 +353,8 @@ public class BeanCodegenImpl implements BeanCodegen {
             .putChain(getKey(String.class, java.sql.Date.class),
                 new DateToStringPropertyCodegen(java.sql.Date.class, Dates.FORMAT_DATE, true))
             //
-            .putChain(getKey(java.sql.Date.class, long.class),
-                new DateToLongPropertyCodegen(java.sql.Date.class))
-            .putChain(getKey(long.class, java.sql.Date.class),
-                new DateToLongPropertyCodegen(java.sql.Date.class, true))
+            .putChain(getKey(java.sql.Date.class, long.class), new DateToLongPropertyCodegen(java.sql.Date.class))
+            .putChain(getKey(long.class, java.sql.Date.class), new DateToLongPropertyCodegen(java.sql.Date.class, true))
             //
             .putChain(getKey(java.sql.Date.class, Long.class),
                 new DateToLongWrapperPropertyCodegen(java.sql.Date.class))
@@ -392,8 +413,7 @@ public class BeanCodegenImpl implements BeanCodegen {
             propertyCodegen = CodegenUtils.getEnumFromTargetPropertyCodegen(st, tt);
         } else if ((st.isArray() || st.isIterable()) && (tt.isArray() || tt.isIterable())) {
             propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt),
-                st.isArray() ? Iterables.ARRAY : Iterables.LIST,
-                tt.isArray() ? Iterables.ARRAY : Iterables.LIST);
+                st.isArray() ? Iterables.ARRAY : Iterables.LIST, tt.isArray() ? Iterables.ARRAY : Iterables.LIST);
         }
         return getPropertyCodegen(property, propertyCodegen);
     }
@@ -404,8 +424,8 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
         propertyCodegen = propertyCodegenMap.get(getKey(property.sourceType().name(), property.targetType().name()));
         if (propertyCodegen == null) {
-            propertyCodegen =
-                propertyCodegenMap.get(getKey(property.targetType().name(), property.sourceType().name()));
+            propertyCodegen = propertyCodegenMap
+                .get(getKey(property.targetType().name(), property.sourceType().name()));
         }
         if (propertyCodegen != null) {
             return propertyCodegen;
@@ -414,8 +434,8 @@ public class BeanCodegenImpl implements BeanCodegen {
         if (property.sourceType().name().startsWith("java") || property.sourceType().name().indexOf('.') == -1
             || property.targetType().name().startsWith("java") || property.targetType().name().indexOf('.') == -1) {
             if (noConvertorException) {
-                throw new IllegalArgumentException(Str.format("未找到转换属性{0}的转换器[{1} <-> {2}]",
-                    property.name(), property.sourceType().name(), property.targetType().name()));
+                throw new IllegalArgumentException(Str.format("未找到转换属性{0}的转换器[{1} <-> {2}]", property.name(),
+                    property.sourceType().name(), property.targetType().name()));
             }
             return new CommentPropertyCodegen(property.sourceType().name(), property.targetType().name());
         }
@@ -472,8 +492,7 @@ public class BeanCodegenImpl implements BeanCodegen {
         String indent2 = getIndent(indentStart + 1);
         StringBuilder src = new StringBuilder();
         src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(targetObjectType)
-            .append(" ")
-            .append(method.name());
+            .append(" ").append(method.name());
         if (method.isStatic()) {
             AssertIllegalArgument.isNotEmpty(sourceObjectName, "when method is static, sourceObjectName");
             src.append("(").append(sourceObjectType).append(" ").append(sourceObjectName).append(") {\n");
@@ -481,8 +500,7 @@ public class BeanCodegenImpl implements BeanCodegen {
             src.append("() {\n");
         }
         src.append(indent2).append(targetObjectType).append(" ").append(targetObjectName).append(" = ").append("new ")
-            .append(targetObjectType)
-            .append("();\n");
+            .append(targetObjectType).append("();\n");
         if (method.isStatic()) {
             src.append(indent2).append("if (").append(sourceObjectName).append(" == null) return ")
                 .append(targetObjectName).append(";\n");
@@ -519,9 +537,7 @@ public class BeanCodegenImpl implements BeanCodegen {
             src.append(indent2).append("if (").append(targetObjectName).append(" == null) return;\n");
         } else {
             src.append(indent2).append(sourceObjectType).append(" ").append(sourceObjectName).append(" = ")
-                .append("new ")
-                .append(sourceObjectType)
-                .append("();\n");
+                .append("new ").append(sourceObjectType).append("();\n");
             src.append(indent2).append("if (").append(targetObjectName).append(" == null) return ")
                 .append(sourceObjectName).append(";\n");
         }
