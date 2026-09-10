@@ -1,5 +1,7 @@
 package cn.featherfly.conversion.codegen.vo;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -59,6 +61,18 @@ public class UserDto {
     private Double double2Double;
 
     private Float float2Float;
+
+    private BigDecimal double2BigDecimal;
+
+    private BigDecimal double2BigDecimal2;
+
+    private BigDecimal long2BigDecimal;
+
+    private BigDecimal long2BigDecimal2;
+
+    private BigInteger long2BigInteger;
+
+    private BigInteger long2BigInteger2;
 
     public UserDto id(Long id) {
 
@@ -359,6 +373,66 @@ public class UserDto {
      */
     public void setFloat2Float(Float float2Float) {
         this.float2Float = float2Float;
+    }
+
+    public BigDecimal getDouble2BigDecimal() {
+        return double2BigDecimal;
+    }
+
+    public void setDouble2BigDecimal(BigDecimal double2BigDecimal) {
+        this.double2BigDecimal = double2BigDecimal;
+    }
+
+    public BigDecimal getDouble2BigDecimal2() {
+        return double2BigDecimal2;
+    }
+
+    public void setDouble2BigDecimal2(BigDecimal double2BigDecimal2) {
+        this.double2BigDecimal2 = double2BigDecimal2;
+    }
+
+    public BigDecimal getLong2BigDecimal() {
+        return long2BigDecimal;
+    }
+
+    public void setLong2BigDecimal(BigDecimal long2BigDecimal) {
+        this.long2BigDecimal = long2BigDecimal;
+    }
+
+    public BigDecimal getLong2BigDecimal2() {
+        return long2BigDecimal2;
+    }
+
+    public void setLong2BigDecimal2(BigDecimal long2BigDecimal2) {
+        this.long2BigDecimal2 = long2BigDecimal2;
+    }
+
+    public BigInteger getLong2BigInteger() {
+        return long2BigInteger;
+    }
+
+    public void setLong2BigInteger(BigInteger long2BigInteger) {
+        this.long2BigInteger = long2BigInteger;
+    }
+
+    public BigInteger getLong2BigInteger2() {
+        return long2BigInteger2;
+    }
+
+    public void setLong2BigInteger2(BigInteger long2BigInteger2) {
+        this.long2BigInteger2 = long2BigInteger2;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public Boolean getIsBindingDingTalk() {
+        return isBindingDingTalk;
+    }
+
+    public Boolean getIsBindingEweChat() {
+        return isBindingEweChat;
     }
 
     @Override

@@ -91,6 +91,18 @@ public class User {
 
     private float float2Float;
 
+    private double double2BigDecimal;
+
+    private Double double2BigDecimal2;
+
+    private long long2BigDecimal;
+
+    private Long long2BigDecimal2;
+
+    private long long2BigInteger;
+
+    private Long long2BigInteger2;
+
     public String getEweChatUserId() {
         return eweChatUserId;
     }
@@ -1041,6 +1053,54 @@ public class User {
      */
     public void setFloat2Float(float float2Float) {
         this.float2Float = float2Float;
+    }
+
+    public double getDouble2BigDecimal() {
+        return double2BigDecimal;
+    }
+
+    public void setDouble2BigDecimal(double double2BigDecimal) {
+        this.double2BigDecimal = double2BigDecimal;
+    }
+
+    public Double getDouble2BigDecimal2() {
+        return double2BigDecimal2;
+    }
+
+    public void setDouble2BigDecimal2(Double double2BigDecimal2) {
+        this.double2BigDecimal2 = double2BigDecimal2;
+    }
+
+    public long getLong2BigDecimal() {
+        return long2BigDecimal;
+    }
+
+    public void setLong2BigDecimal(long long2BigDecimal) {
+        this.long2BigDecimal = long2BigDecimal;
+    }
+
+    public Long getLong2BigDecimal2() {
+        return long2BigDecimal2;
+    }
+
+    public void setLong2BigDecimal2(Long long2BigDecimal2) {
+        this.long2BigDecimal2 = long2BigDecimal2;
+    }
+
+    public long getLong2BigInteger() {
+        return long2BigInteger;
+    }
+
+    public void setLong2BigInteger(long long2BigInteger) {
+        this.long2BigInteger = long2BigInteger;
+    }
+
+    public Long getLong2BigInteger2() {
+        return long2BigInteger2;
+    }
+
+    public void setLong2BigInteger2(Long long2BigInteger2) {
+        this.long2BigInteger2 = long2BigInteger2;
     }
 
     public enum Gender {

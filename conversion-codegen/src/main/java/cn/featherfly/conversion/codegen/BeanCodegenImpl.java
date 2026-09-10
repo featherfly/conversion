@@ -1,5 +1,7 @@
 package cn.featherfly.conversion.codegen;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -18,6 +20,10 @@ import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.conversion.codegen.convertor.BeanToBeanConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.BigDecimalToDoubleConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.BigDecimalToLongConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.BigIntegerToLongConvertorCodegen;
+import cn.featherfly.conversion.codegen.convertor.CommentConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.DateToLocalDateTimeConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.DateToLongConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.DateToLongWrapperConvertorCodegen;
@@ -29,6 +35,9 @@ import cn.featherfly.conversion.codegen.convertor.LocalDateToStringConvertorCode
 import cn.featherfly.conversion.codegen.convertor.LocalTimeToStringConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.TimeToLocalTimeConvertorCodegen;
 import cn.featherfly.conversion.codegen.property.BeanToBeanPropertyCodegen;
+import cn.featherfly.conversion.codegen.property.BigDecimalToDoublePropertyCodegen;
+import cn.featherfly.conversion.codegen.property.BigDecimalToLongPropertyCodegen;
+import cn.featherfly.conversion.codegen.property.BigIntegerToLongPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.BooleanDirectAssignPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.CommentPropertyCodegen;
 import cn.featherfly.conversion.codegen.property.DateToLocalDateTimePropertyCodegen;
@@ -63,41 +72,6 @@ public class BeanCodegenImpl implements BeanCodegen {
 
     private boolean noConvertorException;
 
-    //    /**
-    //     * Instantiates a new bean codegen impl.
-    //     */
-    //    public BeanCodegenImpl() {
-    //        this(Collections.emptyMap());
-    //    }
-    //
-    //    /**
-    //     * Instantiates a new bean codegen impl.
-    //     *
-    //     * @param indentStart the indent start
-    //     */
-    //    public BeanCodegenImpl(int indentStart) {
-    //        this(indentStart, Collections.emptyMap());
-    //    }
-    //
-    //    /**
-    //     * Instantiates a new bean codegen impl.
-    //     *
-    //     * @param propertyCodegenMap the property codegen map
-    //     */
-    //    public BeanCodegenImpl(Map<String, PropertyCodegen> propertyCodegenMap) {
-    //        this(0, propertyCodegenMap);
-    //    }
-    //
-    //    /**
-    //     * Instantiates a new bean codegen impl.
-    //     *
-    //     * @param indentStart the indent start
-    //     * @param propertyCodegenMap the property codegen map
-    //     */
-    //    public BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap) {
-    //        this(indentStart, propertyCodegenMap, Collections.emptyMap());
-    //    }
-
     /**
      * Instantiates a new bean codegen impl.
      *
@@ -111,12 +85,13 @@ public class BeanCodegenImpl implements BeanCodegen {
         this.indentStart = indentStart;
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
         this.propertyCodegenMap = addPrimitiveType(
-            addTime(addSqlTimestamp(addSqlTime(addSqlDate(addDate(new ChainMapImpl<>()))))));
+            addTime(addSqlTimestamp(addSqlTime(addSqlDate(addDate(addMath(new ChainMapImpl<>())))))));
         this.propertyCodegenMap.putAll(propertyCodegenMap);
 
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
         this.convertorMap = addTimeConvertor(
-            addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(addDateConvertor(new ChainMapImpl<>())))));
+            addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(addDateConvertor(
+                addMathConvertor(new ChainMapImpl<>()))))));
         this.convertorMap.putAll(convertorMap);
     }
 
@@ -128,10 +103,10 @@ public class BeanCodegenImpl implements BeanCodegen {
     //        ChainMap<String, ConvertorCodegen> propertyCodegens) {
     //        return propertyCodegens
     //            // boolean <> Boolean
-    ////            .putChain(getKey(Boolean.class, boolean.class),
-    ////                new BooleanDirectAssignPropertyCodegen(Boolean.class, boolean.class))
-    ////            .putChain(getKey(boolean.class, Boolean.class),
-    ////                new BooleanDirectAssignPropertyCodegen(boolean.class, Boolean.class))
+    //            .putChain(getKey(Boolean.class, boolean.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
+    //            .putChain(getKey(boolean.class, Boolean.class),
+    //                ASSIGN_PROPERTY_CODEGEN)
     //            // byte <> Byte
     //            .putChain(getKey(Byte.class, byte.class),
     //                ASSIGN_PROPERTY_CODEGEN)
@@ -264,6 +239,38 @@ public class BeanCodegenImpl implements BeanCodegen {
             .putChain(getKey(LocalDate.class, Date.class), new DateToLocalDateTimeConvertorCodegen(Date.class, true));
     }
 
+    private static ChainMap<String, ConvertorCodegen> addMathConvertor(
+        ChainMap<String, ConvertorCodegen> convertorCodegens) {
+        // java.math.BigDecimal, java.math.BigInteger
+        return convertorCodegens
+            .putChain(getKey(BigDecimal.class, Long.class),
+                new BigDecimalToLongConvertorCodegen(Long.class))
+            .putChain(getKey(Long.class, BigDecimal.class),
+                new BigDecimalToLongConvertorCodegen(Long.class, true))
+            .putChain(getKey(BigDecimal.class, Long.TYPE),
+                new BigDecimalToLongConvertorCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigDecimal.class),
+                new BigDecimalToLongConvertorCodegen(Long.TYPE, true))
+            //
+            .putChain(getKey(BigDecimal.class, Double.class),
+                new BigDecimalToDoubleConvertorCodegen(Double.class))
+            .putChain(getKey(Double.class, BigDecimal.class),
+                new BigDecimalToDoubleConvertorCodegen(Double.class, true))
+            .putChain(getKey(BigDecimal.class, Double.TYPE),
+                new BigDecimalToDoubleConvertorCodegen(Double.TYPE))
+            .putChain(getKey(Double.TYPE, BigDecimal.class),
+                new BigDecimalToDoubleConvertorCodegen(Double.TYPE, true))
+            //
+            .putChain(getKey(BigInteger.class, Long.class),
+                new BigIntegerToLongConvertorCodegen(Long.class))
+            .putChain(getKey(Long.class, BigInteger.class),
+                new BigIntegerToLongConvertorCodegen(Long.class, true))
+            .putChain(getKey(BigInteger.class, Long.TYPE),
+                new BigIntegerToLongConvertorCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigInteger.class),
+                new BigIntegerToLongConvertorCodegen(Long.TYPE, true));
+    }
+
     // ****************************************************************************************************************
 
     private static ChainMap<String, PropertyCodegen> addPrimitiveType(
@@ -388,6 +395,37 @@ public class BeanCodegenImpl implements BeanCodegen {
             .putChain(getKey(LocalDate.class, Date.class), new DateToLocalDateTimePropertyCodegen(Date.class, true));
     }
 
+    private static ChainMap<String, PropertyCodegen> addMath(ChainMap<String, PropertyCodegen> propertyCodegens) {
+        // java.math.BigDecimal, java.math.BigInteger
+        return propertyCodegens
+            .putChain(getKey(BigDecimal.class, Long.class),
+                new BigDecimalToLongPropertyCodegen(Long.class))
+            .putChain(getKey(Long.class, BigDecimal.class),
+                new BigDecimalToLongPropertyCodegen(Long.class, true))
+            .putChain(getKey(BigDecimal.class, Long.TYPE),
+                new BigDecimalToLongPropertyCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigDecimal.class),
+                new BigDecimalToLongPropertyCodegen(Long.TYPE, true))
+            //
+            .putChain(getKey(BigDecimal.class, Double.class),
+                new BigDecimalToDoublePropertyCodegen(Double.class))
+            .putChain(getKey(Double.class, BigDecimal.class),
+                new BigDecimalToDoublePropertyCodegen(Double.class, true))
+            .putChain(getKey(BigDecimal.class, Double.TYPE),
+                new BigDecimalToDoublePropertyCodegen(Double.TYPE))
+            .putChain(getKey(Double.TYPE, BigDecimal.class),
+                new BigDecimalToDoublePropertyCodegen(Double.TYPE, true))
+            //
+            .putChain(getKey(BigInteger.class, Long.class),
+                new BigIntegerToLongPropertyCodegen(Long.class))
+            .putChain(getKey(Long.class, BigInteger.class),
+                new BigIntegerToLongPropertyCodegen(Long.class, true))
+            .putChain(getKey(BigInteger.class, Long.TYPE),
+                new BigIntegerToLongPropertyCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigInteger.class),
+                new BigIntegerToLongPropertyCodegen(Long.TYPE, true));
+    }
+
     private static String getKey(Class<?> source, Class<?> target) {
         return getKey(source.getName(), target.getName());
     }
@@ -470,6 +508,13 @@ public class BeanCodegenImpl implements BeanCodegen {
         convertorCodegen = convertorMap.get(getKey(tt.name(), st.name()));
         if (convertorCodegen != null) {
             return convertorCodegen;
+        }
+        if (st.name().startsWith("java") || st.name().indexOf('.') == -1
+            || tt.name().startsWith("java") || tt.name().indexOf('.') == -1) {
+            if (noConvertorException) {
+                throw new IllegalArgumentException(Str.format("未找到属性转换器[{0} <-> {1}]", st.name(), tt.name()));
+            }
+            return new CommentConvertorCodegen(st.name(), tt.name());
         }
         return new BeanToBeanConvertorCodegen(st.name(), tt.name());
     }

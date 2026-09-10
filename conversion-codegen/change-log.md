@@ -1,3 +1,9 @@
+# 0.4.0 2026-09-10
+
+feats:
+
+1. 添加BigDecimal to (Double,Long)，BigInteger to Long的生成器 
+
 # 0.3.0 2026-09-06
 
 feats:
