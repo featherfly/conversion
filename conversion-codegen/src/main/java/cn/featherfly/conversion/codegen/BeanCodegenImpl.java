@@ -19,6 +19,7 @@ import cn.featherfly.common.lang.Iterables;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.ChainMapImpl;
+import cn.featherfly.conversion.codegen.MethodMetadata.MethodType;
 import cn.featherfly.conversion.codegen.convertor.BeanToBeanConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.BigDecimalToDoubleConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.BigDecimalToLongConvertorCodegen;
@@ -535,21 +536,38 @@ public class BeanCodegenImpl implements BeanCodegen {
         List<ConvertibleProperty> properties, String sourceObjectName, String targetObjectName) {
         String indent = getIndent(indentStart);
         String indent2 = getIndent(indentStart + 1);
+        String targetDefine = targetObjectType + " " + targetObjectName;
         StringBuilder src = new StringBuilder();
         src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(targetObjectType)
             .append(" ").append(method.name());
         if (method.isStatic()) {
             AssertIllegalArgument.isNotEmpty(sourceObjectName, "when method is static, sourceObjectName");
-            src.append("(").append(sourceObjectType).append(" ").append(sourceObjectName).append(") {\n");
+            src.append("(").append(sourceObjectType).append(" ").append(sourceObjectName)
+                .append(method.isGivenArgument() ? ", " + targetDefine : "")
+                .append(") {\n");
         } else {
-            src.append("() {\n");
+            src.append("(").append(method.isGivenArgument() ? targetDefine : "")
+                .append(") {\n");
         }
-        src.append(indent2).append(targetObjectType).append(" ").append(targetObjectName).append(" = ").append("new ")
-            .append(targetObjectType).append("();\n");
-        if (method.isStatic()) {
-            src.append(indent2).append("if (").append(sourceObjectName).append(" == null) return ")
-                .append(targetObjectName).append(";\n");
+        if (method.isGivenArgument()) {
+            src.append(indent2).append("if (").append(targetObjectName).append(" == null");
+            if (method.isStatic()) {
+                src.append(" || ").append(sourceObjectName).append(" == null");
+            }
+            src.append(") return ").append(targetObjectName).append(";\n");
+        } else {
+            if (method.isStatic()) {
+                src.append(indent2).append("if (").append(sourceObjectName).append(" == null) return null;\n");
+            }
+            src.append(indent2).append(targetDefine).append(" = new ").append(targetObjectType).append("();\n");
         }
+        //        if (method.isStatic()) {
+        //            src.append(indent2).append("if (").append(sourceObjectName).append(" == null")
+        //                .append(method.isGivenArgument() ? " || " + targetObjectName + " == null" : "")
+        //                .append(") return ").append(targetObjectName).append(";\n");
+        //        } else if (method.isGivenArgument()) {
+        //            
+        //        }
         for (ConvertibleProperty prop : properties) {
             PropertyCodegen pc = getPropertyCodegen(prop);
             for (String line : pc.generateToTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
@@ -570,30 +588,42 @@ public class BeanCodegenImpl implements BeanCodegen {
         StringBuilder src = new StringBuilder();
         String indent = getIndent(indentStart);
         String indent2 = getIndent(indentStart + 1);
+        String sourceDefine = sourceObjectType + " " + sourceObjectName;
         if (method.isConstructor()) {
             src.append(indent).append("public ").append(method.name()).append("(").append(targetObjectType).append(" ")
                 .append(targetObjectName).append(") {\n");
         } else {
             src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(sourceObjectType)
                 .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
-                .append(targetObjectName).append(") {\n");
+                .append(targetObjectName)
+                .append(method.isGivenArgument() ? ", " + sourceDefine : "")
+                .append(") {\n");
         }
-        if (method.isConstructor()) {
-            src.append(indent2).append("if (").append(targetObjectName).append(" == null) return;\n");
+        if (method.isGivenArgument() && method.isStatic()) {
+            src.append(indent2).append("if (").append(targetObjectName).append(" == null || ")
+                .append(sourceObjectName).append(" == null) return ").append(sourceObjectName).append(";\n");
         } else {
-            src.append(indent2).append(sourceObjectType).append(" ").append(sourceObjectName).append(" = ")
-                .append("new ").append(sourceObjectType).append("();\n");
-            src.append(indent2).append("if (").append(targetObjectName).append(" == null) return ")
-                .append(sourceObjectName).append(";\n");
+            src.append(indent2).append("if (").append(targetObjectName).append(" == null) return");
+            if (method.methodType() == MethodType.METHOD) {
+                src.append(" this;\n");
+            } else if (method.methodType() == MethodType.STATIC_METHOD) {
+                src.append(" null;\n");
+                src.append(indent2).append(sourceDefine).append(" = ")
+                    .append("new ").append(sourceObjectType).append("();\n");
+            } else if (method.methodType() == MethodType.CONSTRUCTOR) {
+                src.append(";\n");
+            }
         }
         for (ConvertibleProperty prop : properties) {
             PropertyCodegen pc = getPropertyCodegen(prop);
-            for (String line : pc.generateFromTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
+            for (String line : pc
+                .generateFromTarget(prop.name(), method.isStatic() ? sourceObjectName : null, targetObjectName)
+                .split("\n")) {
                 src.append(indent2).append(line).append("\n");
             }
         }
         if (!method.isConstructor()) {
-            src.append(indent2).append("return ").append(sourceObjectName).append(";\n");
+            src.append(indent2).append("return ").append(method.isStatic() ? sourceObjectName : "this").append(";\n");
         }
         src.append(indent).append("}");
         return src.toString();

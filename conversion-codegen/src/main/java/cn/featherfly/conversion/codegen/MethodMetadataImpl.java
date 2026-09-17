@@ -8,6 +8,8 @@
  */
 package cn.featherfly.conversion.codegen;
 
+import cn.featherfly.common.lang.AssertIllegalArgument;
+
 /**
  * MethodMetadataImpl.
  *
@@ -18,9 +20,9 @@ public class MethodMetadataImpl implements MethodMetadata {
 
     private final String name;
 
-    private final boolean isStatic;
+    private final MethodType methodType;
 
-    private final boolean isConstructor;
+    private final boolean givenArgument;
 
     /**
      * Instantiates a new method metadata impl.
@@ -28,34 +30,43 @@ public class MethodMetadataImpl implements MethodMetadata {
      * @param name the name
      */
     public MethodMetadataImpl(String name) {
-        this(name, false, false);
+        this(name, MethodType.METHOD);
     }
 
     /**
      * Instantiates a new method metadata impl.
      *
      * @param name the name
-     * @param isConstructor the is constructor
+     * @param methodType the method type
      */
-    public MethodMetadataImpl(String name, boolean isConstructor) {
-        this(name, isConstructor, false);
+    public MethodMetadataImpl(String name, MethodType methodType) {
+        this(name, methodType, false);
     }
 
     /**
      * Instantiates a new method metadata impl.
      *
      * @param name the name
-     * @param isConstructor the is constructor
-     * @param isStatic the is static
+     * @param givenArgument the given argument
      */
-    public MethodMetadataImpl(String name, boolean isConstructor, boolean isStatic) {
+    public MethodMetadataImpl(String name, boolean givenArgument) {
+        this(name, MethodType.METHOD, givenArgument);
+    }
+
+    /**
+     * Instantiates a new method metadata impl.
+     *
+     * @param name the name
+     * @param methodType the method type
+     * @param givenArgument the given argument
+     */
+    public MethodMetadataImpl(String name, MethodType methodType, boolean givenArgument) {
         super();
-        if (isConstructor && isStatic) {
-            throw new IllegalArgumentException("isConstructor and isStatic both true");
-        }
+        AssertIllegalArgument.isNotNull(name, "name");
+        AssertIllegalArgument.isNotNull(methodType, "methodType");
         this.name = name;
-        this.isStatic = isStatic;
-        this.isConstructor = isConstructor;
+        this.methodType = methodType;
+        this.givenArgument = givenArgument;
     }
 
     /**
@@ -70,8 +81,16 @@ public class MethodMetadataImpl implements MethodMetadata {
      * {@inheritDoc}
      */
     @Override
+    public MethodType methodType() {
+        return methodType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isStatic() {
-        return isStatic;
+        return methodType == MethodType.STATIC_METHOD;
     }
 
     /**
@@ -79,7 +98,15 @@ public class MethodMetadataImpl implements MethodMetadata {
      */
     @Override
     public boolean isConstructor() {
-        return isConstructor;
+        return methodType == MethodType.CONSTRUCTOR;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isGivenArgument() {
+        return givenArgument;
     }
 
 }

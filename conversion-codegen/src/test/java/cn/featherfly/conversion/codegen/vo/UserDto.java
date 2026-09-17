@@ -499,6 +499,16 @@ public class UserDto {
         setGender(Lang.toEnum(Gender.class, user.getGender()));
     }
 
+    public UserDto fromUser(User user) {
+        if (user == null) {
+            return this;
+        }
+        setId(user.getId());
+        setName(user.getName());
+        setGender(Lang.toEnum(Gender.class, user.getGender()));
+        return this;
+    }
+
     public User toUser() {
         User user = new User();
         user.setId(id);

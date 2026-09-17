@@ -17,11 +17,42 @@ package cn.featherfly.conversion.codegen;
 public interface MethodMetadata {
 
     /**
+     * The Enum MethodType.
+     *
+     * @author zhongj
+     */
+    public enum MethodType {
+
+        /** constructor. */
+        CONSTRUCTOR,
+
+        /** method. */
+        METHOD,
+
+        /** static method. */
+        STATIC_METHOD
+    }
+
+    /**
      * Name.
      *
      * @return the string
      */
     String name();
+
+    /**
+     * methodType.
+     *
+     * @return MethodType
+     */
+    MethodType methodType();
+
+    /**
+     * Checks if is given argument.
+     *
+     * @return true, if is given argument
+     */
+    boolean isGivenArgument();
 
     /**
      * Checks if is static.

@@ -19,6 +19,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.conversion.codegen.MethodMetadata.MethodType;
 import cn.featherfly.conversion.codegen.domain.Role;
 import cn.featherfly.conversion.codegen.domain.User;
 import cn.featherfly.conversion.codegen.vo.Gender;
@@ -87,13 +88,14 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test
     public void testToTarget() {
+        String result = null;
         BeanCodegen codegen = BeanCodegenImpl.builder().build();
-        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", false, false),
-            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
 
-        assertEquals(
-            codegen.generateToTarget(new MethodMetadataImpl("toUser", false, false), UserDto.class.getName(),
-                User.class.getName(), properties, null, "user"),
+        result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD), UserDto.class.getName(),
+            User.class.getName(), properties, null, "user");
+        System.out.println(result);
+
+        assertEquals(result,
             "public cn.featherfly.conversion.codegen.domain.User toUser() {\n"
                 + "    cn.featherfly.conversion.codegen.domain.User user = new cn.featherfly.conversion.codegen.domain.User();\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getId())) user.setId(getId());\n"
@@ -114,14 +116,65 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
                 + "    return user;\n" + "}");
 
-        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", false, true),
-            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
-        assertEquals(
-            codegen.generateToTarget(new MethodMetadataImpl("toUser", false, true), UserDto.class.getName(),
-                User.class.getName(), properties, "userDto", "user"),
+        result =
+            codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD, true), UserDto.class.getName(),
+                User.class.getName(), properties, null, "user");
+        System.out.println(result);
+
+        assertEquals(result,
+            "public cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
+                + "    if (user == null) return user;\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getId())) user.setId(getId());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getName())) user.setName(getName());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, getGender()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getAvailable())) user.setAvailable(getAvailable());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getInt2Integer())) user.setInt2Integer(getInt2Integer());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2Long())) user.setLong2Long(getLong2Long());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2Double())) user.setDouble2Double(getDouble2Double());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getFloat2Float())) user.setFloat2Float(getFloat2Float());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getByte2Byte())) user.setByte2Byte(getByte2Byte());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getShort2Short())) user.setShort2Short(getShort2Short());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
+                + "    return user;\n" + "}");
+
+        result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
+            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+        System.out.println(result);
+
+        assertEquals(result,
             "public static cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.vo.UserDto userDto) {\n"
+                + "    if (userDto == null) return null;\n"
                 + "    cn.featherfly.conversion.codegen.domain.User user = new cn.featherfly.conversion.codegen.domain.User();\n"
-                + "    if (userDto == null) return user;\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getId())) user.setId(userDto.getId());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getName())) user.setName(userDto.getName());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userDto.getGender()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getAvailable())) user.setAvailable(userDto.getAvailable());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getInt2Integer())) user.setInt2Integer(userDto.getInt2Integer());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2Long())) user.setLong2Long(userDto.getLong2Long());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2Double())) user.setDouble2Double(userDto.getDouble2Double());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getFloat2Float())) user.setFloat2Float(userDto.getFloat2Float());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getByte2Byte())) user.setByte2Byte(userDto.getByte2Byte());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getShort2Short())) user.setShort2Short(userDto.getShort2Short());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
+                + "    return user;\n" + "}");
+
+        result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD, true),
+            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+        System.out.println(result);
+
+        assertEquals(result,
+            "public static cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.vo.UserDto userDto, cn.featherfly.conversion.codegen.domain.User user) {\n"
+                + "    if (user == null || userDto == null) return user;\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getId())) user.setId(userDto.getId());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getName())) user.setName(userDto.getName());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userDto.getGender()));\n"
@@ -143,14 +196,17 @@ public class BeanCodegenTest extends CodegenTest {
 
     @Test
     public void testFromTarget() {
+        String result = null;
         BeanCodegen codegen = BeanCodegenImpl.builder().build();
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("UserDto", true), UserDto.class.getName(),
-            User.class.getName(), properties, null, "user"));
 
-        assertEquals(
-            codegen.generateFromTarget(new MethodMetadataImpl("UserDto", true), UserDto.class.getName(),
-                User.class.getName(), properties, null, "user"),
-            "public UserDto(cn.featherfly.conversion.codegen.domain.User user) {\n" + "    if (user == null) return;\n"
+        result = codegen.generateFromTarget(new MethodMetadataImpl("UserDto", MethodType.CONSTRUCTOR),
+            UserDto.class.getName(),
+            User.class.getName(), properties, null, "user");
+        System.out.println(result);
+
+        assertEquals(result,
+            "public UserDto(cn.featherfly.conversion.codegen.domain.User user) {\n"
+                + "    if (user == null) return;\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) setId(user.getId());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getName())) setName(user.getName());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, user.getGender()));\n"
@@ -169,14 +225,37 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
                 + "}");
 
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", false),
-            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
-        assertEquals(
-            codegen.generateFromTarget(new MethodMetadataImpl("fromUser", false), UserDto.class.getName(),
-                User.class.getName(), properties, "userDto", "user"),
+        result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
+            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+        System.out.println(result);
+        assertEquals(result,
             "public cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
+                + "    if (user == null) return this;\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) setId(user.getId());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getName())) setName(user.getName());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, user.getGender()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.isAvailable())) setAvailable(user.isAvailable());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getInt2Integer())) setInt2Integer(user.getInt2Integer());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2Long())) setLong2Long(user.getLong2Long());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2Double())) setDouble2Double(user.getDouble2Double());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) setFloat2Float(user.getFloat2Float());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) setByte2Byte(user.getByte2Byte());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) setShort2Short(user.getShort2Short());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+                + "    return this;\n" + "}");
+
+        result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
+            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+        System.out.println(result);
+        assertEquals(result,
+            "public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
+                + "    if (user == null) return null;\n"
                 + "    cn.featherfly.conversion.codegen.vo.UserDto userDto = new cn.featherfly.conversion.codegen.vo.UserDto();\n"
-                + "    if (user == null) return userDto;\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) userDto.setId(user.getId());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getName())) userDto.setName(user.getName());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, user.getGender()));\n"
@@ -195,14 +274,12 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
                 + "    return userDto;\n" + "}");
 
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", false, true),
-            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
-        assertEquals(
-            codegen.generateFromTarget(new MethodMetadataImpl("fromUser", false, true), UserDto.class.getName(),
-                User.class.getName(), properties, "userDto", "user"),
-            "public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
-                + "    cn.featherfly.conversion.codegen.vo.UserDto userDto = new cn.featherfly.conversion.codegen.vo.UserDto();\n"
-                + "    if (user == null) return userDto;\n"
+        result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD, true),
+            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+        System.out.println(result);
+        assertEquals(result,
+            "public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user, cn.featherfly.conversion.codegen.vo.UserDto userDto) {\n"
+                + "    if (user == null || userDto == null) return userDto;\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) userDto.setId(user.getId());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getName())) userDto.setName(user.getName());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, user.getGender()));\n"
@@ -226,7 +303,7 @@ public class BeanCodegenTest extends CodegenTest {
     public void testStaticMethdoSourceObjectNameNull() {
         BeanCodegen codegen = BeanCodegenImpl.builder().build();
 
-        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", false, true),
+        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
             UserDto.class.getName(), User.class.getName(), properties, null, "user"));
     }
 
@@ -234,14 +311,14 @@ public class BeanCodegenTest extends CodegenTest {
     public void testIsStaticAndIsConstructorBothTrue() {
         BeanCodegen codegen = BeanCodegenImpl.builder().build();
 
-        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", true, true),
+        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", null),
             UserDto.class.getName(), User.class.getName(), properties, null, "user"));
     }
 
     @Test
     public void roleDtoToTarget() {
         BeanCodegen codegen = BeanCodegenImpl.builder().build();
-        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toRole", false, false),
+        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toRole", MethodType.METHOD),
             RoleDto.class.getName(), Role.class.getName(), roleProps, null, "role"));
 
         //        assertEquals(codegen.generateToTarget(new MethodMetadataImpl("toRole", false, false),
@@ -255,9 +332,9 @@ public class BeanCodegenTest extends CodegenTest {
         //                + "    return user;\n"
         //                + "}");
 
-        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toRole", false, true),
+        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toRole", MethodType.STATIC_METHOD),
             UserDto.class.getName(), User.class.getName(), roleProps, "roleDto", "role"));
-        //        assertEquals(codegen.generateToTarget(new MethodMetadataImpl("toRole", false, true),
+        //        assertEquals(codegen.generateToTarget(new MethodMetadataImpl("toRole", MethodType.STATIC_METHOD),
         //            UserDto.class.getName(), User.class.getName(),
         //            properties, "userDto", "user"),
         //            "public static cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.vo.UserDto userDto) {\n"
@@ -272,7 +349,8 @@ public class BeanCodegenTest extends CodegenTest {
     @Test
     public void roleDtoFromTarget() {
         BeanCodegen codegen = BeanCodegenImpl.builder().build();
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("RoleDto", true), RoleDto.class.getName(),
+        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("RoleDto", MethodType.CONSTRUCTOR),
+            RoleDto.class.getName(),
             Role.class.getName(), roleProps, null, "role"));
 
         //        assertEquals(codegen.generateToTarget(new MethodMetadataImpl("toRole", false, false),
@@ -286,7 +364,7 @@ public class BeanCodegenTest extends CodegenTest {
         //                + "    return user;\n"
         //                + "}");
 
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromRole", false),
+        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromRole", MethodType.METHOD),
             RoleDto.class.getName(), Role.class.getName(), roleProps, "roleDto", "user"));
         //        assertEquals(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", false),
         //            UserDto.class.getName(), User.class.getName(),
@@ -299,9 +377,9 @@ public class BeanCodegenTest extends CodegenTest {
         //                + "    return userDto;\n"
         //                + "}");
 
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromRole", false, true),
+        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromRole", MethodType.STATIC_METHOD),
             RoleDto.class.getName(), Role.class.getName(), roleProps, "roleDto", "user"));
-        //        assertEquals(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", false, true),
+        //        assertEquals(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
         //            UserDto.class.getName(), User.class.getName(),
         //            properties, "userDto", "user"),
         //            "public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
@@ -316,7 +394,41 @@ public class BeanCodegenTest extends CodegenTest {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void noConvertorException() {
         BeanCodegen codegen = BeanCodegenImpl.builder().setNoConvertorException(true).build();
-        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("RoleDto", true), RoleDto.class.getName(),
+        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("RoleDto", MethodType.CONSTRUCTOR),
+            RoleDto.class.getName(),
             Role.class.getName(), roleProps, null, "role"));
     }
+
+    //    @Test
+    //    public void testFromTarget2() {
+    //        List<ConvertibleProperty> properties = Lang.list(new ConvertiblePropertyImpl("id", long.class, long.class));
+    //        BeanCodegen codegen = BeanCodegenImpl.builder().build();
+    //
+    //        // source UserDto target User
+    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.CONSTRUCTOR),
+    //            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
+    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD),
+    //            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
+    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD, true),
+    //            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
+    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
+    //            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
+    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD, true),
+    //            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
+    //        System.out.println();
+    //
+    //        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("UserDto", MethodType.CONSTRUCTOR),
+    //            UserDto.class.getName(),
+    //            User.class.getName(), properties, null, "user"));
+    //        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
+    //            UserDto.class.getName(),
+    //            User.class.getName(), properties, "userDto", "user"));
+    //        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
+    //            UserDto.class.getName(),
+    //            User.class.getName(), properties, "userDto", "user"));
+    //        System.out
+    //            .println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD, true),
+    //                UserDto.class.getName(),
+    //                User.class.getName(), properties, "userDto", "user"));
+    //    }
 }

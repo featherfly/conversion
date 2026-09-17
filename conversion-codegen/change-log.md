@@ -1,3 +1,55 @@
+# 0.5.0 2026-09-17
+
+feats:
+
+1. BeanCodegen支持生成的复制方法传入对象
+    ```java
+    // source UserDto target User
+    // BeanCodegen.generateToTarget
+    public cn.featherfly.conversion.codegen.domain.User toUser() {
+        cn.featherfly.conversion.codegen.domain.User user = new cn.featherfly.conversion.codegen.domain.User();
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(getId())) user.setId(getId());
+        return user;
+    }
+    public cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.domain.User user) {
+        if (user == null) return user;
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(getId())) user.setId(getId());
+        return user;
+    }
+    public static cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.vo.UserDto userDto) {
+        if (userDto == null) return null;
+        cn.featherfly.conversion.codegen.domain.User user = new cn.featherfly.conversion.codegen.domain.User();
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getId())) user.setId(userDto.getId());
+        return user;
+    }
+    public static cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.vo.UserDto userDto, cn.featherfly.conversion.codegen.domain.User user) {
+        if (user == null || userDto == null) return user;
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getId())) user.setId(userDto.getId());
+        return user;
+    }
+    // BeanCodegen.generateFromTarget
+    public UserDto(cn.featherfly.conversion.codegen.domain.User user) {
+        if (user == null) return;
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) setId(user.getId());
+    }
+    public cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {
+        if (user == null) return this;
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) setId(user.getId());
+        return this;
+    }
+    public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {
+        if (user == null) return null;
+        cn.featherfly.conversion.codegen.vo.UserDto userDto = new cn.featherfly.conversion.codegen.vo.UserDto();
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) userDto.setId(user.getId());
+        return userDto;
+    }
+    public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user, cn.featherfly.conversion.codegen.vo.UserDto userDto) {
+        if (user == null || userDto == null) return userDto;
+        if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) userDto.setId(user.getId());
+        return userDto;
+    }
+    ```
+ 
 # 0.4.0 2026-09-10
 
 feats:
