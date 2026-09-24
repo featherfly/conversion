@@ -73,6 +73,8 @@ public class BeanCodegenImpl implements BeanCodegen {
 
     private boolean noConvertorException;
 
+    private boolean generateJavadoc = true;
+
     /**
      * Instantiates a new bean codegen impl.
      *
@@ -90,9 +92,8 @@ public class BeanCodegenImpl implements BeanCodegen {
         this.propertyCodegenMap.putAll(propertyCodegenMap);
 
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
-        this.convertorMap = addTimeConvertor(
-            addSqlTimestampConvertor(addSqlTimeConvertor(addSqlDateConvertor(addDateConvertor(
-                addMathConvertor(new ChainMapImpl<>()))))));
+        this.convertorMap = addTimeConvertor(addSqlTimestampConvertor(
+            addSqlTimeConvertor(addSqlDateConvertor(addDateConvertor(addMathConvertor(new ChainMapImpl<>()))))));
         this.convertorMap.putAll(convertorMap);
     }
 
@@ -244,32 +245,21 @@ public class BeanCodegenImpl implements BeanCodegen {
         ChainMap<String, ConvertorCodegen> convertorCodegens) {
         // java.math.BigDecimal, java.math.BigInteger
         return convertorCodegens
-            .putChain(getKey(BigDecimal.class, Long.class),
-                new BigDecimalToLongConvertorCodegen(Long.class))
-            .putChain(getKey(Long.class, BigDecimal.class),
-                new BigDecimalToLongConvertorCodegen(Long.class, true))
-            .putChain(getKey(BigDecimal.class, Long.TYPE),
-                new BigDecimalToLongConvertorCodegen(Long.TYPE))
-            .putChain(getKey(Long.TYPE, BigDecimal.class),
-                new BigDecimalToLongConvertorCodegen(Long.TYPE, true))
+            .putChain(getKey(BigDecimal.class, Long.class), new BigDecimalToLongConvertorCodegen(Long.class))
+            .putChain(getKey(Long.class, BigDecimal.class), new BigDecimalToLongConvertorCodegen(Long.class, true))
+            .putChain(getKey(BigDecimal.class, Long.TYPE), new BigDecimalToLongConvertorCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigDecimal.class), new BigDecimalToLongConvertorCodegen(Long.TYPE, true))
             //
-            .putChain(getKey(BigDecimal.class, Double.class),
-                new BigDecimalToDoubleConvertorCodegen(Double.class))
+            .putChain(getKey(BigDecimal.class, Double.class), new BigDecimalToDoubleConvertorCodegen(Double.class))
             .putChain(getKey(Double.class, BigDecimal.class),
                 new BigDecimalToDoubleConvertorCodegen(Double.class, true))
-            .putChain(getKey(BigDecimal.class, Double.TYPE),
-                new BigDecimalToDoubleConvertorCodegen(Double.TYPE))
-            .putChain(getKey(Double.TYPE, BigDecimal.class),
-                new BigDecimalToDoubleConvertorCodegen(Double.TYPE, true))
+            .putChain(getKey(BigDecimal.class, Double.TYPE), new BigDecimalToDoubleConvertorCodegen(Double.TYPE))
+            .putChain(getKey(Double.TYPE, BigDecimal.class), new BigDecimalToDoubleConvertorCodegen(Double.TYPE, true))
             //
-            .putChain(getKey(BigInteger.class, Long.class),
-                new BigIntegerToLongConvertorCodegen(Long.class))
-            .putChain(getKey(Long.class, BigInteger.class),
-                new BigIntegerToLongConvertorCodegen(Long.class, true))
-            .putChain(getKey(BigInteger.class, Long.TYPE),
-                new BigIntegerToLongConvertorCodegen(Long.TYPE))
-            .putChain(getKey(Long.TYPE, BigInteger.class),
-                new BigIntegerToLongConvertorCodegen(Long.TYPE, true));
+            .putChain(getKey(BigInteger.class, Long.class), new BigIntegerToLongConvertorCodegen(Long.class))
+            .putChain(getKey(Long.class, BigInteger.class), new BigIntegerToLongConvertorCodegen(Long.class, true))
+            .putChain(getKey(BigInteger.class, Long.TYPE), new BigIntegerToLongConvertorCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigInteger.class), new BigIntegerToLongConvertorCodegen(Long.TYPE, true));
     }
 
     // ****************************************************************************************************************
@@ -399,32 +389,20 @@ public class BeanCodegenImpl implements BeanCodegen {
     private static ChainMap<String, PropertyCodegen> addMath(ChainMap<String, PropertyCodegen> propertyCodegens) {
         // java.math.BigDecimal, java.math.BigInteger
         return propertyCodegens
-            .putChain(getKey(BigDecimal.class, Long.class),
-                new BigDecimalToLongPropertyCodegen(Long.class))
-            .putChain(getKey(Long.class, BigDecimal.class),
-                new BigDecimalToLongPropertyCodegen(Long.class, true))
-            .putChain(getKey(BigDecimal.class, Long.TYPE),
-                new BigDecimalToLongPropertyCodegen(Long.TYPE))
-            .putChain(getKey(Long.TYPE, BigDecimal.class),
-                new BigDecimalToLongPropertyCodegen(Long.TYPE, true))
+            .putChain(getKey(BigDecimal.class, Long.class), new BigDecimalToLongPropertyCodegen(Long.class))
+            .putChain(getKey(Long.class, BigDecimal.class), new BigDecimalToLongPropertyCodegen(Long.class, true))
+            .putChain(getKey(BigDecimal.class, Long.TYPE), new BigDecimalToLongPropertyCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigDecimal.class), new BigDecimalToLongPropertyCodegen(Long.TYPE, true))
             //
-            .putChain(getKey(BigDecimal.class, Double.class),
-                new BigDecimalToDoublePropertyCodegen(Double.class))
-            .putChain(getKey(Double.class, BigDecimal.class),
-                new BigDecimalToDoublePropertyCodegen(Double.class, true))
-            .putChain(getKey(BigDecimal.class, Double.TYPE),
-                new BigDecimalToDoublePropertyCodegen(Double.TYPE))
-            .putChain(getKey(Double.TYPE, BigDecimal.class),
-                new BigDecimalToDoublePropertyCodegen(Double.TYPE, true))
+            .putChain(getKey(BigDecimal.class, Double.class), new BigDecimalToDoublePropertyCodegen(Double.class))
+            .putChain(getKey(Double.class, BigDecimal.class), new BigDecimalToDoublePropertyCodegen(Double.class, true))
+            .putChain(getKey(BigDecimal.class, Double.TYPE), new BigDecimalToDoublePropertyCodegen(Double.TYPE))
+            .putChain(getKey(Double.TYPE, BigDecimal.class), new BigDecimalToDoublePropertyCodegen(Double.TYPE, true))
             //
-            .putChain(getKey(BigInteger.class, Long.class),
-                new BigIntegerToLongPropertyCodegen(Long.class))
-            .putChain(getKey(Long.class, BigInteger.class),
-                new BigIntegerToLongPropertyCodegen(Long.class, true))
-            .putChain(getKey(BigInteger.class, Long.TYPE),
-                new BigIntegerToLongPropertyCodegen(Long.TYPE))
-            .putChain(getKey(Long.TYPE, BigInteger.class),
-                new BigIntegerToLongPropertyCodegen(Long.TYPE, true));
+            .putChain(getKey(BigInteger.class, Long.class), new BigIntegerToLongPropertyCodegen(Long.class))
+            .putChain(getKey(Long.class, BigInteger.class), new BigIntegerToLongPropertyCodegen(Long.class, true))
+            .putChain(getKey(BigInteger.class, Long.TYPE), new BigIntegerToLongPropertyCodegen(Long.TYPE))
+            .putChain(getKey(Long.TYPE, BigInteger.class), new BigIntegerToLongPropertyCodegen(Long.TYPE, true));
     }
 
     private static String getKey(Class<?> source, Class<?> target) {
@@ -510,8 +488,8 @@ public class BeanCodegenImpl implements BeanCodegen {
         if (convertorCodegen != null) {
             return convertorCodegen;
         }
-        if (st.name().startsWith("java") || st.name().indexOf('.') == -1
-            || tt.name().startsWith("java") || tt.name().indexOf('.') == -1) {
+        if (st.name().startsWith("java") || st.name().indexOf('.') == -1 || tt.name().startsWith("java")
+            || tt.name().indexOf('.') == -1) {
             if (noConvertorException) {
                 throw new IllegalArgumentException(Str.format("未找到属性转换器[{0} <-> {1}]", st.name(), tt.name()));
             }
@@ -538,16 +516,38 @@ public class BeanCodegenImpl implements BeanCodegen {
         String indent2 = getIndent(indentStart + 1);
         String targetDefine = targetObjectType + " " + targetObjectName;
         StringBuilder src = new StringBuilder();
+        if (generateJavadoc) {
+            if (method.isStatic()) {
+                if (method.isGivenArgument()) {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * copy properties from argument {1} to argument {3}\n{0} * @param {1} {1}\n{0} * @param {3} {3}\n{0} * @return the argument {3}\n{0} */\n",
+                        indent, sourceObjectName, targetObjectType, targetObjectName));
+                } else {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
+                        indent, sourceObjectName, targetObjectType));
+                }
+            } else {
+                if (method.isGivenArgument()) {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * copy properties from this to argument {1}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
+                        indent, targetObjectName, targetObjectType));
+                } else {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * create a new {1} and copy properties from this\n{0} * @return new {1}\n{0} */\n",
+                        indent, targetObjectType));
+                }
+            }
+
+        }
         src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(targetObjectType)
             .append(" ").append(method.name());
         if (method.isStatic()) {
             AssertIllegalArgument.isNotEmpty(sourceObjectName, "when method is static, sourceObjectName");
             src.append("(").append(sourceObjectType).append(" ").append(sourceObjectName)
-                .append(method.isGivenArgument() ? ", " + targetDefine : "")
-                .append(") {\n");
+                .append(method.isGivenArgument() ? ", " + targetDefine : "").append(") {\n");
         } else {
-            src.append("(").append(method.isGivenArgument() ? targetDefine : "")
-                .append(") {\n");
+            src.append("(").append(method.isGivenArgument() ? targetDefine : "").append(") {\n");
         }
         if (method.isGivenArgument()) {
             src.append(indent2).append("if (").append(targetObjectName).append(" == null");
@@ -566,7 +566,7 @@ public class BeanCodegenImpl implements BeanCodegen {
         //                .append(method.isGivenArgument() ? " || " + targetObjectName + " == null" : "")
         //                .append(") return ").append(targetObjectName).append(";\n");
         //        } else if (method.isGivenArgument()) {
-        //            
+        //
         //        }
         for (ConvertibleProperty prop : properties) {
             PropertyCodegen pc = getPropertyCodegen(prop);
@@ -585,31 +585,52 @@ public class BeanCodegenImpl implements BeanCodegen {
     @Override
     public String generateFromTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
         List<ConvertibleProperty> properties, String sourceObjectName, String targetObjectName) {
-        StringBuilder src = new StringBuilder();
         String indent = getIndent(indentStart);
         String indent2 = getIndent(indentStart + 1);
         String sourceDefine = sourceObjectType + " " + sourceObjectName;
+        StringBuilder src = new StringBuilder();
+        if (generateJavadoc) {
+            if (method.isStatic()) {
+                if (method.isGivenArgument()) {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * copy properties from {2} to {1}\n{0} * @param {2} {2}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
+                        indent, sourceObjectName, targetObjectName));
+                } else {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
+                        indent, targetObjectName, sourceObjectType));
+                }
+            } else {
+                if (method.isConstructor()) {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * Instantiates a new {1} and copy properties from {2}\n{0} * @param {2} {2}\n{0} */\n",
+                        indent, sourceObjectType, targetObjectName));
+                } else {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * copy properties from {2} to this\n{0} * @param {2} {2}\n{0} * @return this\n{0} */\n",
+                        indent, method.name(), targetObjectName, sourceObjectType));
+                }
+            }
+        }
         if (method.isConstructor()) {
             src.append(indent).append("public ").append(method.name()).append("(").append(targetObjectType).append(" ")
                 .append(targetObjectName).append(") {\n");
         } else {
             src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(sourceObjectType)
                 .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
-                .append(targetObjectName)
-                .append(method.isGivenArgument() ? ", " + sourceDefine : "")
-                .append(") {\n");
+                .append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "").append(") {\n");
         }
         if (method.isGivenArgument() && method.isStatic()) {
-            src.append(indent2).append("if (").append(targetObjectName).append(" == null || ")
-                .append(sourceObjectName).append(" == null) return ").append(sourceObjectName).append(";\n");
+            src.append(indent2).append("if (").append(targetObjectName).append(" == null || ").append(sourceObjectName)
+                .append(" == null) return ").append(sourceObjectName).append(";\n");
         } else {
             src.append(indent2).append("if (").append(targetObjectName).append(" == null) return");
             if (method.methodType() == MethodType.METHOD) {
                 src.append(" this;\n");
             } else if (method.methodType() == MethodType.STATIC_METHOD) {
                 src.append(" null;\n");
-                src.append(indent2).append(sourceDefine).append(" = ")
-                    .append("new ").append(sourceObjectType).append("();\n");
+                src.append(indent2).append(sourceDefine).append(" = ").append("new ").append(sourceObjectType)
+                    .append("();\n");
             } else if (method.methodType() == MethodType.CONSTRUCTOR) {
                 src.append(";\n");
             }
@@ -629,14 +650,45 @@ public class BeanCodegenImpl implements BeanCodegen {
         return src.toString();
     }
 
+    /**
+     * Checks if is no convertor exception.
+     *
+     * @return true, if is no convertor exception
+     */
     public boolean isNoConvertorException() {
         return noConvertorException;
     }
 
+    /**
+     * get indentStart value.
+     *
+     * @return indentStart
+     */
+    public int getIndentStart() {
+        return indentStart;
+    }
+
+    /**
+     * get generateJavadoc value
+     *
+     * @return generateJavadoc
+     */
+    public boolean isGenerateJavadoc() {
+        return generateJavadoc;
+    }
+
+    /**
+     * Builder.
+     *
+     * @return the bean codegen builder
+     */
     public static BeanCodegenBuilder builder() {
         return new BeanCodegenBuilder();
     }
 
+    /**
+     * The Class BeanCodegenBuilder.
+     */
     public static class BeanCodegenBuilder {
 
         private Map<String, PropertyCodegen> propertyCodegenMap = new HashMap<>(0);
@@ -647,31 +699,77 @@ public class BeanCodegenImpl implements BeanCodegen {
 
         private boolean noConvertorException;
 
+        private boolean generateJavadoc = true;
+
+        /**
+         * Sets the indent start.
+         *
+         * @param indentStart the indent start
+         * @return the bean codegen builder
+         */
         public BeanCodegenBuilder setIndentStart(int indentStart) {
             this.indentStart = indentStart;
             return this;
         }
 
+        /**
+         * Sets the no convertor exception.
+         *
+         * @param noConvertorException the no convertor exception
+         * @return the bean codegen builder
+         */
         public BeanCodegenBuilder setNoConvertorException(boolean noConvertorException) {
             this.noConvertorException = noConvertorException;
             return this;
         }
 
+        /**
+         * set generateJavadoc value
+         *
+         * @param generateJavadoc generateJavadoc
+         */
+        public BeanCodegenBuilder setGenerateJavadoc(boolean generateJavadoc) {
+            this.generateJavadoc = generateJavadoc;
+            return this;
+        }
+
+        /**
+         * Adds the property codegen.
+         *
+         * @param source the source
+         * @param target the target
+         * @param propertyCodegen the property codegen
+         * @return the bean codegen builder
+         */
         public BeanCodegenBuilder addPropertyCodegen(Class<?> source, Class<?> target,
             PropertyCodegen propertyCodegen) {
             propertyCodegenMap.put(getKey(source, target), propertyCodegen);
             return this;
         }
 
+        /**
+         * Adds the convertor codegen.
+         *
+         * @param source the source
+         * @param target the target
+         * @param convertorCodegen the convertor codegen
+         * @return the bean codegen builder
+         */
         public BeanCodegenBuilder addConvertorCodegen(Class<?> source, Class<?> target,
             ConvertorCodegen convertorCodegen) {
             convertorMap.put(getKey(source, target), convertorCodegen);
             return this;
         }
 
+        /**
+         * build BeanCodegen.
+         *
+         * @return the bean codegen
+         */
         public BeanCodegen build() {
             BeanCodegenImpl beanCodegen = new BeanCodegenImpl(indentStart, propertyCodegenMap, convertorMap);
             beanCodegen.noConvertorException = noConvertorException;
+            beanCodegen.generateJavadoc = generateJavadoc;
             return beanCodegen;
         }
     }
