@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
@@ -506,75 +507,103 @@ public class BeanCodegenImpl implements BeanCodegen {
         return indent.toString();
     }
 
+    private String generateToTargetJavadoc(MethodMetadata method, String sourceObjectType, String targetObjectType,
+        String sourceObjectName, String targetObjectName) {
+        String indent = getIndent(indentStart);
+        StringBuilder javadoc = new StringBuilder();
+        if (method.isStatic()) {
+            if (method.isGivenArgument()) {
+                javadoc.append(Str.format(
+                    "{0}/**\n{0} * copy properties from argument {1} to argument {3}\n{0} * @param {1} {1}\n{0} * @param {3} {3}\n{0} * @return the argument {3}\n{0} */\n",
+                    indent, sourceObjectName, targetObjectType, targetObjectName));
+            } else {
+                javadoc.append(Str.format(
+                    "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
+                    indent, sourceObjectName, targetObjectType));
+            }
+        } else {
+            if (method.isGivenArgument()) {
+                javadoc.append(Str.format(
+                    "{0}/**\n{0} * copy properties from this to argument {1}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
+                    indent, targetObjectName, targetObjectType));
+            } else {
+                javadoc.append(Str.format(
+                    "{0}/**\n{0} * create a new {1} and copy properties from this\n{0} * @return new {1}\n{0} */\n",
+                    indent, targetObjectType));
+            }
+        }
+        return javadoc.toString();
+    }
+
+    private String generateToTargetMethodDefine(MethodMetadata method, String sourceObjectType, String targetObjectType,
+        String sourceObjectName, String targetObjectName) {
+        String indent = getIndent(indentStart);
+        String targetDefine = targetObjectType + " " + targetObjectName;
+        StringBuilder methodDefine = new StringBuilder();
+        methodDefine.append(indent).append("public ").append(method.isStatic() ? "static " : "")
+            .append(targetObjectType).append(" ").append(method.name());
+        if (method.isStatic()) {
+            AssertIllegalArgument.isNotEmpty(sourceObjectName, "when method is static, sourceObjectName");
+            methodDefine.append("(").append(sourceObjectType).append(" ").append(sourceObjectName)
+                .append(method.isGivenArgument() ? ", " + targetDefine : "").append(") {\n");
+        } else {
+            methodDefine.append("(").append(method.isGivenArgument() ? targetDefine : "").append(") {\n");
+        }
+        return methodDefine.toString();
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String generateToTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
         List<ConvertibleProperty> properties, String sourceObjectName, String targetObjectName) {
+        return generateToTarget(method, sourceObjectType, targetObjectType, indent -> {
+            String targetDefine = targetObjectType + " " + targetObjectName;
+            StringBuilder src = new StringBuilder();
+            if (method.isGivenArgument()) {
+                src.append(indent).append("if (").append(targetObjectName).append(" == null");
+                if (method.isStatic()) {
+                    src.append(" || ").append(sourceObjectName).append(" == null");
+                }
+                src.append(") return ").append(targetObjectName).append(";\n");
+            } else {
+                if (method.isStatic()) {
+                    src.append(indent).append("if (").append(sourceObjectName).append(" == null) return null;\n");
+                }
+                src.append(indent).append(targetDefine).append(" = new ").append(targetObjectType).append("();\n");
+            }
+            for (ConvertibleProperty prop : properties) {
+                PropertyCodegen pc = getPropertyCodegen(prop);
+                for (String line : pc.generateToTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
+                    src.append(indent).append(line).append("\n");
+                }
+            }
+            src.append(indent).append("return ").append(targetObjectName).append(";\n");
+            return src.toString();
+        }, sourceObjectName, targetObjectName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateToTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
+        Function<String, String> content, String sourceObjectName, String targetObjectName) {
         String indent = getIndent(indentStart);
         String indent2 = getIndent(indentStart + 1);
-        String targetDefine = targetObjectType + " " + targetObjectName;
         StringBuilder src = new StringBuilder();
         if (generateJavadoc) {
-            if (method.isStatic()) {
-                if (method.isGivenArgument()) {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * copy properties from argument {1} to argument {3}\n{0} * @param {1} {1}\n{0} * @param {3} {3}\n{0} * @return the argument {3}\n{0} */\n",
-                        indent, sourceObjectName, targetObjectType, targetObjectName));
-                } else {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
-                        indent, sourceObjectName, targetObjectType));
-                }
-            } else {
-                if (method.isGivenArgument()) {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * copy properties from this to argument {1}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
-                        indent, targetObjectName, targetObjectType));
-                } else {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * create a new {1} and copy properties from this\n{0} * @return new {1}\n{0} */\n",
-                        indent, targetObjectType));
-                }
-            }
-
+            src.append(generateToTargetJavadoc(method, sourceObjectType, targetObjectType, sourceObjectName,
+                targetObjectName));
         }
-        src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(targetObjectType)
-            .append(" ").append(method.name());
-        if (method.isStatic()) {
-            AssertIllegalArgument.isNotEmpty(sourceObjectName, "when method is static, sourceObjectName");
-            src.append("(").append(sourceObjectType).append(" ").append(sourceObjectName)
-                .append(method.isGivenArgument() ? ", " + targetDefine : "").append(") {\n");
-        } else {
-            src.append("(").append(method.isGivenArgument() ? targetDefine : "").append(") {\n");
+        src.append(generateToTargetMethodDefine(method, sourceObjectType, targetObjectType, sourceObjectName,
+            targetObjectName));
+        String c = content.apply(indent2);
+        src.append(c);
+        if (!(c.charAt(c.length() - 1) == '\n')) {
+            src.append("\n");
         }
-        if (method.isGivenArgument()) {
-            src.append(indent2).append("if (").append(targetObjectName).append(" == null");
-            if (method.isStatic()) {
-                src.append(" || ").append(sourceObjectName).append(" == null");
-            }
-            src.append(") return ").append(targetObjectName).append(";\n");
-        } else {
-            if (method.isStatic()) {
-                src.append(indent2).append("if (").append(sourceObjectName).append(" == null) return null;\n");
-            }
-            src.append(indent2).append(targetDefine).append(" = new ").append(targetObjectType).append("();\n");
-        }
-        //        if (method.isStatic()) {
-        //            src.append(indent2).append("if (").append(sourceObjectName).append(" == null")
-        //                .append(method.isGivenArgument() ? " || " + targetObjectName + " == null" : "")
-        //                .append(") return ").append(targetObjectName).append(";\n");
-        //        } else if (method.isGivenArgument()) {
-        //
-        //        }
-        for (ConvertibleProperty prop : properties) {
-            PropertyCodegen pc = getPropertyCodegen(prop);
-            for (String line : pc.generateToTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
-                src.append(indent2).append(line).append("\n");
-            }
-        }
-        src.append(indent2).append("return ").append(targetObjectName).append(";\n");
         src.append(indent).append("}");
         return src.toString();
     }
@@ -645,6 +674,56 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
         if (!method.isConstructor()) {
             src.append(indent2).append("return ").append(method.isStatic() ? sourceObjectName : "this").append(";\n");
+        }
+        src.append(indent).append("}");
+        return src.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String generateFromTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
+        Function<String, String> content, String sourceObjectName, String targetObjectName) {
+        String indent = getIndent(indentStart);
+        String indent2 = getIndent(indentStart + 1);
+        String sourceDefine = sourceObjectType + " " + sourceObjectName;
+        StringBuilder src = new StringBuilder();
+        if (generateJavadoc) {
+            if (method.isStatic()) {
+                if (method.isGivenArgument()) {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * copy properties from {2} to {1}\n{0} * @param {2} {2}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
+                        indent, sourceObjectName, targetObjectName));
+                } else {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
+                        indent, targetObjectName, sourceObjectType));
+                }
+            } else {
+                if (method.isConstructor()) {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * Instantiates a new {1} and copy properties from {2}\n{0} * @param {2} {2}\n{0} */\n",
+                        indent, sourceObjectType, targetObjectName));
+                } else {
+                    src.append(Str.format(
+                        "{0}/**\n{0} * copy properties from {2} to this\n{0} * @param {2} {2}\n{0} * @return this\n{0} */\n",
+                        indent, method.name(), targetObjectName, sourceObjectType));
+                }
+            }
+        }
+        if (method.isConstructor()) {
+            src.append(indent).append("public ").append(method.name()).append("(").append(targetObjectType).append(" ")
+                .append(targetObjectName).append(") {\n");
+        } else {
+            src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(sourceObjectType)
+                .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
+                .append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "").append(") {\n");
+        }
+        String c = content.apply(indent2);
+        src.append(c);
+        if (!(c.charAt(c.length() - 1) == '\n')) {
+            src.append("\n");
         }
         src.append(indent).append("}");
         return src.toString();
@@ -724,9 +803,10 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
 
         /**
-         * set generateJavadoc value
+         * set generateJavadoc value.
          *
          * @param generateJavadoc generateJavadoc
+         * @return the bean codegen builder
          */
         public BeanCodegenBuilder setGenerateJavadoc(boolean generateJavadoc) {
             this.generateJavadoc = generateJavadoc;

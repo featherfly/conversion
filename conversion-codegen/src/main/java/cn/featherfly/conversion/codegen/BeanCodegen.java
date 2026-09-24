@@ -1,6 +1,7 @@
 package cn.featherfly.conversion.codegen;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * The Interface PropertyCodegen.
@@ -24,8 +25,23 @@ public interface BeanCodegen {
      * @return the string
      */
     String generateToTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
-        List<ConvertibleProperty> properties, String sourceObjectName,
-        String targetObjectName);
+        List<ConvertibleProperty> properties, String sourceObjectName, String targetObjectName);
+
+    /**
+     * Generate to target.
+     *
+     * @param method the method
+     * @param sourceObjectType the source object type
+     * @param targetObjectType the target object type
+     * @param content the content
+     * @param sourceObjectName the source object name.
+     *        can be null or empty string
+     * @param targetObjectName the target object name.
+     *        cant not be null or empty string
+     * @return the string
+     */
+    String generateToTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
+        Function<String, String> content, String sourceObjectName, String targetObjectName);
 
     /**
      * Generate from target.
@@ -41,6 +57,19 @@ public interface BeanCodegen {
      * @return the string
      */
     String generateFromTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
-        List<ConvertibleProperty> properties, String sourceObjectName,
-        String targetObjectName);
+        List<ConvertibleProperty> properties, String sourceObjectName, String targetObjectName);
+
+    /**
+     * Generate from target.
+     *
+     * @param method the method
+     * @param sourceObjectType the source object type
+     * @param targetObjectType the target object type
+     * @param content the content
+     * @param sourceObjectName the source object name
+     * @param targetObjectName the target object name
+     * @return the string
+     */
+    String generateFromTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
+        Function<String, String> content, String sourceObjectName, String targetObjectName);
 }

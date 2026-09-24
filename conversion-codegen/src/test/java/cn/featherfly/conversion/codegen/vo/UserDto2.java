@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cn.featherfly.common.lang.Lang;
 import cn.featherfly.conversion.codegen.domain.User;
 
-public class UserDto {
+public class UserDto2 {
     @JsonProperty("id")
     private Long id = null;
 
@@ -74,7 +74,7 @@ public class UserDto {
 
     private BigInteger long2BigInteger2;
 
-    public UserDto id(Long id) {
+    public UserDto2 id(Long id) {
 
         this.id = id;
         return this;
@@ -89,7 +89,7 @@ public class UserDto {
         this.id = id;
     }
 
-    public UserDto name(String name) {
+    public UserDto2 name(String name) {
 
         this.name = name;
         return this;
@@ -104,7 +104,7 @@ public class UserDto {
         this.name = name;
     }
 
-    public UserDto mobileNo(String mobileNo) {
+    public UserDto2 mobileNo(String mobileNo) {
 
         this.mobileNo = mobileNo;
         return this;
@@ -119,7 +119,7 @@ public class UserDto {
         this.mobileNo = mobileNo;
     }
 
-    public UserDto gender(Gender gender) {
+    public UserDto2 gender(Gender gender) {
         this.gender = gender;
         return this;
     }
@@ -132,7 +132,7 @@ public class UserDto {
         this.gender = gender;
     }
 
-    public UserDto available(Boolean available) {
+    public UserDto2 available(Boolean available) {
 
         this.available = available;
         return this;
@@ -147,7 +147,7 @@ public class UserDto {
         this.available = available;
     }
 
-    public UserDto email(String email) {
+    public UserDto2 email(String email) {
 
         this.email = email;
         return this;
@@ -162,7 +162,7 @@ public class UserDto {
         this.email = email;
     }
 
-    public UserDto registerTime(String registerTime) {
+    public UserDto2 registerTime(String registerTime) {
 
         this.registerTime = registerTime;
         return this;
@@ -177,7 +177,7 @@ public class UserDto {
         this.registerTime = registerTime;
     }
 
-    public UserDto alipayUserId(String alipayUserId) {
+    public UserDto2 alipayUserId(String alipayUserId) {
 
         this.alipayUserId = alipayUserId;
         return this;
@@ -192,7 +192,7 @@ public class UserDto {
         this.alipayUserId = alipayUserId;
     }
 
-    public UserDto wechatUnionId(String wechatUnionId) {
+    public UserDto2 wechatUnionId(String wechatUnionId) {
 
         this.wechatUnionId = wechatUnionId;
         return this;
@@ -207,7 +207,7 @@ public class UserDto {
         this.wechatUnionId = wechatUnionId;
     }
 
-    public UserDto endTime(LocalDateTime endTime) {
+    public UserDto2 endTime(LocalDateTime endTime) {
 
         this.endTime = endTime;
         return this;
@@ -222,7 +222,7 @@ public class UserDto {
         this.endTime = endTime;
     }
 
-    public UserDto needModifyPass(Boolean needModifyPass) {
+    public UserDto2 needModifyPass(Boolean needModifyPass) {
 
         this.needModifyPass = needModifyPass;
         return this;
@@ -237,7 +237,7 @@ public class UserDto {
         this.needModifyPass = needModifyPass;
     }
 
-    public UserDto isBindingDingTalk(Boolean isBindingDingTalk) {
+    public UserDto2 isBindingDingTalk(Boolean isBindingDingTalk) {
 
         this.isBindingDingTalk = isBindingDingTalk;
         return this;
@@ -252,7 +252,7 @@ public class UserDto {
         this.isBindingDingTalk = isBindingDingTalk;
     }
 
-    public UserDto isBindingEweChat(Boolean isBindingEweChat) {
+    public UserDto2 isBindingEweChat(Boolean isBindingEweChat) {
 
         this.isBindingEweChat = isBindingEweChat;
         return this;
@@ -443,7 +443,7 @@ public class UserDto {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UserDto userDto = (UserDto) o;
+        UserDto2 userDto = (UserDto2) o;
         return Objects.equals(id, userDto.id) && Objects.equals(name, userDto.name)
             && Objects.equals(mobileNo, userDto.mobileNo) && Objects.equals(gender, userDto.gender)
             && Objects.equals(available, userDto.available) && Objects.equals(email, userDto.email)
@@ -493,13 +493,11 @@ public class UserDto {
         return o.toString().replace("\n", "\n    ");
     }
 
-    public UserDto(User user) {
-        setId(user.getId());
-        setName(user.getName());
-        setGender(Lang.toEnum(Gender.class, user.getGender()));
+    public UserDto2(User user) {
+        fromUser(user);
     }
 
-    public UserDto fromUser(User user) {
+    public UserDto2 fromUser(User user) {
         if (user == null) {
             return this;
         }
@@ -510,11 +508,7 @@ public class UserDto {
     }
 
     public User toUser() {
-        User user = new User();
-        user.setId(id);
-        user.setName(name);
-        user.setGender(Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, gender));
-        return user;
+        return toUser(new User());
     }
 
     public User toUser(User user) {
@@ -524,7 +518,7 @@ public class UserDto {
         return user;
     }
 
-    public static UserDto from(User user) {
-        return new UserDto(user);
+    public static UserDto2 from(User user) {
+        return new UserDto2(user);
     }
 }

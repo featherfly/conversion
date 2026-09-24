@@ -316,6 +316,30 @@ public class BeanCodegenTest extends CodegenTest {
     }
 
     @Test
+    public void testToTargetWithContent() {
+        String result = null;
+        BeanCodegen codegen = BeanCodegenImpl.builder().setGenerateJavadoc(false).build();
+
+        result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD), UserDto.class.getName(),
+            User.class.getName(),
+            indent -> indent + "return toUser(new cn.featherfly.conversion.codegen.domain.User());", null, "user");
+        System.out.println(result);
+
+        assertEquals(result, "public cn.featherfly.conversion.codegen.domain.User toUser() {\n"
+            + "    return toUser(new cn.featherfly.conversion.codegen.domain.User());\n" + "}");
+
+        result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
+            UserDto.class.getName(), User.class.getName(),
+            indent -> indent + "return toUser(userDto, new cn.featherfly.conversion.codegen.domain.User());", "userDto",
+            "user");
+        System.out.println(result);
+
+        assertEquals(result,
+            "public static cn.featherfly.conversion.codegen.domain.User toUser(cn.featherfly.conversion.codegen.vo.UserDto userDto) {\n"
+                + "    return toUser(userDto, new cn.featherfly.conversion.codegen.domain.User());\n" + "}");
+    }
+
+    @Test
     public void testFromTarget() {
         String result = null;
         BeanCodegen codegen = BeanCodegenImpl.builder().setGenerateJavadoc(false).build();
@@ -536,6 +560,28 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
             + "    return userDto;\n" + "}");
+    }
+
+    @Test
+    public void testFromTargetWithContent() {
+        String result = null;
+        BeanCodegen codegen = BeanCodegenImpl.builder().setGenerateJavadoc(false).build();
+
+        result = codegen.generateFromTarget(new MethodMetadataImpl("UserDto", MethodType.CONSTRUCTOR),
+            UserDto.class.getName(), User.class.getName(), indent -> indent + "fromUser(user);\n", "userDto", "user");
+        System.out.println(result);
+        assertEquals(result, "public UserDto(cn.featherfly.conversion.codegen.domain.User user) {\n" // 
+            + "    fromUser(user);\n" + "}");
+
+        result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
+            UserDto.class.getName(), User.class.getName(),
+            indent -> indent + "return fromUser(user, new cn.featherfly.conversion.codegen.vo.UserDto());\n", "userDto",
+            "user");
+        System.out.println(result);
+        assertEquals(result,
+            "public static cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
+                + "    return fromUser(user, new cn.featherfly.conversion.codegen.vo.UserDto());\n" + "}");
+
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

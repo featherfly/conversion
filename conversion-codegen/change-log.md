@@ -1,3 +1,10 @@
+# 0.6.0 2026-09-25
+
+feat:
+
+1. BeanCodegenImpl support generate javadoc
+2. add overload method generate[To|From]Target in BeanCodegen
+
 # 0.5.0 2026-09-17
 
 feats:
@@ -49,7 +56,7 @@ feats:
         return userDto;
     }
     ```
- 
+
 # 0.4.0 2026-09-10
 
 feats:
