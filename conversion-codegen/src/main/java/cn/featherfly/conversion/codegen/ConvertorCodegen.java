@@ -19,15 +19,17 @@ public interface ConvertorCodegen extends Convertible {
      * Generate to target.
      *
      * @param source the source
+     * @param target the target
      * @return the string
      */
-    String generateToTarget(String source);
+    String generateToTarget(String source, String target);
 
     /**
      * Generate to source.
      *
      * @param target the target
+     * @param source the source
      * @return the string
      */
-    String generateToSource(String target);
+    String generateToSource(String target, String source);
 }

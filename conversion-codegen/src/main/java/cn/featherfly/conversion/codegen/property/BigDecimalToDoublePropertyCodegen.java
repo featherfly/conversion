@@ -2,7 +2,6 @@ package cn.featherfly.conversion.codegen.property;
 
 import java.math.BigDecimal;
 
-import cn.featherfly.conversion.codegen.PropertyConverterCodegen;
 import cn.featherfly.conversion.codegen.convertor.BigDecimalToDoubleConvertorCodegen;
 
 /**
@@ -11,7 +10,7 @@ import cn.featherfly.conversion.codegen.convertor.BigDecimalToDoubleConvertorCod
  * @author zhongj
  * @since 0.4.0
  */
-public class BigDecimalToDoublePropertyCodegen extends ConvertorPropertyCodegen implements PropertyConverterCodegen {
+public class BigDecimalToDoublePropertyCodegen extends ConvertorPropertyCodegen {
 
     /**
      * Instantiates a new BigDecimal to double property codegen.

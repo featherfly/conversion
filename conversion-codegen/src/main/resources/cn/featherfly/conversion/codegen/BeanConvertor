@@ -1,0 +1,11 @@
+package {packageName};
+
+/**
+ * {sourceType} to {targetType} convertor
+ */
+public {static}class {className} {
+
+{constructor}
+
+{content}
+}

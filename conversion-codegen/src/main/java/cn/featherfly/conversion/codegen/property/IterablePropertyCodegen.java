@@ -17,6 +17,7 @@ import cn.featherfly.common.lang.WordUtils;
 import cn.featherfly.common.structure.ChainMapImpl;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 import cn.featherfly.conversion.codegen.PropertyCodegen;
+import cn.featherfly.conversion.codegen.convertor.BeanToBeanConvertorCodegen;
 
 /**
  * iterable property codegen.
@@ -63,6 +64,8 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         AssertIllegalArgument.isNotEmpty(targetObjectName, "targetObjectName");
         String upperCasePropertyName = WordUtils.upperCaseFirst(propertyName);
         String sourceGetter = null;
+        String targetElementAccess = Str.format("{0}.get{1}()[i]", targetObjectName, upperCasePropertyName);
+
         if (Lang.isEmpty(sourceObjectName)) {
             sourceGetter = Str.format("get{0}()", upperCasePropertyName);
         } else {
@@ -71,23 +74,16 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         StringBuilder sb = new StringBuilder();
         sb.append("if (cn.featherfly.common.lang.Lang.isNotEmpty({sourceGetter})) {\n");
         sb.append("    {targetName}.set{PropertyName}({newIterableObj});\n");
-        //        if (targetIterable == Iterables.ARRAY) {
-        //            sb.append("    {targetName}.set{PropertyName}({newIterableObj});\n");
-        //        } else {
-        //            sb.append("    if (cn.featherfly.common.lang.Lang.isNotEmpty({targetName}.get{PropertyName}())) {\n");
-        //            sb.append("        {targetName}.get{PropertyName}().clear();\n");
-        //            sb.append("    } else {\n");
-        //            sb.append("        {targetName}.set{PropertyName}({newIterableObj});\n");
-        //            sb.append("    }\n");
-        //        }
-
         if (sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY) {
             sb.append("    for (int i = 0; i < {sourceGetter}.length; i++) {\n");
             sb.append("        {elementType} {elementName} = {sourceGetter}[i];\n");
             if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
-                sb.append("        if ({elementName} != null) {\n");
-                sb.append("            {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
-                sb.append("        }\n");
+                sb.append("        if ({elementName} == null) continue;\n");
+                if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                    sb.append("{elementConvertor}\n");
+                } else {
+                    sb.append("        {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
+                }
             } else {
                 sb.append("        {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
             }
@@ -96,31 +92,40 @@ public class IterablePropertyCodegen implements PropertyCodegen {
             sb.append("    for (int i = 0; i < {sourceGetter}.length; i++) {\n");
             sb.append("        {elementType} {elementName} = {sourceGetter}[i];\n");
             if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
-                sb.append("        if ({elementName} != null) {\n    ");
-            }
-            sb.append("        {targetName}.get{PropertyName}().add({elementConvertor});\n");
-            if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
-                sb.append("        } else {\n");
+                sb.append("        if ({elementName} == null) {\n");
                 sb.append("            {targetName}.get{PropertyName}().add({null});\n");
+                sb.append("            continue;\n");
                 sb.append("        }\n");
+            }
+            if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                sb.append("{elementConvertor}\n");
+            } else {
+                sb.append("        {targetName}.get{PropertyName}().add({elementConvertor});\n");
             }
             sb.append("    }\n");
 
         } else if (targetIterable == Iterables.ARRAY) {
             sb.append("    int i = 0;\n");
             sb.append("    for ({elementType} {elementName} : {sourceGetter}) {\n");
-            sb.append("        if ({elementName} != null) {\n");
-            sb.append("            {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
-            sb.append("        }\n");
+            sb.append("        if ({elementName} == null) continue;\n");
+            if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                sb.append("{elementConvertor}\n");
+            } else {
+                sb.append("        {targetName}.get{PropertyName}()[i] = {elementConvertor};\n");
+            }
             sb.append("        i++;\n");
             sb.append("    }\n");
         } else {
             sb.append("    for ({elementType} {elementName} : {sourceGetter}) {\n");
-            sb.append("        if ({elementName} != null) {\n");
-            sb.append("            {targetName}.get{PropertyName}().add({elementConvertor});\n");
-            sb.append("        } else {\n");
+            sb.append("        if ({elementName} == null) {\n");
             sb.append("            {targetName}.get{PropertyName}().add(null);\n");
+            sb.append("            continue;\n");
             sb.append("        }\n");
+            if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                sb.append("{elementConvertor}\n");
+            } else {
+                sb.append("        {targetName}.get{PropertyName}().add({elementConvertor});\n");
+            }
             sb.append("    }\n");
         }
         sb.append("}");
@@ -128,14 +133,15 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         boolean same = sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY
             || sourceIterable != Iterables.ARRAY && targetIterable != Iterables.ARRAY;
         String elementName = propertyName + "Element";
-        return Str.format(sb.toString(), new ChainMapImpl<String, Object>()
+        return Str.format(sb.toString(), new ChainMapImpl<String, Object>() //
             .set("PropertyName", upperCasePropertyName) //
             .set("elementName", elementName) //
             .set("sourceGetter", sourceGetter) //
             .set("targetName", targetObjectName) //
             .set("newIterableObj", getNewIterable(targetIterable, same, convertorCodegen.targetType(), sourceGetter))
             .set("elementType", convertorCodegen.sourceType()) //
-            .set("elementConvertor", convertorCodegen.generateToTarget(elementName)) //
+            // FIXME 这里的target没有明确，第二个参数
+            .set("elementConvertor", convertorCodegen.generateToTarget(elementName, targetElementAccess)) //
         );
     }
 
@@ -162,19 +168,17 @@ public class IterablePropertyCodegen implements PropertyCodegen {
 
         StringBuilder sb = new StringBuilder();
         sb.append("if (cn.featherfly.common.lang.Lang.isNotEmpty({targetName}.get{PropertyName}())) {\n");
-        //        sb.append("    if ({sourceGetter} == null) {\n");
-        //        sb.append("        {sourceSetter}({newIterableObj});\n");
-        //        sb.append("    } else {\n");
-        //        sb.append("        {sourceGetter}.clear();\n");
-        //        sb.append("    }\n");
         sb.append("    {sourceSetter}({newIterableObj});\n");
         if (sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY) {
             sb.append("    for (int i = 0; i < {targetGetter}.length; i++) {\n");
             sb.append("        {elementType} {elementName} = {targetGetter}[i];\n");
             if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
-                sb.append("        if ({elementName} != null) {\n");
-                sb.append("            {sourceGetter}[i] = {elementConvertor};\n");
-                sb.append("        }\n");
+                sb.append("        if ({elementName} == null) continue;\n");
+                if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                    sb.append("{elementConvertor}\n");
+                } else {
+                    sb.append("        {sourceGetter}[i] = {elementConvertor};\n");
+                }
             } else {
                 sb.append("        {sourceGetter}[i] = {elementConvertor};\n");
             }
@@ -182,31 +186,40 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         } else if (sourceIterable == Iterables.ARRAY) {
             sb.append("    int i = 0;\n");
             sb.append("    for ({elementType} {elementName} : {targetGetter}) {\n");
-            sb.append("        if ({elementName} != null) {\n");
-            sb.append("            {sourceGetter}[i] = {elementConvertor};\n");
-            sb.append("        }\n");
+            sb.append("        if ({elementName} == null) continue;\n");
+            if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                sb.append("{elementConvertor}\n");
+            } else {
+                sb.append("        {sourceGetter}[i] = {elementConvertor};\n");
+            }
             sb.append("        i++;\n");
             sb.append("    }\n");
         } else if (targetIterable == Iterables.ARRAY) {
             sb.append("    for (int i = 0; i < {targetGetter}.length; i++) {\n");
             sb.append("        {elementType} {elementName} = {targetGetter}[i];\n");
             if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
-                sb.append("        if ({elementName} != null) {\n    ");
-            }
-            sb.append("        {sourceGetter}.add({elementConvertor});\n");
-            if (ClassUtils.getPrimitiveType(convertorCodegen.sourceType()) == null) {
-                sb.append("        } else {\n");
+                sb.append("        if ({elementName} == null) {\n");
                 sb.append("            {sourceGetter}.add(null);\n");
+                sb.append("            continue;\n");
                 sb.append("        }\n");
+            }
+            if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                sb.append("{elementConvertor}\n");
+            } else {
+                sb.append("        {sourceGetter}.add({elementConvertor});\n");
             }
             sb.append("    }\n");
         } else {
             sb.append("    for ({elementType} {elementName} : {targetGetter}) {\n");
-            sb.append("        if ({elementName} != null) {\n");
-            sb.append("            {sourceGetter}.add({elementConvertor});\n");
-            sb.append("        } else {\n");
+            sb.append("        if ({elementName} == null) {\n");
             sb.append("            {sourceGetter}.add(null);\n");
+            sb.append("            continue;\n");
             sb.append("        }\n");
+            if (convertorCodegen instanceof BeanToBeanConvertorCodegen) {
+                sb.append("{elementConvertor}\n");
+            } else {
+                sb.append("        {sourceGetter}.add({elementConvertor});\n");
+            }
             sb.append("    }\n");
         }
         sb.append("}");
@@ -214,17 +227,17 @@ public class IterablePropertyCodegen implements PropertyCodegen {
         String elementName = propertyName + "Element";
         boolean same = sourceIterable == Iterables.ARRAY && targetIterable == Iterables.ARRAY
             || sourceIterable != Iterables.ARRAY && targetIterable != Iterables.ARRAY;
-        return Str.format(sb.toString(), new ChainMapImpl<String, Object>()
-            .set("PropertyName", upperCasePropertyName) //
+        return Str.format(sb.toString(), new ChainMapImpl<String, Object>().set("PropertyName", upperCasePropertyName) //
             .set("elementName", elementName) //
             .set("sourceGetter", sourceGetter) //
             .set("sourceSetter", sourceSetter) //
             .set("targetGetter", targetGetter) //
             .set("targetName", targetObjectName) //
-            .set("newIterableObj",
-                getNewIterable(sourceIterable, same, convertorCodegen.sourceType(), targetGetter))
+            .set("newIterableObj", getNewIterable(sourceIterable, same, convertorCodegen.sourceType(), targetGetter))
             .set("elementType", convertorCodegen.targetType()) //
-            .set("elementConvertor", convertorCodegen.generateToSource(elementName)) //
+            // FIXME 这里的souce没有明确,第二个参数
+            .set("elementConvertor", convertorCodegen.generateToSource(elementName,
+                sourceIterable == Iterables.ARRAY ? sourceGetter + "[i]" : sourceGetter + ".get(i)")) //
         );
     }
 

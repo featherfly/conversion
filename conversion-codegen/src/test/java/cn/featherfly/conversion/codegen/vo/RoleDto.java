@@ -39,6 +39,17 @@ public class RoleDto {
 
     private UserDto[] userArray = new UserDto[0];
 
+    private List<Gender> genderList = new ArrayList<>();
+
+    private UserDto user;
+
+    /**
+     * Instantiates a new role dto.
+     */
+    public RoleDto() {
+        super();
+    }
+
     public Long getId() {
         return id;
     }
@@ -93,6 +104,42 @@ public class RoleDto {
 
     public void setUserArray(UserDto[] userArray) {
         this.userArray = userArray;
+    }
+
+    /**
+     * get genderList value
+     *
+     * @return genderList
+     */
+    public List<Gender> getGenderList() {
+        return genderList;
+    }
+
+    /**
+     * set genderList value
+     *
+     * @param genderList genderList
+     */
+    public void setGenderList(List<Gender> genderList) {
+        this.genderList = genderList;
+    }
+
+    /**
+     * get user value
+     *
+     * @return userDto
+     */
+    public UserDto getUser() {
+        return user;
+    }
+
+    /**
+     * set userDto value
+     *
+     * @param user user
+     */
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
     public Role toRole() {

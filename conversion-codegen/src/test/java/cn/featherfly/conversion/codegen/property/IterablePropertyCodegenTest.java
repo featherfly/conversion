@@ -10,12 +10,18 @@ package cn.featherfly.conversion.codegen.property;
 
 import org.testng.annotations.Test;
 
+import cn.featherfly.conversion.codegen.BeanCodegen;
+import cn.featherfly.conversion.codegen.BeanCodegenImpl;
+
 /**
  * IterablePropertyCodegenTest.
  *
  * @author zhongj
  */
 public abstract class IterablePropertyCodegenTest extends PropertyCodegenTest {
+
+    // 因为主生成没有的indentStart为0，所有element的 indentStart为1
+    protected BeanCodegen iterableElementBeanCodegen = BeanCodegenImpl.builder().setIndentStart(1).build();
 
     @Test
     public abstract void directAssign();

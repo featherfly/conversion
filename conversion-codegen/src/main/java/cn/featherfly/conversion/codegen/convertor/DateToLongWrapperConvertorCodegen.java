@@ -76,7 +76,7 @@ public class DateToLongWrapperConvertorCodegen extends AbstractConvertorCodegen 
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source) {
+    public String generateToTarget(String source, String target) {
         if (inverse) {
             return toDate(source);
         }
@@ -87,7 +87,7 @@ public class DateToLongWrapperConvertorCodegen extends AbstractConvertorCodegen 
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target) {
+    public String generateToSource(String target, String source) {
         if (inverse) {
             return toLong(target);
         }

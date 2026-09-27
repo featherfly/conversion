@@ -8,6 +8,8 @@
  */
 package cn.featherfly.conversion.codegen;
 
+import cn.featherfly.common.lang.Iterables;
+
 /**
  * TypeMetadata.
  *
@@ -49,4 +51,11 @@ public interface TypeMetadata {
      * @return true, if is iterable
      */
     boolean isIterable();
+
+    /**
+     * Gets the iterables.
+     *
+     * @return the iterables
+     */
+    Iterables getIterables();
 }

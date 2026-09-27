@@ -1,9 +1,10 @@
-# 0.6.0 2026-09-25
+# 0.6.0 2026-
 
 feat:
 
 1. BeanCodegenImpl support generate javadoc
 2. add overload method generate[To|From]Target in BeanCodegen
+3. BeanToBean[Convertor|Property]Codegen support generate set bean properties
 
 # 0.5.0 2026-09-17
 

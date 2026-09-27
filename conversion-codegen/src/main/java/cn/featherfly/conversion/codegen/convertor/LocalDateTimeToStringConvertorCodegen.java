@@ -60,7 +60,7 @@ public class LocalDateTimeToStringConvertorCodegen extends AbstractConvertorCode
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source) {
+    public String generateToTarget(String source, String target) {
         if (inverse) {
             return parse(source);
         }
@@ -71,7 +71,7 @@ public class LocalDateTimeToStringConvertorCodegen extends AbstractConvertorCode
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target) {
+    public String generateToSource(String target, String source) {
         if (inverse) {
             return format(target);
         }

@@ -16,7 +16,6 @@ import java.util.function.Function;
 import cn.featherfly.common.exception.NotImplementedException;
 import cn.featherfly.common.lang.AssertIllegalArgument;
 import cn.featherfly.common.lang.Dates;
-import cn.featherfly.common.lang.Iterables;
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.common.structure.ChainMap;
 import cn.featherfly.common.structure.ChainMapImpl;
@@ -70,6 +69,8 @@ public class BeanCodegenImpl implements BeanCodegen {
 
     private final Map<String, ConvertorCodegen> convertorMap;
 
+    private final Map<String, ConvertorCodegen> beanToBeanConvertorMap;
+
     private final int indentStart;
 
     private boolean noConvertorException;
@@ -84,7 +85,7 @@ public class BeanCodegenImpl implements BeanCodegen {
      * @param convertorMap the convertor map
      */
     private BeanCodegenImpl(int indentStart, Map<String, PropertyCodegen> propertyCodegenMap,
-        Map<String, ConvertorCodegen> convertorMap) {
+        Map<String, ConvertorCodegen> convertorMap, Map<String, ConvertorCodegen> beanToBeanConvertorMap) {
         super();
         this.indentStart = indentStart;
         // 先加入默认实现，用户自定义实现优先级更高，会覆盖相同类型转换的默认实现
@@ -96,6 +97,8 @@ public class BeanCodegenImpl implements BeanCodegen {
         this.convertorMap = addTimeConvertor(addSqlTimestampConvertor(
             addSqlTimeConvertor(addSqlDateConvertor(addDateConvertor(addMathConvertor(new ChainMapImpl<>()))))));
         this.convertorMap.putAll(convertorMap);
+
+        this.beanToBeanConvertorMap = beanToBeanConvertorMap;
     }
 
     // ****************************************************************************************************************
@@ -429,9 +432,9 @@ public class BeanCodegenImpl implements BeanCodegen {
             propertyCodegen = CodegenUtils.getEnumToTargetPropertyCodegen(st, tt);
         } else if (tt.isEnum()) {
             propertyCodegen = CodegenUtils.getEnumFromTargetPropertyCodegen(st, tt);
-        } else if ((st.isArray() || st.isIterable()) && (tt.isArray() || tt.isIterable())) {
-            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt),
-                st.isArray() ? Iterables.ARRAY : Iterables.LIST, tt.isArray() ? Iterables.ARRAY : Iterables.LIST);
+        } else if (st.getIterables() != null && tt.getIterables() != null) {
+            propertyCodegen = new IterablePropertyCodegen(getElementConvertorCodegen(st, tt), st.getIterables(),
+                tt.getIterables());
         }
         return getPropertyCodegen(property, propertyCodegen);
     }
@@ -457,7 +460,9 @@ public class BeanCodegenImpl implements BeanCodegen {
             }
             return new CommentPropertyCodegen(property.sourceType().name(), property.targetType().name());
         }
-        return new BeanToBeanPropertyCodegen(property.sourceType().name(), property.targetType().name());
+        return new BeanToBeanPropertyCodegen(property.sourceType().name(), property.targetType().name(),
+            getBeanToBeanConvertorCodegen(property.sourceType().name(), property.targetType().name(), indentStart,
+                false));
     }
 
     private ConvertorCodegen getElementConvertorCodegen(TypeMetadata souceType, TypeMetadata targetType) {
@@ -496,7 +501,19 @@ public class BeanCodegenImpl implements BeanCodegen {
             }
             return new CommentConvertorCodegen(st.name(), tt.name());
         }
-        return new BeanToBeanConvertorCodegen(st.name(), tt.name());
+        return getBeanToBeanConvertorCodegen(st.name(), tt.name(), indentStart + 1, true);
+    }
+
+    private ConvertorCodegen getBeanToBeanConvertorCodegen(String source, String target, int indentStart,
+        boolean isElement) {
+        ConvertorCodegen codegen = beanToBeanConvertorMap.get(getKey(source, target));
+        if (codegen != null) {
+            return codegen;
+        }
+        // TODO if () 这里加入逻辑特定的逻辑，
+        // 可以加入BiFunction<String, String, ConvertorCodegen> convertorCodegenCreator用于外部传入逻辑
+        return new BeanToBeanConvertorCodegen(builder().setIndentStart(indentStart - 1).setGenerateJavadoc(false)
+            .setNoConvertorException(noConvertorException).build(), source, target, indentStart, false, isElement);
     }
 
     private String getIndent(int size) {
@@ -561,17 +578,19 @@ public class BeanCodegenImpl implements BeanCodegen {
         return generateToTarget(method, sourceObjectType, targetObjectType, indent -> {
             String targetDefine = targetObjectType + " " + targetObjectName;
             StringBuilder src = new StringBuilder();
-            if (method.isGivenArgument()) {
-                src.append(indent).append("if (").append(targetObjectName).append(" == null");
-                if (method.isStatic()) {
-                    src.append(" || ").append(sourceObjectName).append(" == null");
+            if (method != null) {
+                if (method.isGivenArgument()) {
+                    src.append(indent).append("if (").append(targetObjectName).append(" == null");
+                    if (method.isStatic()) {
+                        src.append(" || ").append(sourceObjectName).append(" == null");
+                    }
+                    src.append(") return ").append(targetObjectName).append(";\n");
+                } else {
+                    if (method.isStatic()) {
+                        src.append(indent).append("if (").append(sourceObjectName).append(" == null) return null;\n");
+                    }
+                    src.append(indent).append(targetDefine).append(" = new ").append(targetObjectType).append("();\n");
                 }
-                src.append(") return ").append(targetObjectName).append(";\n");
-            } else {
-                if (method.isStatic()) {
-                    src.append(indent).append("if (").append(sourceObjectName).append(" == null) return null;\n");
-                }
-                src.append(indent).append(targetDefine).append(" = new ").append(targetObjectType).append("();\n");
             }
             for (ConvertibleProperty prop : properties) {
                 PropertyCodegen pc = getPropertyCodegen(prop);
@@ -579,7 +598,9 @@ public class BeanCodegenImpl implements BeanCodegen {
                     src.append(indent).append(line).append("\n");
                 }
             }
-            src.append(indent).append("return ").append(targetObjectName).append(";\n");
+            if (method != null) {
+                src.append(indent).append("return ").append(targetObjectName).append(";\n");
+            }
             return src.toString();
         }, sourceObjectName, targetObjectName);
     }
@@ -593,18 +614,24 @@ public class BeanCodegenImpl implements BeanCodegen {
         String indent = getIndent(indentStart);
         String indent2 = getIndent(indentStart + 1);
         StringBuilder src = new StringBuilder();
-        if (generateJavadoc) {
-            src.append(generateToTargetJavadoc(method, sourceObjectType, targetObjectType, sourceObjectName,
+        if (method != null) {
+            // method start
+            if (generateJavadoc) {
+                src.append(generateToTargetJavadoc(method, sourceObjectType, targetObjectType, sourceObjectName,
+                    targetObjectName));
+            }
+            src.append(generateToTargetMethodDefine(method, sourceObjectType, targetObjectType, sourceObjectName,
                 targetObjectName));
         }
-        src.append(generateToTargetMethodDefine(method, sourceObjectType, targetObjectType, sourceObjectName,
-            targetObjectName));
         String c = content.apply(indent2);
         src.append(c);
         if (!(c.charAt(c.length() - 1) == '\n')) {
             src.append("\n");
         }
-        src.append(indent).append("}");
+        if (method != null) {
+            // method end
+            src.append(indent).append("}");
+        }
         return src.toString();
     }
 
@@ -618,64 +645,72 @@ public class BeanCodegenImpl implements BeanCodegen {
         String indent2 = getIndent(indentStart + 1);
         String sourceDefine = sourceObjectType + " " + sourceObjectName;
         StringBuilder src = new StringBuilder();
-        if (generateJavadoc) {
-            if (method.isStatic()) {
-                if (method.isGivenArgument()) {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * copy properties from {2} to {1}\n{0} * @param {2} {2}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
-                        indent, sourceObjectName, targetObjectName));
+        if (method != null) {
+            // method start
+            if (generateJavadoc) {
+                if (method.isStatic()) {
+                    if (method.isGivenArgument()) {
+                        src.append(Str.format(
+                            "{0}/**\n{0} * copy properties from {2} to {1}\n{0} * @param {2} {2}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
+                            indent, sourceObjectName, targetObjectName));
+                    } else {
+                        src.append(Str.format(
+                            "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
+                            indent, targetObjectName, sourceObjectType));
+                    }
                 } else {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n",
-                        indent, targetObjectName, sourceObjectType));
-                }
-            } else {
-                if (method.isConstructor()) {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * Instantiates a new {1} and copy properties from {2}\n{0} * @param {2} {2}\n{0} */\n",
-                        indent, sourceObjectType, targetObjectName));
-                } else {
-                    src.append(Str.format(
-                        "{0}/**\n{0} * copy properties from {2} to this\n{0} * @param {2} {2}\n{0} * @return this\n{0} */\n",
-                        indent, method.name(), targetObjectName, sourceObjectType));
+                    if (method.isConstructor()) {
+                        src.append(Str.format(
+                            "{0}/**\n{0} * Instantiates a new {1} and copy properties from {2}\n{0} * @param {2} {2}\n{0} */\n",
+                            indent, sourceObjectType, targetObjectName));
+                    } else {
+                        src.append(Str.format(
+                            "{0}/**\n{0} * copy properties from {2} to this\n{0} * @param {2} {2}\n{0} * @return this\n{0} */\n",
+                            indent, method.name(), targetObjectName, sourceObjectType));
+                    }
                 }
             }
-        }
-        if (method.isConstructor()) {
-            src.append(indent).append("public ").append(method.name()).append("(").append(targetObjectType).append(" ")
-                .append(targetObjectName).append(") {\n");
-        } else {
-            src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(sourceObjectType)
-                .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
-                .append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "").append(") {\n");
-        }
-        if (method.isGivenArgument() && method.isStatic()) {
-            src.append(indent2).append("if (").append(targetObjectName).append(" == null || ").append(sourceObjectName)
-                .append(" == null) return ").append(sourceObjectName).append(";\n");
-        } else {
-            src.append(indent2).append("if (").append(targetObjectName).append(" == null) return");
-            if (method.methodType() == MethodType.METHOD) {
-                src.append(" this;\n");
-            } else if (method.methodType() == MethodType.STATIC_METHOD) {
-                src.append(" null;\n");
-                src.append(indent2).append(sourceDefine).append(" = ").append("new ").append(sourceObjectType)
-                    .append("();\n");
-            } else if (method.methodType() == MethodType.CONSTRUCTOR) {
-                src.append(";\n");
+            if (method.isConstructor()) {
+                src.append(indent).append("public ").append(method.name()).append("(").append(targetObjectType)
+                    .append(" ").append(targetObjectName).append(") {\n");
+            } else {
+                src.append(indent).append("public ").append(method.isStatic() ? "static " : "").append(sourceObjectType)
+                    .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
+                    .append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "")
+                    .append(") {\n");
+            }
+            if (method.isGivenArgument() && method.isStatic()) {
+                src.append(indent2).append("if (").append(targetObjectName).append(" == null || ")
+                    .append(sourceObjectName).append(" == null) return ").append(sourceObjectName).append(";\n");
+            } else {
+                src.append(indent2).append("if (").append(targetObjectName).append(" == null) return");
+                if (method.methodType() == MethodType.METHOD) {
+                    src.append(" this;\n");
+                } else if (method.methodType() == MethodType.STATIC_METHOD) {
+                    src.append(" null;\n");
+                    src.append(indent2).append(sourceDefine).append(" = ").append("new ").append(sourceObjectType)
+                        .append("();\n");
+                } else if (method.methodType() == MethodType.CONSTRUCTOR) {
+                    src.append(";\n");
+                }
             }
         }
         for (ConvertibleProperty prop : properties) {
             PropertyCodegen pc = getPropertyCodegen(prop);
             for (String line : pc
-                .generateFromTarget(prop.name(), method.isStatic() ? sourceObjectName : null, targetObjectName)
-                .split("\n")) {
+                //                .generateFromTarget(prop.name(), method.isStatic() ? sourceObjectName : null, targetObjectName)
+                .generateFromTarget(prop.name(), sourceObjectName, targetObjectName).split("\n")) {
                 src.append(indent2).append(line).append("\n");
             }
         }
-        if (!method.isConstructor()) {
-            src.append(indent2).append("return ").append(method.isStatic() ? sourceObjectName : "this").append(";\n");
+        if (method != null) {
+            // method end
+            if (!method.isConstructor()) {
+                src.append(indent2).append("return ").append(method.isStatic() ? sourceObjectName : "this")
+                    .append(";\n");
+            }
+            src.append(indent).append("}");
         }
-        src.append(indent).append("}");
         return src.toString();
     }
 
@@ -774,6 +809,8 @@ public class BeanCodegenImpl implements BeanCodegen {
 
         private Map<String, ConvertorCodegen> convertorMap = new HashMap<>(0);
 
+        private Map<String, ConvertorCodegen> beanToBeanConvertorMap = new HashMap<>(0);
+
         private int indentStart;
 
         private boolean noConvertorException;
@@ -842,12 +879,27 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
 
         /**
+         * Adds the bean to bean convertor codegen.
+         *
+         * @param source the source
+         * @param target the target
+         * @param convertorCodegen the convertor codegen
+         * @return the bean codegen builder
+         */
+        public BeanCodegenBuilder addBeanToBeanConvertorCodegen(Class<?> source, Class<?> target,
+            ConvertorCodegen convertorCodegen) {
+            beanToBeanConvertorMap.put(getKey(source, target), convertorCodegen);
+            return this;
+        }
+
+        /**
          * build BeanCodegen.
          *
          * @return the bean codegen
          */
         public BeanCodegen build() {
-            BeanCodegenImpl beanCodegen = new BeanCodegenImpl(indentStart, propertyCodegenMap, convertorMap);
+            BeanCodegenImpl beanCodegen = new BeanCodegenImpl(indentStart, propertyCodegenMap, convertorMap,
+                beanToBeanConvertorMap);
             beanCodegen.noConvertorException = noConvertorException;
             beanCodegen.generateJavadoc = generateJavadoc;
             return beanCodegen;

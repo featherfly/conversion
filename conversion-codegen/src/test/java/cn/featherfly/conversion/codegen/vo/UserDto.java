@@ -74,8 +74,10 @@ public class UserDto {
 
     private BigInteger long2BigInteger2;
 
-    public UserDto id(Long id) {
+    public UserDto() {
+    }
 
+    public UserDto id(Long id) {
         this.id = id;
         return this;
     }

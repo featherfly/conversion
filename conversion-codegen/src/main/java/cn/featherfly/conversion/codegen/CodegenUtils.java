@@ -26,6 +26,8 @@ import cn.featherfly.conversion.codegen.property.EnumToStringPropertyCodegen;
  */
 public final class CodegenUtils {
 
+    public static final String INDENT = "    ";
+
     private CodegenUtils() {
 
     }
@@ -153,5 +155,13 @@ public final class CodegenUtils {
             return new EnumToLongWrapperConvertorCodegen(typeName, true);
         }
         return null;
+    }
+
+    public static String getIndent(int size) {
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            indent.append(INDENT);
+        }
+        return indent.toString();
     }
 }

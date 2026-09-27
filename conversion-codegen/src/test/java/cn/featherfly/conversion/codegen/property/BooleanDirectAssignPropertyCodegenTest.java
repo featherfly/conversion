@@ -18,25 +18,33 @@ import org.testng.annotations.Test;
  */
 public class BooleanDirectAssignPropertyCodegenTest {
 
+    //    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDeleted())) user.setDeleted(userDto.getDeleted());
+    //    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDeleted())) user.setDeleted(userDto.getDeleted());
+
     @Test
     public void testBoolean2boolean() {
         BooleanDirectAssignPropertyCodegen codegen = new BooleanDirectAssignPropertyCodegen(Boolean.class,
             boolean.class);
 
-        System.out.println(codegen.generateFromTarget("deleted", "userDto", "user"));
-        assertEquals(codegen.generateFromTarget("deleted", "userDto", "user"),
+        String result = codegen.generateFromTarget("deleted", "userDto", "user");
+
+        System.out.println(result);
+        assertEquals(result,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.isDeleted())) userDto.setDeleted(user.isDeleted());");
 
-        System.out.println(codegen.generateToTarget("deleted", "userDto", "user"));
-        assertEquals(codegen.generateToTarget("deleted", "userDto", "user"),
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getDeleted())) user.setDeleted(userDto.getDeleted());");
+        result = codegen.generateToTarget("deleted", "userDto", "user");
+        System.out.println(result);
+        assertEquals(result,
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDeleted())) user.setDeleted(userDto.getDeleted());");
 
-        System.out.println(codegen.generateFromTarget("deleted", null, "user"));
-        assertEquals(codegen.generateFromTarget("deleted", null, "user"),
+        result = codegen.generateFromTarget("deleted", null, "user");
+        System.out.println(result);
+        assertEquals(result,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.isDeleted())) setDeleted(user.isDeleted());");
 
-        System.out.println(codegen.generateToTarget("deleted", null, "user"));
-        assertEquals(codegen.generateToTarget("deleted", null, "user"),
+        result = codegen.generateToTarget("deleted", null, "user");
+        System.out.println(result);
+        assertEquals(result,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(getDeleted())) user.setDeleted(getDeleted());");
 
     }
@@ -45,20 +53,25 @@ public class BooleanDirectAssignPropertyCodegenTest {
     public void testboolean2Boolean() {
         BooleanDirectAssignPropertyCodegen codegen = new BooleanDirectAssignPropertyCodegen(boolean.class,
             Boolean.class);
-        System.out.println(codegen.generateFromTarget("deleted", "userDto", "user"));
-        assertEquals(codegen.generateFromTarget("deleted", "userDto", "user"),
+
+        String result = codegen.generateFromTarget("deleted", "userDto", "user");
+        System.out.println(result);
+        assertEquals(result,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDeleted())) userDto.setDeleted(user.getDeleted());");
 
-        System.out.println(codegen.generateToTarget("deleted", "userDto", "user"));
-        assertEquals(codegen.generateToTarget("deleted", "userDto", "user"),
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(isDeleted())) user.setDeleted(userDto.isDeleted());");
+        result = codegen.generateToTarget("deleted", "userDto", "user");
+        System.out.println(result);
+        assertEquals(result,
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.isDeleted())) user.setDeleted(userDto.isDeleted());");
 
-        System.out.println(codegen.generateFromTarget("deleted", null, "user"));
-        assertEquals(codegen.generateFromTarget("deleted", null, "user"),
+        result = codegen.generateFromTarget("deleted", null, "user");
+        System.out.println(result);
+        assertEquals(result,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDeleted())) setDeleted(user.getDeleted());");
 
-        System.out.println(codegen.generateToTarget("deleted", null, "user"));
-        assertEquals(codegen.generateToTarget("deleted", null, "user"),
+        result = codegen.generateToTarget("deleted", null, "user");
+        System.out.println(result);
+        assertEquals(result,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(isDeleted())) user.setDeleted(isDeleted());");
     }
 }

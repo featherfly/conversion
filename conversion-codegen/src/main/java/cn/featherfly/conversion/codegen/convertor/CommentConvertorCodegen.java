@@ -35,7 +35,7 @@ public class CommentConvertorCodegen extends AbstractConvertible implements Conv
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source) {
+    public String generateToTarget(String source, String target) {
         if (Locale.CHINESE.getLanguage().equals(Locale.getDefault().getLanguage())) {
             return Str.format("// 没有对应的转换器 {0} <-> {1}", sourceType, targetType);
         } else {
@@ -47,8 +47,8 @@ public class CommentConvertorCodegen extends AbstractConvertible implements Conv
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target) {
-        return generateToTarget(target);
+    public String generateToSource(String target, String source) {
+        return generateToTarget(target, null);
     }
 
     /**

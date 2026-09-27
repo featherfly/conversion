@@ -369,7 +369,7 @@ public class BeanCodegenTest extends CodegenTest {
             + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
-            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+            UserDto.class.getName(), User.class.getName(), properties, null, "user");
         System.out.println(result);
         assertEquals(result,
             "public cn.featherfly.conversion.codegen.vo.UserDto fromUser(cn.featherfly.conversion.codegen.domain.User user) {\n"
@@ -476,7 +476,7 @@ public class BeanCodegenTest extends CodegenTest {
             + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
-            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
+            UserDto.class.getName(), User.class.getName(), properties, null, "user");
         System.out.println(result);
         assertEquals(result, "/**\n" //
             + " * copy properties from user to this\n" //

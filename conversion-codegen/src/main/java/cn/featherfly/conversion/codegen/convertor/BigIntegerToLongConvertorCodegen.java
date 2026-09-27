@@ -36,7 +36,7 @@ public class BigIntegerToLongConvertorCodegen extends AbstractConvertorCodegen i
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source) {
+    public String generateToTarget(String source, String target) {
         if (inverse) {
             return toBigInteger(source);
         }
@@ -47,7 +47,7 @@ public class BigIntegerToLongConvertorCodegen extends AbstractConvertorCodegen i
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target) {
+    public String generateToSource(String target, String source) {
         if (inverse) {
             return toLong(target);
         }

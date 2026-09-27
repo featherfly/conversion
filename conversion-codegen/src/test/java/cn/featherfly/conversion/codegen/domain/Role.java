@@ -34,6 +34,10 @@ public class Role {
 
     private User[] userArray = new User[0];
 
+    private List<User.Gender> genderList = new ArrayList<>();
+
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -88,5 +92,41 @@ public class Role {
 
     public void setUserArray(User[] userArray) {
         this.userArray = userArray;
+    }
+
+    /**
+     * get genderList value
+     *
+     * @return genderList
+     */
+    public List<User.Gender> getGenderList() {
+        return genderList;
+    }
+
+    /**
+     * set genderList value
+     *
+     * @param genderList genderList
+     */
+    public void setGenderList(List<User.Gender> genderList) {
+        this.genderList = genderList;
+    }
+
+    /**
+     * get user value
+     *
+     * @return user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * set user value
+     *
+     * @param user user
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 }
