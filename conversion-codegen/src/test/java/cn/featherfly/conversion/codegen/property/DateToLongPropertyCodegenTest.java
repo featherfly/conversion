@@ -21,29 +21,31 @@ public class DateToLongPropertyCodegenTest extends PropertyCodegenTest {
 
     @Test
     public void testDate() {
-        DateToLongPropertyCodegen dateToLong =
-            new DateToLongPropertyCodegen("java.util.Date");
+        DateToLongPropertyCodegen dateToLong = new DateToLongPropertyCodegen("java.util.Date");
         fromTarget = dateToLong.generateFromTarget("createTime", "userDto", "user");
         toTarget = dateToLong.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(new java.util.Date(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(userDto.getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(new java.util.Date(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(userDto.getCreateTime().getTime());\n" //
+            + "}");
 
-        DateToLongPropertyCodegen stringToDate =
-            new DateToLongPropertyCodegen("java.util.Date", true);
+        DateToLongPropertyCodegen stringToDate = new DateToLongPropertyCodegen("java.util.Date", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "userDto", "user");
         toTarget = stringToDate.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(new java.util.Date(userDto.getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.util.Date(userDto.getCreateTime()));\n" //
+            + "}");
 
         dateToLong = new DateToLongPropertyCodegen("java.util.Date");
         fromTarget = dateToLong.generateFromTarget("createTime", "", "user");
@@ -51,47 +53,53 @@ public class DateToLongPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(new java.util.Date(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(new java.util.Date(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(getCreateTime().getTime());\n" //
+            + "}");
 
         stringToDate = new DateToLongPropertyCodegen("java.util.Date", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "", "user");
         toTarget = stringToDate.generateToTarget("createTime", "", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(new java.util.Date(getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.util.Date(getCreateTime()));\n" //
+            + "}");
     }
 
     @Test
     public void testSqlDate() {
-        DateToLongPropertyCodegen dateToLong =
-            new DateToLongPropertyCodegen("java.sql.Date");
+        DateToLongPropertyCodegen dateToLong = new DateToLongPropertyCodegen("java.sql.Date");
         fromTarget = dateToLong.generateFromTarget("createTime", "userDto", "user");
         toTarget = dateToLong.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(new java.sql.Date(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(userDto.getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(new java.sql.Date(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(userDto.getCreateTime().getTime());\n" //
+            + "}");
 
-        DateToLongPropertyCodegen stringToDate =
-            new DateToLongPropertyCodegen("java.sql.Date", true);
+        DateToLongPropertyCodegen stringToDate = new DateToLongPropertyCodegen("java.sql.Date", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "userDto", "user");
         toTarget = stringToDate.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(new java.sql.Date(userDto.getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.sql.Date(userDto.getCreateTime()));\n" //
+            + "}");
 
         dateToLong = new DateToLongPropertyCodegen("java.sql.Date");
         fromTarget = dateToLong.generateFromTarget("createTime", "", "user");
@@ -99,47 +107,53 @@ public class DateToLongPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(new java.sql.Date(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(new java.sql.Date(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(getCreateTime().getTime());\n" //
+            + "}");
 
         stringToDate = new DateToLongPropertyCodegen("java.sql.Date", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "", "user");
         toTarget = stringToDate.generateToTarget("createTime", "", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(new java.sql.Date(getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.sql.Date(getCreateTime()));\n" //
+            + "}");
     }
 
     @Test
     public void testSqlTime() {
-        DateToLongPropertyCodegen dateToLong =
-            new DateToLongPropertyCodegen("java.sql.Time");
+        DateToLongPropertyCodegen dateToLong = new DateToLongPropertyCodegen("java.sql.Time");
         fromTarget = dateToLong.generateFromTarget("createTime", "userDto", "user");
         toTarget = dateToLong.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(new java.sql.Time(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(userDto.getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(new java.sql.Time(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(userDto.getCreateTime().getTime());\n" //
+            + "}");
 
-        DateToLongPropertyCodegen stringToDate =
-            new DateToLongPropertyCodegen("java.sql.Time", true);
+        DateToLongPropertyCodegen stringToDate = new DateToLongPropertyCodegen("java.sql.Time", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "userDto", "user");
         toTarget = stringToDate.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(new java.sql.Time(userDto.getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.sql.Time(userDto.getCreateTime()));\n" //
+            + "}");
 
         dateToLong = new DateToLongPropertyCodegen("java.sql.Time");
         fromTarget = dateToLong.generateFromTarget("createTime", "", "user");
@@ -147,47 +161,53 @@ public class DateToLongPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(new java.sql.Time(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(new java.sql.Time(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(getCreateTime().getTime());\n" //
+            + "}");
 
         stringToDate = new DateToLongPropertyCodegen("java.sql.Time", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "", "user");
         toTarget = stringToDate.generateToTarget("createTime", "", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(new java.sql.Time(getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.sql.Time(getCreateTime()));\n" //
+            + "}");
     }
 
     @Test
     public void testSqlTimestamp() {
-        DateToLongPropertyCodegen dateToLong =
-            new DateToLongPropertyCodegen("java.sql.Timestamp");
+        DateToLongPropertyCodegen dateToLong = new DateToLongPropertyCodegen("java.sql.Timestamp");
         fromTarget = dateToLong.generateFromTarget("createTime", "userDto", "user");
         toTarget = dateToLong.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(new java.sql.Timestamp(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(userDto.getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(new java.sql.Timestamp(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(userDto.getCreateTime().getTime());\n" //
+            + "}");
 
-        DateToLongPropertyCodegen stringToDate =
-            new DateToLongPropertyCodegen("java.sql.Timestamp", true);
+        DateToLongPropertyCodegen stringToDate = new DateToLongPropertyCodegen("java.sql.Timestamp", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "userDto", "user");
         toTarget = stringToDate.generateToTarget("createTime", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(new java.sql.Timestamp(userDto.getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.sql.Timestamp(userDto.getCreateTime()));\n" //
+            + "}");
 
         dateToLong = new DateToLongPropertyCodegen("java.sql.Timestamp");
         fromTarget = dateToLong.generateFromTarget("createTime", "", "user");
@@ -195,19 +215,23 @@ public class DateToLongPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(new java.sql.Timestamp(user.getCreateTime()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(getCreateTime().getTime());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(new java.sql.Timestamp(user.getCreateTime()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(getCreateTime().getTime());\n" //
+            + "}");
 
         stringToDate = new DateToLongPropertyCodegen("java.sql.Timestamp", true);
         fromTarget = stringToDate.generateFromTarget("createTime", "", "user");
         toTarget = stringToDate.generateToTarget("createTime", "", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) setCreateTime(user.getCreateTime().getTime());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) user.setCreateTime(new java.sql.Timestamp(getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    setCreateTime(user.getCreateTime().getTime());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(getCreateTime())) {\n" //
+            + "    user.setCreateTime(new java.sql.Timestamp(getCreateTime()));\n" //
+            + "}");
     }
 }

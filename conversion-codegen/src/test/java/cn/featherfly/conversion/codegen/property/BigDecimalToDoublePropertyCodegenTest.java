@@ -27,10 +27,12 @@ public class BigDecimalToDoublePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(order.getPrice())) orderDto.setPrice(java.math.BigDecimal.valueOf(order.getPrice()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(orderDto.getPrice())) order.setPrice(orderDto.getPrice().doubleValue());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(order.getPrice())) {\n" //
+            + "    orderDto.setPrice(java.math.BigDecimal.valueOf(order.getPrice()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(orderDto.getPrice())) {\n" //
+            + "    order.setPrice(orderDto.getPrice().doubleValue());\n" //
+            + "}");
 
         BigDecimalToDoublePropertyCodegen stringToDate = new BigDecimalToDoublePropertyCodegen(Double.TYPE, true);
         fromTarget = stringToDate.generateFromTarget("createTime", "userDto", "user");
@@ -38,10 +40,12 @@ public class BigDecimalToDoublePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(user.getCreateTime().doubleValue());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(java.math.BigDecimal.valueOf(userDto.getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(user.getCreateTime().doubleValue());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(java.math.BigDecimal.valueOf(userDto.getCreateTime()));\n" //
+            + "}");
     }
 
     @Test
@@ -52,10 +56,12 @@ public class BigDecimalToDoublePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(order.getPrice())) orderDto.setPrice(java.math.BigDecimal.valueOf(order.getPrice()));");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(orderDto.getPrice())) order.setPrice(orderDto.getPrice().doubleValue());");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(order.getPrice())) {\n" //
+            + "    orderDto.setPrice(java.math.BigDecimal.valueOf(order.getPrice()));\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(orderDto.getPrice())) {\n" //
+            + "    order.setPrice(orderDto.getPrice().doubleValue());\n" //
+            + "}");
 
         BigDecimalToDoublePropertyCodegen stringToDate = new BigDecimalToDoublePropertyCodegen(Double.TYPE, true);
         fromTarget = stringToDate.generateFromTarget("createTime", "userDto", "user");
@@ -63,9 +69,11 @@ public class BigDecimalToDoublePropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) userDto.setCreateTime(user.getCreateTime().doubleValue());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) user.setCreateTime(java.math.BigDecimal.valueOf(userDto.getCreateTime()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getCreateTime())) {\n" //
+            + "    userDto.setCreateTime(user.getCreateTime().doubleValue());\n" //
+            + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getCreateTime())) {\n" //
+            + "    user.setCreateTime(java.math.BigDecimal.valueOf(userDto.getCreateTime()));\n" //
+            + "}");
     }
 }

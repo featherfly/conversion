@@ -3,7 +3,7 @@ package cn.featherfly.conversion.codegen.convertor;
 import java.math.BigDecimal;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type BigDecimal to double convertor codegen.
@@ -11,7 +11,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.4.0
  */
-public class BigDecimalToDoubleConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class BigDecimalToDoubleConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new BigDecimal to double convertor codegen.
@@ -36,22 +36,22 @@ public class BigDecimalToDoubleConvertorCodegen extends AbstractConvertorCodegen
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toBigDecimal(source);
+            return toBigDecimal(content);
         }
-        return toDouble(source);
+        return toDouble(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toDouble(target);
+            return toDouble(content);
         }
-        return toBigDecimal(target);
+        return toBigDecimal(content);
     }
 
     private String toBigDecimal(String src) {

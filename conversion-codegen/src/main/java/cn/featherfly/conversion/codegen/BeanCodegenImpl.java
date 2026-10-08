@@ -62,8 +62,7 @@ import cn.featherfly.conversion.codegen.property.TimeToLocalTimePropertyCodegen;
  */
 public class BeanCodegenImpl implements BeanCodegen {
 
-    private static final String JAVADOC_TEMPLATE1 =
-        "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n";
+    private static final String JAVADOC_TEMPLATE1 = "{0}/**\n{0} * create a new {2} and copy properties from {1}\n{0} * @param {1} {1}\n{0} * @return new {2}\n{0} */\n";
 
     private static final String METHOD_END = ") {\n";
 
@@ -409,9 +408,7 @@ public class BeanCodegenImpl implements BeanCodegen {
         } else if (tt.isEnum()) {
             propertyCodegen = CodegenUtils.getEnumFromTargetPropertyCodegen(st, tt);
         } else if (st.getIterables() != null && tt.getIterables() != null) {
-            propertyCodegen =
-                new IterablePropertyCodegen(getElementConvertorCodegen(property), st.getIterables(),
-                    tt.getIterables());
+            propertyCodegen = new IterablePropertyCodegen(property, getElementConvertorCodegen(property));
         }
         return getPropertyCodegen(property, propertyCodegen);
     }
@@ -439,8 +436,7 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
         return new BeanToBeanPropertyCodegen(property.sourceType().name(), property.targetType().name(),
             getBeanToBeanConvertorCodegen(property, property.sourceType().name(), property.targetType().name(),
-                indentStart,
-                false));
+                indentStart, false));
     }
 
     private ConvertorCodegen getEnumConvertorCodegen(TypeMetadata st, TypeMetadata tt) {
@@ -492,8 +488,7 @@ public class BeanCodegenImpl implements BeanCodegen {
     }
 
     private ConvertorCodegen getBeanToBeanConvertorCodegen(ConvertibleProperty property, String source, String target,
-        int indentStart,
-        boolean isElement) {
+        int indentStart, boolean isElement) {
         ConvertorCodegen codegen = beanToBeanConvertorMap.get(getKey(source, target));
         if (codegen != null) {
             return codegen;
@@ -504,11 +499,10 @@ public class BeanCodegenImpl implements BeanCodegen {
                 return codegen;
             }
         }
-        return new BeanToBeanConvertorCodegen(builder().setIndentStart(indentStart - 1)
-            .setIndentSymbol(indentSymbol)
-            .setNoConvertorException(noConvertorException)
-            .setGenerateJavadoc(false)
-            .build(), source, target, indentStart, false, isElement);
+        return new BeanToBeanConvertorCodegen(
+            builder().setIndentStart(indentStart - 1).setIndentSymbol(indentSymbol)
+                .setNoConvertorException(noConvertorException).setGenerateJavadoc(false).build(),
+            source, target, indentStart, false, isElement);
     }
 
     private String getIndent(int size) {
@@ -529,9 +523,7 @@ public class BeanCodegenImpl implements BeanCodegen {
                     "{0}/**\n{0} * copy properties from argument {1} to argument {3}\n{0} * @param {1} {1}\n{0} * @param {3} {3}\n{0} * @return the argument {3}\n{0} */\n",
                     indent, sourceObjectName, targetObjectType, targetObjectName));
             } else {
-                javadoc.append(Str.format(
-                    JAVADOC_TEMPLATE1,
-                    indent, sourceObjectName, targetObjectType));
+                javadoc.append(Str.format(JAVADOC_TEMPLATE1, indent, sourceObjectName, targetObjectType));
             }
         } else {
             if (method.isGivenArgument()) {
@@ -649,9 +641,7 @@ public class BeanCodegenImpl implements BeanCodegen {
                             "{0}/**\n{0} * copy properties from {2} to {1}\n{0} * @param {2} {2}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
                             indent1, sourceObjectName, targetObjectName));
                     } else {
-                        src.append(Str.format(
-                            JAVADOC_TEMPLATE1,
-                            indent1, targetObjectName, sourceObjectType));
+                        src.append(Str.format(JAVADOC_TEMPLATE1, indent1, targetObjectName, sourceObjectType));
                     }
                 } else {
                     if (method.isConstructor()) {
@@ -670,9 +660,8 @@ public class BeanCodegenImpl implements BeanCodegen {
                     .append(" ").append(targetObjectName).append(METHOD_END);
             } else {
                 src.append(indent1).append(PUBLIC_KEYWORD).append(method.isStatic() ? STATIC_KEYWORD : "")
-                    .append(sourceObjectType)
-                    .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
-                    .append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "")
+                    .append(sourceObjectType).append(" ").append(method.name()).append("(").append(targetObjectType)
+                    .append(" ").append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "")
                     .append(METHOD_END);
             }
             if (method.isGivenArgument() && method.isStatic()) {
@@ -727,9 +716,7 @@ public class BeanCodegenImpl implements BeanCodegen {
                         "{0}/**\n{0} * copy properties from {2} to {1}\n{0} * @param {2} {2}\n{0} * @param {1} {1}\n{0} * @return the argument {1}\n{0} */\n",
                         indent1, sourceObjectName, targetObjectName));
                 } else {
-                    src.append(Str.format(
-                        JAVADOC_TEMPLATE1,
-                        indent1, targetObjectName, sourceObjectType));
+                    src.append(Str.format(JAVADOC_TEMPLATE1, indent1, targetObjectName, sourceObjectType));
                 }
             } else {
                 if (method.isConstructor()) {
@@ -745,13 +732,11 @@ public class BeanCodegenImpl implements BeanCodegen {
         }
         if (method.isConstructor()) {
             src.append(indent1).append(PUBLIC_KEYWORD).append(method.name()).append("(").append(targetObjectType)
-                .append(" ")
-                .append(targetObjectName).append(METHOD_END);
+                .append(" ").append(targetObjectName).append(METHOD_END);
         } else {
             src.append(indent1).append(PUBLIC_KEYWORD).append(method.isStatic() ? STATIC_KEYWORD : "")
-                .append(sourceObjectType)
-                .append(" ").append(method.name()).append("(").append(targetObjectType).append(" ")
-                .append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "")
+                .append(sourceObjectType).append(" ").append(method.name()).append("(").append(targetObjectType)
+                .append(" ").append(targetObjectName).append(method.isGivenArgument() ? ", " + sourceDefine : "")
                 .append(METHOD_END);
         }
         String c = content.apply(indent2);
@@ -923,8 +908,7 @@ public class BeanCodegenImpl implements BeanCodegen {
          * @param convertorFinder the convertor finder
          * @return the bean codegen builder
          */
-        public BeanCodegenBuilder addConvertorCodegenFinder(
-            ConvertorCodegenFinder convertorFinder) {
+        public BeanCodegenBuilder addConvertorCodegenFinder(ConvertorCodegenFinder convertorFinder) {
             convertorFinderList.add(convertorFinder);
             return this;
         }

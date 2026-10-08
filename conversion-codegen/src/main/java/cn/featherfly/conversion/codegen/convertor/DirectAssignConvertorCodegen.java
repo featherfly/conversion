@@ -1,7 +1,7 @@
 package cn.featherfly.conversion.codegen.convertor;
 
 import cn.featherfly.conversion.codegen.CodegenUtils;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * direct assign convertor codegen.
@@ -9,7 +9,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class DirectAssignConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class DirectAssignConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new direct assign convertor codegen.
@@ -33,15 +33,15 @@ public class DirectAssignConvertorCodegen extends AbstractConvertorCodegen imple
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
-        return source;
+    protected String toTarget(String src, ConvertibleProperty property) {
+        return src;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
-        return target;
+    protected String toSource(String src, ConvertibleProperty property) {
+        return src;
     }
 }

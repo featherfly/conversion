@@ -109,12 +109,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getFloat2Float())) user.setFloat2Float(getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getByte2Byte())) user.setByte2Byte(getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getShort2Short())) user.setShort2Short(getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) {\n" //
+            + "        user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) {\n" //
+            + "        user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) {\n" //
+            + "        user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) {\n" //
+            + "        user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
             + "    return user;\n" + "}");
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD, true),
@@ -134,12 +146,24 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getFloat2Float())) user.setFloat2Float(getFloat2Float());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getByte2Byte())) user.setByte2Byte(getByte2Byte());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getShort2Short())) user.setShort2Short(getShort2Short());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) {\n" //
+                + "        user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) {\n" //
+                + "        user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) {\n" //
+                + "        user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) {\n" //
+                + "        user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+                + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+                + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+                + "    }\n" //
                 + "    return user;\n" + "}");
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
@@ -160,12 +184,24 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getFloat2Float())) user.setFloat2Float(userDto.getFloat2Float());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getByte2Byte())) user.setByte2Byte(userDto.getByte2Byte());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getShort2Short())) user.setShort2Short(userDto.getShort2Short());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) {\n" //
+                + "        user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) {\n" //
+                + "        user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) {\n" //
+                + "        user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) {\n" //
+                + "        user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+                + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+                + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+                + "    }\n" //
                 + "    return user;\n" + "}");
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD, true),
@@ -185,12 +221,24 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getFloat2Float())) user.setFloat2Float(userDto.getFloat2Float());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getByte2Byte())) user.setByte2Byte(userDto.getByte2Byte());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getShort2Short())) user.setShort2Short(userDto.getShort2Short());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) {\n" //
+                + "        user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) {\n" //
+                + "        user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) {\n" //
+                + "        user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) {\n" //
+                + "        user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+                + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+                + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+                + "    }\n" //
                 + "    return user;\n" + "}");
     }
 
@@ -219,12 +267,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getFloat2Float())) user.setFloat2Float(getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getByte2Byte())) user.setByte2Byte(getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getShort2Short())) user.setShort2Short(getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) {\n" //
+            + "        user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) {\n" //
+            + "        user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) {\n" //
+            + "        user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) {\n" //
+            + "        user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
             + "    return user;\n" + "}");
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD, true),
@@ -248,12 +308,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getFloat2Float())) user.setFloat2Float(getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getByte2Byte())) user.setByte2Byte(getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getShort2Short())) user.setShort2Short(getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) user.setLong2BigInteger(getLong2BigInteger().longValue());\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal())) {\n" //
+            + "        user.setDouble2BigDecimal(getDouble2BigDecimal().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getDouble2BigDecimal2())) {\n" //
+            + "        user.setDouble2BigDecimal2(getDouble2BigDecimal2().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal())) {\n" //
+            + "        user.setLong2BigDecimal(getLong2BigDecimal().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigDecimal2())) {\n" //
+            + "        user.setLong2BigDecimal2(getLong2BigDecimal2().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
             + "    return user;\n" + "}");
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
@@ -278,12 +350,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getFloat2Float())) user.setFloat2Float(userDto.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getByte2Byte())) user.setByte2Byte(userDto.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getShort2Short())) user.setShort2Short(userDto.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) {\n" //
+            + "        user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) {\n" //
+            + "        user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) {\n" //
+            + "        user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) {\n" //
+            + "        user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
             + "    return user;\n" + "}");
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD, true),
@@ -308,12 +392,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getFloat2Float())) user.setFloat2Float(userDto.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getByte2Byte())) user.setByte2Byte(userDto.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getShort2Short())) user.setShort2Short(userDto.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal())) {\n" //
+            + "        user.setDouble2BigDecimal(userDto.getDouble2BigDecimal().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getDouble2BigDecimal2())) {\n" //
+            + "        user.setDouble2BigDecimal2(userDto.getDouble2BigDecimal2().doubleValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal())) {\n" //
+            + "        user.setLong2BigDecimal(userDto.getLong2BigDecimal().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigDecimal2())) {\n" //
+            + "        user.setLong2BigDecimal2(userDto.getLong2BigDecimal2().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getLong2BigInteger())) {\n" //
+            + "        user.setLong2BigInteger(userDto.getLong2BigInteger().longValue());\n" //
+            + "    }\n" //
             + "    return user;\n" + "}");
     }
 
@@ -362,12 +458,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) setFloat2Float(user.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) setByte2Byte(user.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) setShort2Short(user.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+            + "        setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+            + "        setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+            + "        setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+            + "        setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
             + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
@@ -386,12 +494,24 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) setFloat2Float(user.getFloat2Float());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) setByte2Byte(user.getByte2Byte());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) setShort2Short(user.getShort2Short());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+                + "        setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+                + "        setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+                + "        setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+                + "        setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+                + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+                + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+                + "    }\n" //
                 + "    return this;\n" + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
@@ -411,13 +531,25 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) userDto.setFloat2Float(user.getFloat2Float());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) userDto.setByte2Byte(user.getByte2Byte());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) userDto.setShort2Short(user.getShort2Short());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-                + "    return userDto;\n" + "}");
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+                + "        userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+                + "        userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+                + "        userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+                + "        userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+                + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+                + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+                + "    }\n" //
+                + "" + "    return userDto;\n" + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD, true),
             UserDto.class.getName(), User.class.getName(), properties, "userDto", "user");
@@ -435,13 +567,25 @@ public class BeanCodegenTest extends CodegenTest {
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) userDto.setFloat2Float(user.getFloat2Float());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) userDto.setByte2Byte(user.getByte2Byte());\n"
                 + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) userDto.setShort2Short(user.getShort2Short());\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-                + "    return userDto;\n" + "}");
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+                + "        userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+                + "        userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+                + "        userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+                + "        userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+                + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+                + "    }\n" //
+                + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+                + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+                + "    }\n" //
+                + "" + "    return userDto;\n" + "}");
     }
 
     @Test
@@ -453,10 +597,9 @@ public class BeanCodegenTest extends CodegenTest {
             UserDto.class.getName(), User.class.getName(), properties, null, "user");
         System.out.println(result);
 
-        assertEquals(result, "/**\n" //
-            + " * Instantiates a new cn.featherfly.conversion.codegen.vo.UserDto and copy properties from user\n" //
-            + " * @param user user\n" //
-            + " */\n" //
+        assertEquals(result, "/**\n"
+            + " * Instantiates a new cn.featherfly.conversion.codegen.vo.UserDto and copy properties from user\n"
+            + " * @param user user\n" + " */\n"
             + "public UserDto(cn.featherfly.conversion.codegen.domain.User user) {\n"
             + "    if (user == null) return;\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getId())) setId(user.getId());\n"
@@ -469,12 +612,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) setFloat2Float(user.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) setByte2Byte(user.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) setShort2Short(user.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+            + "        setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n"  //
+            + "        setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n"  //
+            + "        setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n"  //
+            + "        setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"  //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n"  //
+            + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
             + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
@@ -497,12 +652,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) setFloat2Float(user.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) setByte2Byte(user.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) setShort2Short(user.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+            + "        setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+            + "        setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+            + "        setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+            + "        setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
             + "    return this;\n" + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
@@ -526,12 +693,24 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) userDto.setFloat2Float(user.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) userDto.setByte2Byte(user.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) userDto.setShort2Short(user.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+            + "        userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+            + "        userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+            + "        userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+            + "        userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
             + "    return userDto;\n" + "}");
 
         result = codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD, true),
@@ -555,13 +734,26 @@ public class BeanCodegenTest extends CodegenTest {
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getFloat2Float())) userDto.setFloat2Float(user.getFloat2Float());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getByte2Byte())) userDto.setByte2Byte(user.getByte2Byte());\n"
             + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getShort2Short())) userDto.setShort2Short(user.getShort2Short());\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n"
-            + "    return userDto;\n" + "}");
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal())) {\n" //
+            + "        userDto.setDouble2BigDecimal(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getDouble2BigDecimal2())) {\n" //
+            + "        userDto.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(user.getDouble2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal())) {\n" //
+            + "        userDto.setLong2BigDecimal(java.math.BigDecimal.valueOf(user.getLong2BigDecimal()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigDecimal2())) {\n" //
+            + "        userDto.setLong2BigDecimal2(java.math.BigDecimal.valueOf(user.getLong2BigDecimal2()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
+            + "    if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getLong2BigInteger())) {\n" //
+            + "        userDto.setLong2BigInteger(java.math.BigInteger.valueOf(user.getLong2BigInteger()));\n" //
+            + "    }\n" //
+            + "    return userDto;\n" //
+            + "}");
     }
 
     @Test
@@ -719,13 +911,11 @@ public class BeanCodegenTest extends CodegenTest {
                         }
 
                         @Override
-                        public String generateToTarget(String source, String target) {
+                        public String generateToTarget(ConvertibleProperty property, String source, String target) {
                             if (property.sourceType().isArray()) {
-                                return source + ".to"
-                                    + StringUtils.substringAfterLast(targetType(), ".") + "();";
+                                return source + ".to" + StringUtils.substringAfterLast(targetType(), ".") + "();";
                             } else if (property.sourceType().isCollection()) {
-                                return source + ".to"
-                                    + StringUtils.substringAfterLast(targetType(), ".") + "()";
+                                return source + ".to" + StringUtils.substringAfterLast(targetType(), ".") + "()";
                             } else if (target.endsWith("()")) {
                                 String t = target.replaceAll("\\.get", ".set");
                                 t = t.substring(0, t.length() - 1);
@@ -738,21 +928,19 @@ public class BeanCodegenTest extends CodegenTest {
                         }
 
                         @Override
-                        public String generateToSource(String target, String source) {
+                        public String generateToSource(ConvertibleProperty property, String target, String source) {
                             return "new " + sourceType() + "(" + target + ")";
                         }
                     };
                 }
                 return null;
-            })
-            .build();
+            }).build();
 
         result = codegen.generateToTarget(new MethodMetadataImpl("toRole", MethodType.METHOD), RoleDto.class.getName(),
             Role.class.getName(), roleProps, null, "role");
         System.out.println(result);
-        result =
-            codegen.generateFromTarget(new MethodMetadataImpl("toRole", MethodType.METHOD), RoleDto.class.getName(),
-                Role.class.getName(), roleProps, null, "role");
+        result = codegen.generateFromTarget(new MethodMetadataImpl("toRole", MethodType.METHOD),
+            RoleDto.class.getName(), Role.class.getName(), roleProps, null, "role");
         System.out.println(result);
     }
 }

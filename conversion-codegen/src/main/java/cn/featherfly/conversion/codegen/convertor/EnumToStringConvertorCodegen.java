@@ -2,7 +2,7 @@ package cn.featherfly.conversion.codegen.convertor;
 
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.CodegenUtils;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type Enum to enum convertor codegen.
@@ -10,7 +10,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class EnumToStringConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class EnumToStringConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new enum to string convertor codegen.
@@ -35,22 +35,22 @@ public class EnumToStringConvertorCodegen extends AbstractConvertorCodegen imple
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String src, ConvertibleProperty property) {
         if (inverse) {
-            return toEnum(sourceType, source);
+            return toEnum(targetType(), src);
         }
-        return toString(source);
+        return toString(src);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String src, ConvertibleProperty property) {
         if (inverse) {
-            return toString(target);
+            return toString(src);
         }
-        return toEnum(sourceType, target);
+        return toEnum(sourceType(), src);
     }
 
     /**

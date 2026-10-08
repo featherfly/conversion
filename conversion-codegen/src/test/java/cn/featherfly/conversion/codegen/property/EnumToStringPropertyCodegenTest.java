@@ -24,30 +24,35 @@ public class EnumToStringPropertyCodegenTest extends PropertyCodegenTest {
         String genderClass = getClassName(cn.featherfly.conversion.codegen.domain.User.Gender.class);
 
         System.out.println("source enum to string");
-        EnumToStringPropertyCodegen enumToString =
-            new EnumToStringPropertyCodegen(genderClass);
+        EnumToStringPropertyCodegen enumToString = new EnumToStringPropertyCodegen(genderClass);
         fromTarget = enumToString.generateFromTarget("gender", "userDto", "user");
         toTarget = enumToString.generateToTarget("gender", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
-        assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(user.getGender()));");
+        assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) {\n"
+            + "    userDto.setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(user.getGender()));\n"
+            + "}");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(userDto.getGender().name());");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) {\n"
+                + "    user.setGender(userDto.getGender().name());\n" // 
+                + "}");
 
         System.out.println("source string to enum");
         EnumToStringPropertyCodegen stringToEnum = new EnumToStringPropertyCodegen(
-            "cn.featherfly.conversion.codegen.domain.User.Gender", true);
+            cn.featherfly.conversion.codegen.domain.User.Gender.class.getName(), true);
         fromTarget = stringToEnum.generateFromTarget("gender", "userDto", "user");
         toTarget = stringToEnum.generateToTarget("gender", "userDto", "user");
         System.out.println(fromTarget);
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) userDto.setGender(user.getGender().name());");
-        assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) user.setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(userDto.getGender()));");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) {\n"
+                + "    userDto.setGender(user.getGender().name());\n" //
+                + "}");
+        assertEquals(toTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(userDto.getGender())) {\n"
+            + "    user.setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(userDto.getGender()));\n"
+            + "}");
 
         System.out.println("source enum to string");
         fromTarget = enumToString.generateFromTarget("gender", "", "user");
@@ -56,9 +61,13 @@ public class EnumToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(user.getGender()));");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) {\n"
+                + "    setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(user.getGender()));\n" // 
+                + "}");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(getGender().name());");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) {\n"
+                + "    user.setGender(getGender().name());\n" //
+                + "}");
 
         System.out.println("source string to enum");
         fromTarget = stringToEnum.generateFromTarget("gender", "", "user");
@@ -67,9 +76,13 @@ public class EnumToStringPropertyCodegenTest extends PropertyCodegenTest {
         System.out.println(toTarget);
 
         assertEquals(fromTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) setGender(user.getGender().name());");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getGender())) {\n"
+                + "    setGender(user.getGender().name());\n" //
+                + "}");
         assertEquals(toTarget,
-            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) user.setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(getGender()));");
+            "if (cn.featherfly.common.lang.Lang.isNotEmpty(getGender())) {\n"
+                + "    user.setGender(cn.featherfly.conversion.codegen.domain.User.Gender.valueOf(getGender()));\n" //
+                + "}");
 
     }
 

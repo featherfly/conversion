@@ -36,5 +36,8 @@ public abstract class IterablePropertyCodegenTest extends PropertyCodegenTest {
     public abstract void enumToString();
 
     @Test
+    public abstract void enumToStringInverse();
+
+    @Test
     public abstract void beanToBean();
 }

@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.time.LocalTime;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type Time to LocalTime convertor codegen.
@@ -12,7 +12,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class TimeToLocalTimeConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class TimeToLocalTimeConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new time to local time convertor codegen.
@@ -74,22 +74,22 @@ public class TimeToLocalTimeConvertorCodegen extends AbstractConvertorCodegen im
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toTime(source);
+            return toTime(content);
         }
-        return toLocalTime(source);
+        return toLocalTime(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toLocalTime(target);
+            return toLocalTime(content);
         }
-        return toTime(target);
+        return toTime(content);
     }
 
     private String toTime(String src) {

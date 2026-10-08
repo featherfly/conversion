@@ -22,7 +22,6 @@ import cn.featherfly.conversion.codegen.BeanCodegen;
 import cn.featherfly.conversion.codegen.CodegenUtils;
 import cn.featherfly.conversion.codegen.ConvertibleProperty;
 import cn.featherfly.conversion.codegen.ConvertiblePropertyImpl;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
 import cn.featherfly.conversion.codegen.TypeMetadata;
 import cn.featherfly.conversion.codegen.TypeMetadataImpl;
 
@@ -32,7 +31,7 @@ import cn.featherfly.conversion.codegen.TypeMetadataImpl;
  * @author zhongj
  * @since 0.1.0
  */
-public class BeanToBeanConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class BeanToBeanConvertorCodegen extends AbstractConvertorCodegen {
 
     private final boolean instantiateObject;
 
@@ -157,9 +156,9 @@ public class BeanToBeanConvertorCodegen extends AbstractConvertorCodegen impleme
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    public String generateToTarget(ConvertibleProperty property, String source, String target) {
         if (inverse) {
-            return generate(targetType, sourceType, target, source, true);
+            return generate(targetType, sourceType, source, target, true);
         }
         return generate(sourceType, targetType, source, target, true);
     }
@@ -168,15 +167,11 @@ public class BeanToBeanConvertorCodegen extends AbstractConvertorCodegen impleme
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    public String generateToSource(ConvertibleProperty property, String target, String source) {
         if (inverse) {
-            return generate(targetType, sourceType, target, source, false);
+            return generate(sourceType, targetType, source, target, false);
         }
         return generate(sourceType, targetType, source, target, false);
-        //        if (inverse) {
-        //            return Str.format("{0}.{1}()", target, toTargetName);
-        //        }
-        //        return Str.format("{0}({1})", toSourceName, target);
     }
 
     private List<ConvertibleProperty> properties(BeanDescriptor<?> sourceBeanDescriptor,

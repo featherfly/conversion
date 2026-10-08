@@ -2,7 +2,7 @@ package cn.featherfly.conversion.codegen.convertor;
 
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.CodegenUtils;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type Enum to Integer convertor codegen.
@@ -10,7 +10,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class EnumToIntegerConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class EnumToIntegerConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new enum to integer convertor codegen.
@@ -35,22 +35,22 @@ public class EnumToIntegerConvertorCodegen extends AbstractConvertorCodegen impl
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String src, ConvertibleProperty property) {
         if (inverse) {
-            return toEnum(sourceType, source);
+            return toEnum(targetType(), src);
         }
-        return toInt(source);
+        return toInt(src);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String src, ConvertibleProperty property) {
         if (inverse) {
-            return toInt(target);
+            return toInt(src);
         }
-        return toEnum(sourceType, target);
+        return toEnum(sourceType(), src);
     }
 
     private String toInt(String src) {

@@ -1,7 +1,7 @@
 package cn.featherfly.conversion.codegen.convertor;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type Enum to long convertor codegen.
@@ -9,7 +9,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class EnumToLongConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class EnumToLongConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new Enum to long convertor codegen.
@@ -34,22 +34,22 @@ public class EnumToLongConvertorCodegen extends AbstractConvertorCodegen impleme
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toEnum(sourceType, source);
+            return toEnum(targetType(), content);
         }
-        return toLong(source);
+        return toLong(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toLong(target);
+            return toLong(content);
         }
-        return toEnum(sourceType, target);
+        return toEnum(sourceType(), content);
     }
 
     private String toLong(String src) {

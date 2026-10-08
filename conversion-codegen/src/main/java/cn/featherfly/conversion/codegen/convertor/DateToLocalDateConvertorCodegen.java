@@ -5,7 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.CodegenUtils;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type Date to LocalDate convertor codegen.
@@ -13,7 +13,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class DateToLocalDateConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class DateToLocalDateConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new Date to long convertor codegen.
@@ -75,22 +75,22 @@ public class DateToLocalDateConvertorCodegen extends AbstractConvertorCodegen im
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toDate(source);
+            return toDate(content);
         }
-        return toLocalDate(source);
+        return toLocalDate(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toLocalDate(target);
+            return toLocalDate(content);
         }
-        return toDate(target);
+        return toDate(content);
     }
 
     private String toDate(String src) {

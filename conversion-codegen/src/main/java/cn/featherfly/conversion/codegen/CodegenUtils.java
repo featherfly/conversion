@@ -26,6 +26,7 @@ import cn.featherfly.conversion.codegen.property.EnumToStringPropertyCodegen;
  */
 public final class CodegenUtils {
 
+    /** The Constant INDENT. */
     public static final String INDENT = "    ";
 
     private CodegenUtils() {
@@ -65,6 +66,25 @@ public final class CodegenUtils {
             // 优化 自动导入的java.lang包
             return typeName.substring(lastDotIndex + 1, typeName.length());
         }
+        return typeName;
+    }
+
+    /**
+     * Gets the class name for src.
+     *
+     * @param typeName the type name
+     * @return the class name for src
+     */
+    public static String getClassNameForSrc(String typeName) {
+        int lastDotIndex = typeName.lastIndexOf('.');
+        if (lastDotIndex == -1) {
+            // 处理 primitive type
+            return typeName;
+        }
+        if ("java.lang".equals(typeName.substring(0, lastDotIndex))) {
+            // 优化 自动导入的java.lang包
+            return typeName.substring(lastDotIndex + 1, typeName.length());
+        }
         // 处理内部类，内部类的Class.getName()会包含$,而在代码中，是用.进行导航
         return typeName.replace("$", ".");
     }
@@ -85,14 +105,33 @@ public final class CodegenUtils {
         return name.substring(lastDotIndex + 1, name.length());
     }
 
+    /**
+     * Gets the to type method.
+     *
+     * @param type the type
+     * @return the to type method
+     */
     public static String getToTypeMethod(String type) {
         return "to" + CodegenUtils.getClassSimpleName(type);
     }
 
+    /**
+     * Gets the new constructor.
+     *
+     * @param type the type
+     * @return the new constructor
+     */
     public static String getNewConstructor(String type) {
         return "new " + type;
     }
 
+    /**
+     * Gets the enum to target property codegen.
+     *
+     * @param st the st
+     * @param tt the tt
+     * @return the enum to target property codegen
+     */
     public static PropertyCodegen getEnumToTargetPropertyCodegen(TypeMetadata st, TypeMetadata tt) {
         String typeName = CodegenUtils.getClassName(st.name());
         if (tt.name().equals(String.class.getName()) || tt.name().equals(String.class.getSimpleName())) {
@@ -109,6 +148,13 @@ public final class CodegenUtils {
         return null;
     }
 
+    /**
+     * Gets the enum from target property codegen.
+     *
+     * @param st the st
+     * @param tt the tt
+     * @return the enum from target property codegen
+     */
     public static PropertyCodegen getEnumFromTargetPropertyCodegen(TypeMetadata st, TypeMetadata tt) {
         String typeName = CodegenUtils.getClassName(tt.name());
         if (st.name().equals(String.class.getName()) || st.name().equals(String.class.getSimpleName())) {
@@ -125,6 +171,13 @@ public final class CodegenUtils {
         return null;
     }
 
+    /**
+     * Gets the enum to target convertor codegen.
+     *
+     * @param st the st
+     * @param tt the tt
+     * @return the enum to target convertor codegen
+     */
     public static ConvertorCodegen getEnumToTargetConvertorCodegen(TypeMetadata st, TypeMetadata tt) {
         String typeName = CodegenUtils.getClassName(st.name());
         if (tt.name().equals(String.class.getName()) || tt.name().equals(String.class.getSimpleName())) {
@@ -141,6 +194,13 @@ public final class CodegenUtils {
         return null;
     }
 
+    /**
+     * Gets the enum from target convertor codegen.
+     *
+     * @param st the st
+     * @param tt the tt
+     * @return the enum from target convertor codegen
+     */
     public static ConvertorCodegen getEnumFromTargetConvertorCodegen(TypeMetadata st, TypeMetadata tt) {
         String typeName = CodegenUtils.getClassName(tt.name());
         if (st.name().equals(String.class.getName()) || st.name().equals(String.class.getSimpleName())) {
@@ -157,6 +217,12 @@ public final class CodegenUtils {
         return null;
     }
 
+    /**
+     * Gets the indent.
+     *
+     * @param size the size
+     * @return the indent
+     */
     public static String getIndent(int size) {
         StringBuilder indent = new StringBuilder();
         for (int i = 0; i < size; i++) {

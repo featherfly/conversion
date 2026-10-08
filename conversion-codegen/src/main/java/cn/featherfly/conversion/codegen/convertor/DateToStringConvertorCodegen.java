@@ -4,7 +4,7 @@ import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.CodegenUtils;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type Date to long convertor codegen.
@@ -12,7 +12,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class DateToStringConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class DateToStringConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     private final String format;
 
@@ -87,22 +87,22 @@ public class DateToStringConvertorCodegen extends AbstractConvertorCodegen imple
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return parse(source);
+            return parse(content);
         }
-        return format(source, format);
+        return format(content, format);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return format(target, format);
+            return format(content, format);
         }
-        return parse(target);
+        return parse(content);
     }
 
     private String parse(String src) {

@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.AbstractConvertible;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 import cn.featherfly.conversion.codegen.ConvertorCodegen;
 
 /**
@@ -35,7 +36,7 @@ public class CommentConvertorCodegen extends AbstractConvertible implements Conv
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    public String generateToTarget(ConvertibleProperty property, String source, String target) {
         if (Locale.CHINESE.getLanguage().equals(Locale.getDefault().getLanguage())) {
             return Str.format("// 没有对应的转换器 {0} <-> {1}", sourceType, targetType);
         } else {
@@ -47,8 +48,8 @@ public class CommentConvertorCodegen extends AbstractConvertible implements Conv
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
-        return generateToTarget(target, null);
+    public String generateToSource(ConvertibleProperty property, String target, String source) {
+        return generateToTarget(property, target, source);
     }
 
     /**

@@ -10,9 +10,13 @@ package cn.featherfly.conversion.codegen.property;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.Iterables;
+import cn.featherfly.conversion.codegen.ConvertiblePropertyImpl;
+import cn.featherfly.conversion.codegen.PropertyCodegen;
+import cn.featherfly.conversion.codegen.TypeMetadataImpl;
 import cn.featherfly.conversion.codegen.convertor.BeanToBeanConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.DirectAssignConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.EnumToEnumConvertorCodegen;
@@ -32,7 +36,10 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
     public void directAssign() {
         final String propertyName = "nameList";
         DirectAssignConvertorCodegen directAssign = new DirectAssignConvertorCodegen(String.class);
-        IterablePropertyCodegen iterableDirectAssign = new IterablePropertyCodegen(directAssign, Iterables.LIST);
+        IterablePropertyCodegen iterableDirectAssign = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, String.class),
+                new TypeMetadataImpl(List.class, String.class)),
+            directAssign);
 
         System.out.println("iterable direct assign");
         toTarget = iterableDirectAssign.generateToTarget(propertyName, "userDto", "user");
@@ -65,7 +72,9 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
                 + "}");
 
         directAssign = new DirectAssignConvertorCodegen("java.lang.String");
-        iterableDirectAssign = new IterablePropertyCodegen(directAssign, Iterables.LIST);
+        iterableDirectAssign = new IterablePropertyCodegen(new ConvertiblePropertyImpl(propertyName,
+            new TypeMetadataImpl(List.class, String.class), new TypeMetadataImpl(List.class, String.class)),
+            directAssign);
         System.out.println("iterable direct assign with constructor");
         toTarget = iterableDirectAssign.generateToTarget(propertyName, null, "user");
         fromTarget = iterableDirectAssign.generateFromTarget(propertyName, null, "user");
@@ -77,7 +86,7 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
         assertEquals(toTarget,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(getNameList())) {\n"
                 + "    user.setNameList(new java.util.ArrayList<>(getNameList().size()));\n" //
-                + "    for (java.lang.String nameListElement : getNameList()) {\n" //
+                + "    for (String nameListElement : getNameList()) {\n" //
                 + "        if (nameListElement == null) {\n" //
                 + "            user.getNameList().add(null);\n" // 
                 + "            continue;\n" // 
@@ -88,7 +97,7 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
         assertEquals(fromTarget,
             "if (cn.featherfly.common.lang.Lang.isNotEmpty(user.getNameList())) {\n"
                 + "    setNameList(new java.util.ArrayList<>(user.getNameList().size()));\n" //
-                + "    for (java.lang.String nameListElement : user.getNameList()) {\n" //
+                + "    for (String nameListElement : user.getNameList()) {\n" //
                 + "        if (nameListElement == null) {\n" //
                 + "            getNameList().add(null);\n" //
                 + "            continue;\n" //
@@ -114,7 +123,11 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
         String voGender = getClassName(cn.featherfly.conversion.codegen.vo.Gender.class);
 
         EnumToEnumConvertorCodegen enumToEnum = new EnumToEnumConvertorCodegen(voGender, domainGender);
-        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(enumToEnum, Iterables.LIST);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName,
+                new TypeMetadataImpl(List.class, cn.featherfly.conversion.codegen.vo.Gender.class),
+                new TypeMetadataImpl(List.class, cn.featherfly.conversion.codegen.domain.User.Gender.class)),
+            enumToEnum);
         System.out.println("iterable enum to enum");
         fromTarget = iterableEnumToEnum.generateFromTarget(propertyName, "userDto", "user");
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "userDto", "user");
@@ -176,9 +189,11 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
     public void enumToString() {
         final String propertyName = "genderList";
         String voGender = getClassName(cn.featherfly.conversion.codegen.vo.Gender.class);
-        String userGender = getClassName(cn.featherfly.conversion.codegen.domain.User.Gender.class);
+
         EnumToStringConvertorCodegen enumToString = new EnumToStringConvertorCodegen(voGender);
-        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(enumToString, Iterables.LIST);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(new ConvertiblePropertyImpl(
+            propertyName, new TypeMetadataImpl(List.class, cn.featherfly.conversion.codegen.vo.Gender.class),
+            new TypeMetadataImpl(List.class, String.class)), enumToString);
 
         System.out.println("iterable enum to string");
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "userDto", "user");
@@ -237,12 +252,22 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
             + "        getGenderList().add(cn.featherfly.conversion.codegen.vo.Gender.valueOf(genderListElement));\n"
             + "    }\n"//
             + "}");
+    }
 
-        // --------------------------
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void enumToStringInverse() {
         System.out.println("iterable string to enum");
+        final String propertyName = "genderList";
+        String userGender = getClassName(cn.featherfly.conversion.codegen.domain.User.Gender.class);
 
         EnumToStringConvertorCodegen stringToEnum = new EnumToStringConvertorCodegen(userGender, true);
-        iterableEnumToEnum = new IterablePropertyCodegen(stringToEnum, Iterables.LIST);
+        PropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, String.class),
+                new TypeMetadataImpl(List.class, cn.featherfly.conversion.codegen.domain.User.Gender.class)),
+            stringToEnum);
 
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "userDto", "user");
         fromTarget = iterableEnumToEnum.generateFromTarget(propertyName, "userDto", "user");
@@ -308,7 +333,10 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
         final String propertyName = "userList";
         BeanToBeanConvertorCodegen beanToBean = new BeanToBeanConvertorCodegen(iterableElementBeanCodegen,
             UserDto.class, User.class, 2, false, true);
-        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(beanToBean, Iterables.LIST);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, UserDto.class),
+                new TypeMetadataImpl(List.class, User.class)),
+            beanToBean);
 
         System.out.println("iterable bean to bean (UserDto -> User);");
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "roleDto", "role");
@@ -332,22 +360,38 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getGender())) targetUserElement.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userListElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getAvailable())) targetUserElement.setAvailable(userListElement.getAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEmail())) targetUserElement.setEmail(userListElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) targetUserElement.setRegisterTime(cn.featherfly.common.lang.Dates.parse(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) {\n"
+            + "            targetUserElement.setRegisterTime(cn.featherfly.common.lang.Dates.parse(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getAlipayUserId())) targetUserElement.setAlipayUserId(userListElement.getAlipayUserId());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getWechatUnionId())) targetUserElement.setWechatUnionId(userListElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) targetUserElement.setEndTime(cn.featherfly.common.lang.Dates.toDate(userListElement.getEndTime()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) {\n"
+            + "            targetUserElement.setEndTime(cn.featherfly.common.lang.Dates.toDate(userListElement.getEndTime()));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getInt2Integer())) targetUserElement.setInt2Integer(userListElement.getInt2Integer());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2Long())) targetUserElement.setLong2Long(userListElement.getLong2Long());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getByte2Byte())) targetUserElement.setByte2Byte(userListElement.getByte2Byte());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getShort2Short())) targetUserElement.setShort2Short(userListElement.getShort2Short());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2Double())) targetUserElement.setDouble2Double(userListElement.getDouble2Double());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getFloat2Float())) targetUserElement.setFloat2Float(userListElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) targetUserElement.setDouble2BigDecimal(userListElement.getDouble2BigDecimal().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) targetUserElement.setDouble2BigDecimal2(userListElement.getDouble2BigDecimal2().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) targetUserElement.setLong2BigDecimal(userListElement.getLong2BigDecimal().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) targetUserElement.setLong2BigDecimal2(userListElement.getLong2BigDecimal2().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) targetUserElement.setLong2BigInteger(userListElement.getLong2BigInteger().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) targetUserElement.setLong2BigInteger2(userListElement.getLong2BigInteger2().longValue());\n" // 
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) {\n"
+            + "            targetUserElement.setDouble2BigDecimal(userListElement.getDouble2BigDecimal().doubleValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) {\n"
+            + "            targetUserElement.setDouble2BigDecimal2(userListElement.getDouble2BigDecimal2().doubleValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) {\n"
+            + "            targetUserElement.setLong2BigDecimal(userListElement.getLong2BigDecimal().longValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) {\n"
+            + "            targetUserElement.setLong2BigDecimal2(userListElement.getLong2BigDecimal2().longValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) {\n"
+            + "            targetUserElement.setLong2BigInteger(userListElement.getLong2BigInteger().longValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) {\n"
+            + "            targetUserElement.setLong2BigInteger2(userListElement.getLong2BigInteger2().longValue());\n"
+            + "        }\n" //
             + "    }\n" //
             + "}");
         assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(role.getUserList())) {\n"
@@ -365,22 +409,38 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getGender())) sourceUserDtoElement.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, userListElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.isAvailable())) sourceUserDtoElement.setAvailable(userListElement.isAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEmail())) sourceUserDtoElement.setEmail(userListElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) sourceUserDtoElement.setRegisterTime(cn.featherfly.common.lang.Dates.format(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) {\n"
+            + "            sourceUserDtoElement.setRegisterTime(cn.featherfly.common.lang.Dates.format(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getAlipayUserId())) sourceUserDtoElement.setAlipayUserId(userListElement.getAlipayUserId());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getWechatUnionId())) sourceUserDtoElement.setWechatUnionId(userListElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) sourceUserDtoElement.setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userListElement.getEndTime()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) {\n"
+            + "            sourceUserDtoElement.setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userListElement.getEndTime()));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getInt2Integer())) sourceUserDtoElement.setInt2Integer(userListElement.getInt2Integer());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2Long())) sourceUserDtoElement.setLong2Long(userListElement.getLong2Long());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getByte2Byte())) sourceUserDtoElement.setByte2Byte(userListElement.getByte2Byte());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getShort2Short())) sourceUserDtoElement.setShort2Short(userListElement.getShort2Short());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2Double())) sourceUserDtoElement.setDouble2Double(userListElement.getDouble2Double());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getFloat2Float())) sourceUserDtoElement.setFloat2Float(userListElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) sourceUserDtoElement.setDouble2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) sourceUserDtoElement.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) sourceUserDtoElement.setLong2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) sourceUserDtoElement.setLong2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) sourceUserDtoElement.setLong2BigInteger(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) sourceUserDtoElement.setLong2BigInteger2(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger2()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) {\n"
+            + "            sourceUserDtoElement.setDouble2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) {\n"
+            + "            sourceUserDtoElement.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal2()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) {\n"
+            + "            sourceUserDtoElement.setLong2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) {\n"
+            + "            sourceUserDtoElement.setLong2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal2()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) {\n"
+            + "            sourceUserDtoElement.setLong2BigInteger(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) {\n"
+            + "            sourceUserDtoElement.setLong2BigInteger2(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger2()));\n"
+            + "        }\n" //
             + "    }\n" //
             + "}");
 
@@ -406,22 +466,38 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getGender())) targetUserElement.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userListElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getAvailable())) targetUserElement.setAvailable(userListElement.getAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEmail())) targetUserElement.setEmail(userListElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) targetUserElement.setRegisterTime(cn.featherfly.common.lang.Dates.parse(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) {\n"
+            + "            targetUserElement.setRegisterTime(cn.featherfly.common.lang.Dates.parse(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getAlipayUserId())) targetUserElement.setAlipayUserId(userListElement.getAlipayUserId());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getWechatUnionId())) targetUserElement.setWechatUnionId(userListElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) targetUserElement.setEndTime(cn.featherfly.common.lang.Dates.toDate(userListElement.getEndTime()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) {\n"
+            + "            targetUserElement.setEndTime(cn.featherfly.common.lang.Dates.toDate(userListElement.getEndTime()));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getInt2Integer())) targetUserElement.setInt2Integer(userListElement.getInt2Integer());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2Long())) targetUserElement.setLong2Long(userListElement.getLong2Long());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getByte2Byte())) targetUserElement.setByte2Byte(userListElement.getByte2Byte());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getShort2Short())) targetUserElement.setShort2Short(userListElement.getShort2Short());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2Double())) targetUserElement.setDouble2Double(userListElement.getDouble2Double());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getFloat2Float())) targetUserElement.setFloat2Float(userListElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) targetUserElement.setDouble2BigDecimal(userListElement.getDouble2BigDecimal().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) targetUserElement.setDouble2BigDecimal2(userListElement.getDouble2BigDecimal2().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) targetUserElement.setLong2BigDecimal(userListElement.getLong2BigDecimal().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) targetUserElement.setLong2BigDecimal2(userListElement.getLong2BigDecimal2().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) targetUserElement.setLong2BigInteger(userListElement.getLong2BigInteger().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) targetUserElement.setLong2BigInteger2(userListElement.getLong2BigInteger2().longValue());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) {\n"
+            + "            targetUserElement.setDouble2BigDecimal(userListElement.getDouble2BigDecimal().doubleValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) {\n"
+            + "            targetUserElement.setDouble2BigDecimal2(userListElement.getDouble2BigDecimal2().doubleValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) {\n"
+            + "            targetUserElement.setLong2BigDecimal(userListElement.getLong2BigDecimal().longValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) {\n"
+            + "            targetUserElement.setLong2BigDecimal2(userListElement.getLong2BigDecimal2().longValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) {\n"
+            + "            targetUserElement.setLong2BigInteger(userListElement.getLong2BigInteger().longValue());\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) {\n"
+            + "            targetUserElement.setLong2BigInteger2(userListElement.getLong2BigInteger2().longValue());\n"
+            + "        }\n" //
             + "    }\n" //
             + "}");
         assertEquals(fromTarget, "if (cn.featherfly.common.lang.Lang.isNotEmpty(role.getUserList())) {\n"
@@ -439,22 +515,38 @@ public class IterableListPropertyCodegenTest extends IterablePropertyCodegenTest
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getGender())) sourceUserDtoElement.setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, userListElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.isAvailable())) sourceUserDtoElement.setAvailable(userListElement.isAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEmail())) sourceUserDtoElement.setEmail(userListElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) sourceUserDtoElement.setRegisterTime(cn.featherfly.common.lang.Dates.format(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getRegisterTime())) {\n"
+            + "            sourceUserDtoElement.setRegisterTime(cn.featherfly.common.lang.Dates.format(userListElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getAlipayUserId())) sourceUserDtoElement.setAlipayUserId(userListElement.getAlipayUserId());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getWechatUnionId())) sourceUserDtoElement.setWechatUnionId(userListElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) sourceUserDtoElement.setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userListElement.getEndTime()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getEndTime())) {\n"
+            + "            sourceUserDtoElement.setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userListElement.getEndTime()));\n"
+            + "        }\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getInt2Integer())) sourceUserDtoElement.setInt2Integer(userListElement.getInt2Integer());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2Long())) sourceUserDtoElement.setLong2Long(userListElement.getLong2Long());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getByte2Byte())) sourceUserDtoElement.setByte2Byte(userListElement.getByte2Byte());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getShort2Short())) sourceUserDtoElement.setShort2Short(userListElement.getShort2Short());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2Double())) sourceUserDtoElement.setDouble2Double(userListElement.getDouble2Double());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getFloat2Float())) sourceUserDtoElement.setFloat2Float(userListElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) sourceUserDtoElement.setDouble2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) sourceUserDtoElement.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) sourceUserDtoElement.setLong2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) sourceUserDtoElement.setLong2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) sourceUserDtoElement.setLong2BigInteger(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) sourceUserDtoElement.setLong2BigInteger2(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger2()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal())) {\n"
+            + "            sourceUserDtoElement.setDouble2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getDouble2BigDecimal2())) {\n"
+            + "            sourceUserDtoElement.setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getDouble2BigDecimal2()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal())) {\n"
+            + "            sourceUserDtoElement.setLong2BigDecimal(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigDecimal2())) {\n"
+            + "            sourceUserDtoElement.setLong2BigDecimal2(java.math.BigDecimal.valueOf(userListElement.getLong2BigDecimal2()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger())) {\n"
+            + "            sourceUserDtoElement.setLong2BigInteger(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger()));\n"
+            + "        }\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userListElement.getLong2BigInteger2())) {\n"
+            + "            sourceUserDtoElement.setLong2BigInteger2(java.math.BigInteger.valueOf(userListElement.getLong2BigInteger2()));\n"
+            + "        }\n" //
             + "    }\n" //
             + "}");
 

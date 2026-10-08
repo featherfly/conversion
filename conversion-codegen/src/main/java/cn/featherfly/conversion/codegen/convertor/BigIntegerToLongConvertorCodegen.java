@@ -3,7 +3,7 @@ package cn.featherfly.conversion.codegen.convertor;
 import java.math.BigInteger;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type BigInteger to long convertor codegen.
@@ -11,7 +11,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.4.0
  */
-public class BigIntegerToLongConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class BigIntegerToLongConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new BigInteger to long convertor codegen.
@@ -36,22 +36,22 @@ public class BigIntegerToLongConvertorCodegen extends AbstractConvertorCodegen i
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toBigInteger(source);
+            return toBigInteger(content);
         }
-        return toLong(source);
+        return toLong(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toLong(target);
+            return toLong(content);
         }
-        return toBigInteger(target);
+        return toBigInteger(content);
     }
 
     private String toBigInteger(String src) {

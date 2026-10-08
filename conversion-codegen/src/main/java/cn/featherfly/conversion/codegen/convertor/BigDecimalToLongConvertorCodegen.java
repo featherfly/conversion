@@ -3,7 +3,7 @@ package cn.featherfly.conversion.codegen.convertor;
 import java.math.BigDecimal;
 
 import cn.featherfly.common.lang.Str;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * The type BigDecimal to long convertor codegen.
@@ -11,7 +11,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.4.0
  */
-public class BigDecimalToLongConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class BigDecimalToLongConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     /**
      * Instantiates a new BigDecimal to long convertor codegen.
@@ -36,22 +36,22 @@ public class BigDecimalToLongConvertorCodegen extends AbstractConvertorCodegen i
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toBigDecimal(source);
+            return toBigDecimal(content);
         }
-        return toLong(source);
+        return toLong(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return toLong(target);
+            return toLong(content);
         }
-        return toBigDecimal(target);
+        return toBigDecimal(content);
     }
 
     private String toBigDecimal(String src) {
@@ -61,4 +61,5 @@ public class BigDecimalToLongConvertorCodegen extends AbstractConvertorCodegen i
     private String toLong(String src) {
         return Str.format("{0}.longValue()", src);
     }
+
 }

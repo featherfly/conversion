@@ -5,7 +5,7 @@ import java.util.Date;
 
 import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.CodegenUtils;
-import cn.featherfly.conversion.codegen.ConvertorCodegen;
+import cn.featherfly.conversion.codegen.ConvertibleProperty;
 
 /**
  * LocalDate to String convertor codegen.
@@ -13,7 +13,7 @@ import cn.featherfly.conversion.codegen.ConvertorCodegen;
  * @author zhongj
  * @since 0.1.0
  */
-public class LocalDateToStringConvertorCodegen extends AbstractConvertorCodegen implements ConvertorCodegen {
+public class LocalDateToStringConvertorCodegen extends AbstractSimpleConvertorCodegen {
 
     private final String format;
 
@@ -60,23 +60,22 @@ public class LocalDateToStringConvertorCodegen extends AbstractConvertorCodegen 
      * {@inheritDoc}
      */
     @Override
-    public String generateToTarget(String source, String target) {
+    protected String toTarget(String content, ConvertibleProperty property) {
         if (inverse) {
-            return parse(source);
+            return parse(content);
         }
-        return format(source);
+        return format(content);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String generateToSource(String target, String source) {
+    protected String toSource(String content, ConvertibleProperty property) {
         if (inverse) {
-            return format(target);
+            return format(content);
         }
-        return parse(target);
-
+        return parse(content);
     }
 
     private String format(String src) {

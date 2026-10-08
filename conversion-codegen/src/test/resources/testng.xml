@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="conversion codegen Test Suite" parallel="tests"
+	thread-count="1">
+	<test name="mapping type test">
+        <packages>
+            <package
+                name="cn.featherfly.hammer.sqldb.jdbc.mappingtype.*" />
+        </packages>
+    </test>
+
+    <test name="property codegen test">
+        <packages>
+            <package
+                name="cn.featherfly.conversion.codegen.property.*" />
+        </packages>
+    </test>
+
+    <test name="bean codegen test">
+        <classes>
+            <class name="cn.featherfly.conversion.codegen.BeanCodegenTest"></class>
+        </classes>
+    </test>
+</suite>

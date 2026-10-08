@@ -10,9 +10,12 @@ package cn.featherfly.conversion.codegen.property;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.testng.annotations.Test;
 
-import cn.featherfly.common.lang.Iterables;
+import cn.featherfly.conversion.codegen.ConvertiblePropertyImpl;
+import cn.featherfly.conversion.codegen.TypeMetadataImpl;
 import cn.featherfly.conversion.codegen.convertor.BeanToBeanConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.DirectAssignConvertorCodegen;
 import cn.featherfly.conversion.codegen.convertor.EnumToEnumConvertorCodegen;
@@ -38,8 +41,10 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
         DirectAssignConvertorCodegen directAssign = new DirectAssignConvertorCodegen(String.class);
 
         System.out.println("iterable array to list direct assign");
-        IterablePropertyCodegen iterableDirectAssign = new IterablePropertyCodegen(directAssign, Iterables.LIST,
-            Iterables.ARRAY);
+        IterablePropertyCodegen iterableDirectAssign = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, String.class),
+                new TypeMetadataImpl(String[].class)),
+            directAssign);
         toTarget = iterableDirectAssign.generateToTarget(propertyName, "userDto", "user");
         fromTarget = iterableDirectAssign.generateFromTarget(propertyName, "userDto", "user");
         System.out.println("toTarget: userDto -> user");
@@ -112,8 +117,10 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
         DirectAssignConvertorCodegen directAssign = new DirectAssignConvertorCodegen(int.class);
 
         System.out.println("iterable direct assign");
-        IterablePropertyCodegen iterableDirectAssign = new IterablePropertyCodegen(directAssign, Iterables.LIST,
-            Iterables.ARRAY);
+        IterablePropertyCodegen iterableDirectAssign = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, int.class),
+                new TypeMetadataImpl(int[].class)),
+            directAssign);
         toTarget = iterableDirectAssign.generateToTarget(propertyName, "userDto", "user");
         fromTarget = iterableDirectAssign.generateFromTarget(propertyName, "userDto", "user");
         System.out.println("toTarget: userDto -> user");
@@ -173,16 +180,18 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
     @Override
     @Test
     public void enumToEnum() {
+        final String propertyName = "genderList";
         String domainGender = getClassName(cn.featherfly.conversion.codegen.domain.User.Gender.class);
         String voGender = getClassName(cn.featherfly.conversion.codegen.vo.Gender.class);
 
         EnumToEnumConvertorCodegen enumToEnum = new EnumToEnumConvertorCodegen(voGender, domainGender);
-        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(enumToEnum, Iterables.LIST,
-            Iterables.ARRAY);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(new ConvertiblePropertyImpl(
+            propertyName, new TypeMetadataImpl(List.class, cn.featherfly.conversion.codegen.vo.Gender.class),
+            new TypeMetadataImpl(cn.featherfly.conversion.codegen.domain.User.Gender[].class)), enumToEnum);
 
         System.out.println("iterable enum to enum");
-        fromTarget = iterableEnumToEnum.generateFromTarget("genderList", "userDto", "user");
-        toTarget = iterableEnumToEnum.generateToTarget("genderList", "userDto", "user");
+        fromTarget = iterableEnumToEnum.generateFromTarget(propertyName, "userDto", "user");
+        toTarget = iterableEnumToEnum.generateToTarget(propertyName, "userDto", "user");
         System.out.println("toTarget: userDto -> user");
         System.out.println(toTarget);
         System.out.println("fromTarget: userDto <- user");
@@ -209,8 +218,8 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "}");
 
         System.out.println("iterable enum to enum");
-        fromTarget = iterableEnumToEnum.generateFromTarget("genderList", null, "user");
-        toTarget = iterableEnumToEnum.generateToTarget("genderList", null, "user");
+        fromTarget = iterableEnumToEnum.generateFromTarget(propertyName, null, "user");
+        toTarget = iterableEnumToEnum.generateToTarget(propertyName, null, "user");
         System.out.println("toTarget: this -> user");
         System.out.println(toTarget);
         System.out.println("fromTarget: this <- user");
@@ -245,11 +254,11 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
     public void enumToString() {
         final String propertyName = "genderArray";
         String voGender = getClassName(cn.featherfly.conversion.codegen.vo.Gender.class);
-        String userGender = getClassName(cn.featherfly.conversion.codegen.domain.User.Gender.class);
 
         EnumToStringConvertorCodegen enumToString = new EnumToStringConvertorCodegen(voGender);
-        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(enumToString, Iterables.LIST,
-            Iterables.ARRAY);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(new ConvertiblePropertyImpl(
+            propertyName, new TypeMetadataImpl(List.class, cn.featherfly.conversion.codegen.vo.Gender.class),
+            new TypeMetadataImpl(String[].class)), enumToString);
 
         System.out.println("iterable enum to string");
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "userDto", "user");
@@ -306,11 +315,21 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "    }\n"//
             + "}");
 
-        // --------------------------
-        System.out.println("iterable string to enum");
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void enumToStringInverse() {
+        System.out.println("iterable string to enum");
+        final String propertyName = "genderArray";
+        String userGender = getClassName(cn.featherfly.conversion.codegen.domain.User.Gender.class);
         EnumToStringConvertorCodegen stringToEnum = new EnumToStringConvertorCodegen(userGender, true);
-        iterableEnumToEnum = new IterablePropertyCodegen(stringToEnum, Iterables.LIST, Iterables.ARRAY);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, String.class),
+                new TypeMetadataImpl(cn.featherfly.conversion.codegen.domain.User.Gender[].class)),
+            stringToEnum);
 
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "userDto", "user");
         fromTarget = iterableEnumToEnum.generateFromTarget(propertyName, "userDto", "user");
@@ -359,7 +378,7 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "    setGenderArray(new java.util.ArrayList<>(user.getGenderArray().length));\n"
             + "    for (int i = 0; i < user.getGenderArray().length; i++) {\n"
             + "        cn.featherfly.conversion.codegen.domain.User.Gender genderArrayElement = user.getGenderArray()[i];\n"
-            + "        if (genderArrayElement == null) {\n" // 
+            + "        if (genderArrayElement == null) {\n" //
             + "            getGenderArray().add(null);\n"//
             + "            continue;\n"//
             + "        }\n"//
@@ -377,8 +396,10 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
         final String propertyName = "userArray";
         BeanToBeanConvertorCodegen beanToBean = new BeanToBeanConvertorCodegen(iterableElementBeanCodegen,
             UserDto.class, User.class, 0);
-        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(beanToBean, Iterables.LIST,
-            Iterables.ARRAY);
+        IterablePropertyCodegen iterableEnumToEnum = new IterablePropertyCodegen(
+            new ConvertiblePropertyImpl(propertyName, new TypeMetadataImpl(List.class, UserDto.class),
+                new TypeMetadataImpl(User[].class)),
+            beanToBean);
 
         System.out.println("iterable bean to bean (UserDto -> User);");
         toTarget = iterableEnumToEnum.generateToTarget(propertyName, "roleDto", "role");
@@ -398,22 +419,38 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getGender())) role.getUserArray()[i].setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userArrayElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAvailable())) role.getUserArray()[i].setAvailable(userArrayElement.getAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEmail())) role.getUserArray()[i].setEmail(userArrayElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) role.getUserArray()[i].setRegisterTime(cn.featherfly.common.lang.Dates.parse(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) role.getUserArray()[i].setAlipayUserId(userArrayElement.getAlipayUserId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) role.getUserArray()[i].setWechatUnionId(userArrayElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) role.getUserArray()[i].setEndTime(cn.featherfly.common.lang.Dates.toDate(userArrayElement.getEndTime()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) role.getUserArray()[i].setInt2Integer(userArrayElement.getInt2Integer());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) role.getUserArray()[i].setLong2Long(userArrayElement.getLong2Long());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) role.getUserArray()[i].setByte2Byte(userArrayElement.getByte2Byte());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) role.getUserArray()[i].setShort2Short(userArrayElement.getShort2Short());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) role.getUserArray()[i].setDouble2Double(userArrayElement.getDouble2Double());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) role.getUserArray()[i].setFloat2Float(userArrayElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) role.getUserArray()[i].setDouble2BigDecimal(userArrayElement.getDouble2BigDecimal().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) role.getUserArray()[i].setDouble2BigDecimal2(userArrayElement.getDouble2BigDecimal2().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) role.getUserArray()[i].setLong2BigDecimal(userArrayElement.getLong2BigDecimal().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) role.getUserArray()[i].setLong2BigDecimal2(userArrayElement.getLong2BigDecimal2().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) role.getUserArray()[i].setLong2BigInteger(userArrayElement.getLong2BigInteger().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) role.getUserArray()[i].setLong2BigInteger2(userArrayElement.getLong2BigInteger2().longValue());\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) {\n" //
+            + "            role.setUserArray()[i].setRegisterTime(cn.featherfly.common.lang.Dates.parse(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) role.getUserArray()[i].setAlipayUserId(userArrayElement.getAlipayUserId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) role.getUserArray()[i].setWechatUnionId(userArrayElement.getWechatUnionId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) {\n" //
+            + "            role.setUserArray()[i].setEndTime(cn.featherfly.common.lang.Dates.toDate(userArrayElement.getEndTime()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) role.getUserArray()[i].setInt2Integer(userArrayElement.getInt2Integer());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) role.getUserArray()[i].setLong2Long(userArrayElement.getLong2Long());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) role.getUserArray()[i].setByte2Byte(userArrayElement.getByte2Byte());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) role.getUserArray()[i].setShort2Short(userArrayElement.getShort2Short());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) role.getUserArray()[i].setDouble2Double(userArrayElement.getDouble2Double());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) role.getUserArray()[i].setFloat2Float(userArrayElement.getFloat2Float());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) {\n" //
+            + "            role.setUserArray()[i].setDouble2BigDecimal(userArrayElement.getDouble2BigDecimal().doubleValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) {\n" //
+            + "            role.setUserArray()[i].setDouble2BigDecimal2(userArrayElement.getDouble2BigDecimal2().doubleValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigDecimal(userArrayElement.getLong2BigDecimal().longValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigDecimal2(userArrayElement.getLong2BigDecimal2().longValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigInteger(userArrayElement.getLong2BigInteger().longValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigInteger2(userArrayElement.getLong2BigInteger2().longValue());\n" //
+            + "        }\n" //
             + "        i++;\n" //
             + "    }\n"//
             + "}");
@@ -429,22 +466,38 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getGender())) roleDto.getUserArray().get(i).setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, userArrayElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.isAvailable())) roleDto.getUserArray().get(i).setAvailable(userArrayElement.isAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEmail())) roleDto.getUserArray().get(i).setEmail(userArrayElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) roleDto.getUserArray().get(i).setRegisterTime(cn.featherfly.common.lang.Dates.format(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) roleDto.getUserArray().get(i).setAlipayUserId(userArrayElement.getAlipayUserId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) roleDto.getUserArray().get(i).setWechatUnionId(userArrayElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) roleDto.getUserArray().get(i).setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userArrayElement.getEndTime()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) roleDto.getUserArray().get(i).setInt2Integer(userArrayElement.getInt2Integer());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) roleDto.getUserArray().get(i).setLong2Long(userArrayElement.getLong2Long());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) roleDto.getUserArray().get(i).setByte2Byte(userArrayElement.getByte2Byte());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) roleDto.getUserArray().get(i).setShort2Short(userArrayElement.getShort2Short());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) roleDto.getUserArray().get(i).setDouble2Double(userArrayElement.getDouble2Double());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) roleDto.getUserArray().get(i).setFloat2Float(userArrayElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) roleDto.getUserArray().get(i).setDouble2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) roleDto.getUserArray().get(i).setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) roleDto.getUserArray().get(i).setLong2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) roleDto.getUserArray().get(i).setLong2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) roleDto.getUserArray().get(i).setLong2BigInteger(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) roleDto.getUserArray().get(i).setLong2BigInteger2(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger2()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) {\n" //
+            + "            roleDto.setUserArray().set(i).setRegisterTime(cn.featherfly.common.lang.Dates.format(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) roleDto.getUserArray().get(i).setAlipayUserId(userArrayElement.getAlipayUserId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) roleDto.getUserArray().get(i).setWechatUnionId(userArrayElement.getWechatUnionId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) {\n" //
+            + "            roleDto.setUserArray().set(i).setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userArrayElement.getEndTime()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) roleDto.getUserArray().get(i).setInt2Integer(userArrayElement.getInt2Integer());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) roleDto.getUserArray().get(i).setLong2Long(userArrayElement.getLong2Long());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) roleDto.getUserArray().get(i).setByte2Byte(userArrayElement.getByte2Byte());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) roleDto.getUserArray().get(i).setShort2Short(userArrayElement.getShort2Short());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) roleDto.getUserArray().get(i).setDouble2Double(userArrayElement.getDouble2Double());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) roleDto.getUserArray().get(i).setFloat2Float(userArrayElement.getFloat2Float());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) {\n" //
+            + "            roleDto.setUserArray().set(i).setDouble2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) {\n" //
+            + "            roleDto.setUserArray().set(i).setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal2()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) {\n" //
+            + "            roleDto.setUserArray().set(i).setLong2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) {\n" //
+            + "            roleDto.setUserArray().set(i).setLong2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal2()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) {\n" //
+            + "            roleDto.setUserArray().set(i).setLong2BigInteger(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) {\n" //
+            + "            roleDto.setUserArray().set(i).setLong2BigInteger2(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger2()));\n" //
+            + "        }\n" //
             + "    }\n"//
             + "}");
 
@@ -466,22 +519,38 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getGender())) role.getUserArray()[i].setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.domain.User.Gender.class, userArrayElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAvailable())) role.getUserArray()[i].setAvailable(userArrayElement.getAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEmail())) role.getUserArray()[i].setEmail(userArrayElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) role.getUserArray()[i].setRegisterTime(cn.featherfly.common.lang.Dates.parse(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) role.getUserArray()[i].setAlipayUserId(userArrayElement.getAlipayUserId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) role.getUserArray()[i].setWechatUnionId(userArrayElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) role.getUserArray()[i].setEndTime(cn.featherfly.common.lang.Dates.toDate(userArrayElement.getEndTime()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) role.getUserArray()[i].setInt2Integer(userArrayElement.getInt2Integer());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) role.getUserArray()[i].setLong2Long(userArrayElement.getLong2Long());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) role.getUserArray()[i].setByte2Byte(userArrayElement.getByte2Byte());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) role.getUserArray()[i].setShort2Short(userArrayElement.getShort2Short());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) role.getUserArray()[i].setDouble2Double(userArrayElement.getDouble2Double());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) role.getUserArray()[i].setFloat2Float(userArrayElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) role.getUserArray()[i].setDouble2BigDecimal(userArrayElement.getDouble2BigDecimal().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) role.getUserArray()[i].setDouble2BigDecimal2(userArrayElement.getDouble2BigDecimal2().doubleValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) role.getUserArray()[i].setLong2BigDecimal(userArrayElement.getLong2BigDecimal().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) role.getUserArray()[i].setLong2BigDecimal2(userArrayElement.getLong2BigDecimal2().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) role.getUserArray()[i].setLong2BigInteger(userArrayElement.getLong2BigInteger().longValue());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) role.getUserArray()[i].setLong2BigInteger2(userArrayElement.getLong2BigInteger2().longValue());\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) {\n" //
+            + "            role.setUserArray()[i].setRegisterTime(cn.featherfly.common.lang.Dates.parse(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) role.getUserArray()[i].setAlipayUserId(userArrayElement.getAlipayUserId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) role.getUserArray()[i].setWechatUnionId(userArrayElement.getWechatUnionId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) {\n" //
+            + "            role.setUserArray()[i].setEndTime(cn.featherfly.common.lang.Dates.toDate(userArrayElement.getEndTime()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) role.getUserArray()[i].setInt2Integer(userArrayElement.getInt2Integer());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) role.getUserArray()[i].setLong2Long(userArrayElement.getLong2Long());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) role.getUserArray()[i].setByte2Byte(userArrayElement.getByte2Byte());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) role.getUserArray()[i].setShort2Short(userArrayElement.getShort2Short());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) role.getUserArray()[i].setDouble2Double(userArrayElement.getDouble2Double());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) role.getUserArray()[i].setFloat2Float(userArrayElement.getFloat2Float());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) {\n" //
+            + "            role.setUserArray()[i].setDouble2BigDecimal(userArrayElement.getDouble2BigDecimal().doubleValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) {\n" //
+            + "            role.setUserArray()[i].setDouble2BigDecimal2(userArrayElement.getDouble2BigDecimal2().doubleValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigDecimal(userArrayElement.getLong2BigDecimal().longValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigDecimal2(userArrayElement.getLong2BigDecimal2().longValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigInteger(userArrayElement.getLong2BigInteger().longValue());\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) {\n" //
+            + "            role.setUserArray()[i].setLong2BigInteger2(userArrayElement.getLong2BigInteger2().longValue());\n" //
+            + "        }\n" //
             + "        i++;\n" //
             + "    }\n"//
             + "}");
@@ -497,22 +566,38 @@ public class IterableListToArrayPropertyCodegenTest extends IterablePropertyCode
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getGender())) getUserArray().get(i).setGender(cn.featherfly.common.lang.Lang.toEnum(cn.featherfly.conversion.codegen.vo.Gender.class, userArrayElement.getGender()));\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.isAvailable())) getUserArray().get(i).setAvailable(userArrayElement.isAvailable());\n"
             + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEmail())) getUserArray().get(i).setEmail(userArrayElement.getEmail());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) getUserArray().get(i).setRegisterTime(cn.featherfly.common.lang.Dates.format(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) getUserArray().get(i).setAlipayUserId(userArrayElement.getAlipayUserId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) getUserArray().get(i).setWechatUnionId(userArrayElement.getWechatUnionId());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) getUserArray().get(i).setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userArrayElement.getEndTime()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) getUserArray().get(i).setInt2Integer(userArrayElement.getInt2Integer());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) getUserArray().get(i).setLong2Long(userArrayElement.getLong2Long());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) getUserArray().get(i).setByte2Byte(userArrayElement.getByte2Byte());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) getUserArray().get(i).setShort2Short(userArrayElement.getShort2Short());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) getUserArray().get(i).setDouble2Double(userArrayElement.getDouble2Double());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) getUserArray().get(i).setFloat2Float(userArrayElement.getFloat2Float());\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) getUserArray().get(i).setDouble2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) getUserArray().get(i).setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) getUserArray().get(i).setLong2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) getUserArray().get(i).setLong2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal2()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) getUserArray().get(i).setLong2BigInteger(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger()));\n"
-            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) getUserArray().get(i).setLong2BigInteger2(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger2()));\n"
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getRegisterTime())) {\n" //
+            + "            getUserArray().set(i).setRegisterTime(cn.featherfly.common.lang.Dates.format(userArrayElement.getRegisterTime(), \"yyyy-MM-dd HH:mm:ss\"));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getAlipayUserId())) getUserArray().get(i).setAlipayUserId(userArrayElement.getAlipayUserId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getWechatUnionId())) getUserArray().get(i).setWechatUnionId(userArrayElement.getWechatUnionId());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getEndTime())) {\n" //
+            + "            getUserArray().set(i).setEndTime(cn.featherfly.common.lang.Dates.toLocalDateTime(userArrayElement.getEndTime()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getInt2Integer())) getUserArray().get(i).setInt2Integer(userArrayElement.getInt2Integer());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2Long())) getUserArray().get(i).setLong2Long(userArrayElement.getLong2Long());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getByte2Byte())) getUserArray().get(i).setByte2Byte(userArrayElement.getByte2Byte());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getShort2Short())) getUserArray().get(i).setShort2Short(userArrayElement.getShort2Short());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2Double())) getUserArray().get(i).setDouble2Double(userArrayElement.getDouble2Double());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getFloat2Float())) getUserArray().get(i).setFloat2Float(userArrayElement.getFloat2Float());\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal())) {\n" //
+            + "            getUserArray().set(i).setDouble2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getDouble2BigDecimal2())) {\n" //
+            + "            getUserArray().set(i).setDouble2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getDouble2BigDecimal2()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal())) {\n" //
+            + "            getUserArray().set(i).setLong2BigDecimal(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigDecimal2())) {\n" //
+            + "            getUserArray().set(i).setLong2BigDecimal2(java.math.BigDecimal.valueOf(userArrayElement.getLong2BigDecimal2()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger())) {\n" //
+            + "            getUserArray().set(i).setLong2BigInteger(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger()));\n" //
+            + "        }\n" //
+            + "        if (cn.featherfly.common.lang.Lang.isNotEmpty(userArrayElement.getLong2BigInteger2())) {\n" //
+            + "            getUserArray().set(i).setLong2BigInteger2(java.math.BigInteger.valueOf(userArrayElement.getLong2BigInteger2()));\n" //
+            + "        }\n" //
             + "    }\n"//
             + "}");
 
