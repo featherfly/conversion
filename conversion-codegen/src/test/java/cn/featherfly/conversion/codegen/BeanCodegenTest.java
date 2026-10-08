@@ -15,10 +15,12 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import cn.featherfly.common.lang.Lang;
+import cn.featherfly.common.lang.Str;
 import cn.featherfly.conversion.codegen.MethodMetadata.MethodType;
 import cn.featherfly.conversion.codegen.domain.Role;
 import cn.featherfly.conversion.codegen.domain.User;
@@ -682,36 +684,75 @@ public class BeanCodegenTest extends CodegenTest {
             RoleDto.class.getName(), Role.class.getName(), roleProps, null, "role"));
     }
 
-    //    @Test
-    //    public void testFromTarget2() {
-    //        List<ConvertibleProperty> properties = Lang.list(new ConvertiblePropertyImpl("id", long.class, long.class));
-    //        BeanCodegen codegen = BeanCodegenImpl.builder().build();
-    //
-    //        // source UserDto target User
-    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.CONSTRUCTOR),
-    //            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
-    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD),
-    //            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
-    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.METHOD, true),
-    //            UserDto.class.getName(), User.class.getName(), properties, null, "user"));
-    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD),
-    //            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
-    //        System.out.println(codegen.generateToTarget(new MethodMetadataImpl("toUser", MethodType.STATIC_METHOD, true),
-    //            UserDto.class.getName(), User.class.getName(), properties, "userDto", "user"));
-    //        System.out.println();
-    //
-    //        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("UserDto", MethodType.CONSTRUCTOR),
-    //            UserDto.class.getName(),
-    //            User.class.getName(), properties, null, "user"));
-    //        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.METHOD),
-    //            UserDto.class.getName(),
-    //            User.class.getName(), properties, "userDto", "user"));
-    //        System.out.println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD),
-    //            UserDto.class.getName(),
-    //            User.class.getName(), properties, "userDto", "user"));
-    //        System.out
-    //            .println(codegen.generateFromTarget(new MethodMetadataImpl("fromUser", MethodType.STATIC_METHOD, true),
-    //                UserDto.class.getName(),
-    //                User.class.getName(), properties, "userDto", "user"));
-    //    }
+    @Test
+    public void convertorCodegenFinder() {
+        String result = null;
+        List<ConvertibleProperty> roleProps = Lang.list( //
+            new ConvertiblePropertyImpl("user", new TypeMetadataImpl(UserDto.class), new TypeMetadataImpl(User.class)),
+            new ConvertiblePropertyImpl("users", new TypeMetadataImpl(UserDto[].class),
+                new TypeMetadataImpl(User[].class)),
+            new ConvertiblePropertyImpl("userList", new TypeMetadataImpl(List.class, UserDto.class),
+                new TypeMetadataImpl(List.class, User.class))
+        //
+        );
+        String indent = "    ";
+        BeanCodegen codegen = BeanCodegenImpl.builder() //
+            .setGenerateJavadoc(false) //
+            .setIndentSymbol(indent) //
+            .addConvertorCodegenFinder((property, source, target, indentStart) -> {
+                if (source.endsWith("Dto")) {
+                    return new ConvertorCodegen() {
+
+                        @Override
+                        public String targetType() {
+                            return target;
+                        }
+
+                        @Override
+                        public String sourceType() {
+                            return source;
+                        }
+
+                        @Override
+                        public boolean isInverse() {
+                            return false;
+                        }
+
+                        @Override
+                        public String generateToTarget(String source, String target) {
+                            if (property.sourceType().isArray()) {
+                                return source + ".to"
+                                    + StringUtils.substringAfterLast(targetType(), ".") + "();";
+                            } else if (property.sourceType().isCollection()) {
+                                return source + ".to"
+                                    + StringUtils.substringAfterLast(targetType(), ".") + "()";
+                            } else if (target.endsWith("()")) {
+                                String t = target.replaceAll("\\.get", ".set");
+                                t = t.substring(0, t.length() - 1);
+                                return Str.join(indent, indentStart) + t + source + ".to"
+                                    + StringUtils.substringAfterLast(targetType(), ".") + "());";
+                            } else {
+                                return Str.join(indent, indentStart) + target + " = " + source + ".to"
+                                    + StringUtils.substringAfterLast(targetType(), ".") + "();";
+                            }
+                        }
+
+                        @Override
+                        public String generateToSource(String target, String source) {
+                            return "new " + sourceType() + "(" + target + ")";
+                        }
+                    };
+                }
+                return null;
+            })
+            .build();
+
+        result = codegen.generateToTarget(new MethodMetadataImpl("toRole", MethodType.METHOD), RoleDto.class.getName(),
+            Role.class.getName(), roleProps, null, "role");
+        System.out.println(result);
+        result =
+            codegen.generateFromTarget(new MethodMetadataImpl("toRole", MethodType.METHOD), RoleDto.class.getName(),
+                Role.class.getName(), roleProps, null, "role");
+        System.out.println(result);
+    }
 }

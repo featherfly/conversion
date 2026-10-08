@@ -46,6 +46,13 @@ public interface TypeMetadata {
     boolean isArray();
 
     /**
+     * Checks if is collection.
+     *
+     * @return true, if is collection
+     */
+    boolean isCollection();
+
+    /**
      * Checks if is iterable.
      *
      * @return true, if is iterable

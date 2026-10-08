@@ -1,7 +1,7 @@
 package cn.featherfly.conversion.codegen;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * The Interface PropertyCodegen.
@@ -41,7 +41,7 @@ public interface BeanCodegen {
      * @return the string
      */
     String generateToTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
-        Function<String, String> content, String sourceObjectName, String targetObjectName);
+        UnaryOperator<String> content, String sourceObjectName, String targetObjectName);
 
     /**
      * Generate from target.
@@ -71,5 +71,5 @@ public interface BeanCodegen {
      * @return the string
      */
     String generateFromTarget(MethodMetadata method, String sourceObjectType, String targetObjectType,
-        Function<String, String> content, String sourceObjectName, String targetObjectName);
+        UnaryOperator<String> content, String sourceObjectName, String targetObjectName);
 }

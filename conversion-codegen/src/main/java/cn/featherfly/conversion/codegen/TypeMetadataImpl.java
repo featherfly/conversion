@@ -98,11 +98,22 @@ public class TypeMetadataImpl implements TypeMetadata {
      * Instantiates a new type metadata impl.
      *
      * @param name the name
+     * @param iterables the iterables
+     * @param elementType the element type
+     */
+    public TypeMetadataImpl(String name, Iterables iterables, TypeMetadata elementType) {
+        this(name, false, iterables, elementType);
+    }
+
+    /**
+     * Instantiates a new type metadata impl.
+     *
+     * @param name the name
      * @param isEnum the is enum
      * @param iterables the iterables
      * @param elementType the element type
      */
-    public TypeMetadataImpl(String name, boolean isEnum, Iterables iterables, TypeMetadata elementType) {
+    private TypeMetadataImpl(String name, boolean isEnum, Iterables iterables, TypeMetadata elementType) {
         super();
         this.name = name;
         this.elementType = elementType;
@@ -138,8 +149,16 @@ public class TypeMetadataImpl implements TypeMetadata {
      * {@inheritDoc}
      */
     @Override
-    public boolean isIterable() {
+    public boolean isCollection() {
         return iterables != null && iterables != Iterables.ARRAY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isIterable() {
+        return iterables != null;
     }
 
     /**
