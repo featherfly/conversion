@@ -44,13 +44,14 @@ public class BeanConvertorGenerator {
 
     private String targetName = "target";
 
-    private static final String DEFAULT_CLASS_TEMPLATE = "package {packageName};\n\n/**\n * {sourceType} to {targetType} convertor\n */\npublic {static}class {className} {\n{content}\n}";
+    private static final String DEFAULT_CLASS_TEMPLATE =
+        "package {packageName};\n\n/**\n * {sourceType} to {targetType} convertor\n */\npublic {static}class {className} {\n{content}\n}";
     private String classTemplate;
 
     /**
      * Instantiates a new bean convertor generator.
      *
-     * @param iterableElementBeanCodegen the bean codegen
+     * @param beanCodegen the bean codegen
      * @param source the source
      * @param target the target
      */
@@ -97,6 +98,12 @@ public class BeanConvertorGenerator {
         return properties;
     }
 
+    /**
+     * Generate.
+     *
+     * @param className the class name
+     * @return the string
+     */
     public String generate(String className) {
         StringBuilder src = new StringBuilder();
         for (MethodMetadata method : methods) {
